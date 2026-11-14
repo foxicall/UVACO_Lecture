@@ -1,0 +1,9 @@
+@import 'tailwindcss';
+:root { --paper: #FAF7F2; --ink: #182220; --pine: #1B4D3E; --gold: #D97706; --ocean: #1E4E5F; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', sans-serif; font-size: 1.375rem; line-height: 1.75; }
+button, input, textarea, select { font: inherit; }
+button { cursor: pointer; }
+button:disabled { cursor: not-allowed; opacity: .6; }
+:focus-visible { outline: 3px solid var(--pine); outline-offset: 4px; }
+main { padding: 24px; }
