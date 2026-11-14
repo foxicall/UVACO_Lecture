@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "sourceDigest": "16ee8c70d71ed619a3749c0c0f7f7ce10d893733e36b87762a86ff1cd95432da",
+  "sourceDigest": "bc1f3d0852b41f76179fb63fe5f4eeddf98e9db65c0445f424f9114a98240e66",
   "inventory": [
     {
       "path": "README.md",
-      "bytes": 17016,
-      "sha256": "28ea0756675700ae147467efaf0508d67114bba67ea87fa428d74cc494f0add7",
+      "bytes": 16491,
+      "sha256": "164a0a560860185918a704b529c8b38f101fba348f22dc30f00d86339c21ff1c",
       "kind": "project-document"
     },
     {
@@ -45,45 +45,45 @@
       "kind": "clinical-source"
     },
     {
-      "path": "葡眾/lectures/1.歐瀚文醫師_探索老化生物學從功能醫學走向健康長壽.md",
+      "path": "葡眾/lectures/1.細胞能量與老化速率.md",
       "bytes": 14151,
       "sha256": "f7789732f27d376b0463f4316d6b2488426076c8bab8fb2cbf8a645f34ec762c",
       "kind": "clinical-source"
     },
     {
-      "path": "葡眾/lectures/2.王偉全醫師_排除環境促老因子×降低長壽路上的毒素負荷.md",
+      "path": "葡眾/lectures/2.環境促老毒素與引流.md",
       "bytes": 14356,
       "sha256": "8efeff959701f6195fad4405f324c350655976385f5c050353e92bb5ebf7ba6a",
       "kind": "clinical-source"
     },
     {
-      "path": "葡眾/lectures/3.歐忠儒博士_探索老化生物學從功能醫學走向健康長壽.md",
+      "path": "葡眾/lectures/3.內分泌與神經類固醇.md",
       "bytes": 15722,
       "sha256": "bd10d02e654a4832e0dbeb3ef32b588b4c440f7c4ef380cd6f18609bcd31c29e",
       "kind": "clinical-source"
     },
     {
-      "path": "葡眾/lectures/4.洪佳琪營養師_認識(腦)發炎老化風險x解析智能長壽秘訣.md",
+      "path": "葡眾/lectures/4.發炎消退與髓鞘修復.md",
       "bytes": 11404,
       "sha256": "06f7f6858122e16ca4f50b71b1abad2ba669fda3d4410f29af1b07481a007c96",
       "kind": "clinical-source"
     },
     {
-      "path": "葡眾/lectures/5.劉士銘醫師_代謝老化與長壽體質.md",
+      "path": "葡眾/lectures/5.血管內皮與脂蛋白代謝.md",
       "bytes": 13540,
       "sha256": "663db27546640c9b919146e06071fc4ff550f1283f8c7c7198e3a3da3dcbede6",
       "kind": "clinical-source"
     },
     {
-      "path": "葡眾/lectures/6.王凱瑜醫師_腦腸軸與免疫老化x長壽健康的臨床洞見.md",
+      "path": "葡眾/lectures/6.腦腸軸與免疫老化.md",
       "bytes": 13950,
       "sha256": "556014ec20fd736ca5da3e257d52a7d97d92ae8784e5fa8a5c06e8f845e867de",
       "kind": "clinical-source"
     },
     {
       "path": "葡眾/longevity-6-lectures-source.md",
-      "bytes": 36011,
-      "sha256": "23d79127a5bc7b9690d16670ef70903b6ee7fcae0a699509f35f0847110e8873",
+      "bytes": 35538,
+      "sha256": "7974cb74cd90ed8f21d4f4f2311402fce45b70ae8f7f15107bdff5d3f3d0ff7d",
       "kind": "clinical-source"
     },
     {
@@ -163,7 +163,7 @@
     {
       "id": "L1",
       "title": "健康長壽與粒線體代謝",
-      "path": "葡眾/lectures/1.歐瀚文醫師_探索老化生物學從功能醫學走向健康長壽.md",
+      "path": "葡眾/lectures/1.細胞能量與老化速率.md",
       "sha256": "f7789732f27d376b0463f4316d6b2488426076c8bab8fb2cbf8a645f34ec762c",
       "bytes": 14151,
       "sectionCount": 14
@@ -171,7 +171,7 @@
     {
       "id": "L2",
       "title": "環境暴露與黴菌毒素",
-      "path": "葡眾/lectures/2.王偉全醫師_排除環境促老因子×降低長壽路上的毒素負荷.md",
+      "path": "葡眾/lectures/2.環境促老毒素與引流.md",
       "sha256": "8efeff959701f6195fad4405f324c350655976385f5c050353e92bb5ebf7ba6a",
       "bytes": 14356,
       "sectionCount": 16
@@ -179,7 +179,7 @@
     {
       "id": "L3",
       "title": "荷爾蒙、壓力與神經調節",
-      "path": "葡眾/lectures/3.歐忠儒博士_探索老化生物學從功能醫學走向健康長壽.md",
+      "path": "葡眾/lectures/3.內分泌與神經類固醇.md",
       "sha256": "bd10d02e654a4832e0dbeb3ef32b588b4c440f7c4ef380cd6f18609bcd31c29e",
       "bytes": 15722,
       "sectionCount": 12
@@ -187,7 +187,7 @@
     {
       "id": "L4",
       "title": "發炎消退與腦部脂質研究",
-      "path": "葡眾/lectures/4.洪佳琪營養師_認識(腦)發炎老化風險x解析智能長壽秘訣.md",
+      "path": "葡眾/lectures/4.發炎消退與髓鞘修復.md",
       "sha256": "06f7f6858122e16ca4f50b71b1abad2ba669fda3d4410f29af1b07481a007c96",
       "bytes": 11404,
       "sectionCount": 12
@@ -195,7 +195,7 @@
     {
       "id": "L5",
       "title": "代謝老化與血管健康",
-      "path": "葡眾/lectures/5.劉士銘醫師_代謝老化與長壽體質.md",
+      "path": "葡眾/lectures/5.血管內皮與脂蛋白代謝.md",
       "sha256": "663db27546640c9b919146e06071fc4ff550f1283f8c7c7198e3a3da3dcbede6",
       "bytes": 13540,
       "sectionCount": 12
@@ -203,7 +203,7 @@
     {
       "id": "L6",
       "title": "腦腸軸與免疫老化",
-      "path": "葡眾/lectures/6.王凱瑜醫師_腦腸軸與免疫老化x長壽健康的臨床洞見.md",
+      "path": "葡眾/lectures/6.腦腸軸與免疫老化.md",
       "sha256": "556014ec20fd736ca5da3e257d52a7d97d92ae8784e5fa8a5c06e8f845e867de",
       "bytes": 13950,
       "sectionCount": 15
@@ -212,8 +212,8 @@
       "id": "S1",
       "title": "六套長壽講座圖解校對",
       "path": "葡眾/longevity-6-lectures-source.md",
-      "sha256": "23d79127a5bc7b9690d16670ef70903b6ee7fcae0a699509f35f0847110e8873",
-      "bytes": 36011,
+      "sha256": "7974cb74cd90ed8f21d4f4f2311402fce45b70ae8f7f15107bdff5d3f3d0ff7d",
+      "bytes": 35538,
       "sectionCount": 31
     },
     {

@@ -63,27 +63,27 @@ npm run assets:generate -- --require-ai
 
 來源機轉原文可在產品科學頁展開閱讀。介面區分研究機制與成品療效，專利、企業獎項與醫師資歷不作為保健品治病的證明。ECFMG 證書不等同美國各州行醫執照。
 
-## 完整原始 PDF 圖像導覽
+## 六專題與互動醫療圖表
 
-目前有 **9 份原始 PDF、297 頁、429 張獨立內嵌圖片**。新增《人體營養藍圖》《細胞修復齒輪》《疼痛與身體照顧》《大腦森林》，並完整保留五份長壽簡報。主介面仍顯示林煒醫師；依最新指示公開原始 PDF 與頁面，保留原頁作者署名，不將參考資料改署為活動講師。
+公開版有 **六個臨床專題、八條代謝路徑、108 個互動節點**，連到十二項產品的成分對照。四大主題依序顯示症狀與有來源的數據、生理位置與代謝分工、產品原料。前兩幕不顯示產品推薦。內建 `MedicalDiagramGallery` 的統計、解剖與路徑 SVG 不依賴 PDF 載入。
 
-四主題故事採 70／30 圖像與短導讀，12 款產品各有三張相關原頁。播放器桌面為 68／32 分欄，平板與手機垂直排列；9 份簡報每一頁都能從縮圖選取，支援左右鍵、Home／End、觸控、語音與自動朗讀。原圖可雙指縮放，另有 PDF.js 2 倍畫布繪製；圖片載入失敗會自動使用原 PDF，PDF 也無法載入時顯示直接開啟原檔的連結。
+公開圖解共 **147 頁、165 張科學圖像裁切**。私人原始文件保留原始位元組；公開 PDF、影像、縮圖與內嵌圖像共用去識別化結果，移除封面、人物、書籍宣傳、主辦單位標誌及姓名頁尾。第二專題沒有原始 PDF，明確使用四頁文稿重製圖解。
 
-`src/data/visual-assets-manifest.ts` 是共用索引，記錄 PDF 雜湊、頁碼、200 dpi 影像、縮圖、內嵌圖片與主題映射。`pdf-source-index.json` 保留文字擷取與 OCR 資料，不直接供瀏覽器使用；`visual-page-curation.json` 的逐頁編輯優先於 Gemini 3.8 Flash 生成導讀。歷史的 24 張重製圖保留供舊資料交叉核對，播放器已改用完整原頁。
+`visual-assets-manifest` 的 `pageNumber` 保留來源頁碼，`pdfPageNumber` 對應公開選編 PDF 的實際頁碼；PDF.js、放大與 PDF 連結一律使用後者。整頁縮放、橫直式簡報及「適合畫面」保留原有修正。
+
+轉檔以 **120 dpi、關鍵頁、單一處理程序** 執行；一般建置只校驗已提交資產，不做 PDF 轉檔。Next.js 建置設定 4096 MB heap 上限。`biochemical-pathways.ts` 區分人體生理與產品原料研究，並以獨立分支呈現 MTR／BHMT、SPM 家族、自噬與血管代謝。
 
 ```bash
-# 重新擷取需 Python PyMuPDF / Pillow；掃描頁 OCR 另需 Tesseract chi_tra+eng
-UVACO_TESSDATA=/path/to/tessdata npm run visuals:extract
-# 一般建置只驗證已提交資產並準備 PDF.js，不依賴 Python 或外部 API
+# 修改原始檔或公開選頁政策後，明確執行；需要 PyMuPDF / Pillow
+npm run visuals:extract
+# 一般建置只驗證資產與匿名資料
 npm run visuals:prepare
-# 可選：用實際原頁圖片生成白話草稿，固定 Gemini 3.8 Flash，需人工檢視
-npx tsx scripts/generate-pdf-captions.ts --review-images
+# 選用的逐頁 OCR 稽核；每次僅讀一張影像
+UVACO_TESSDATA=/tmp/uvaco-tessdata python3 scripts/audit-public-pdf-assets.py --ocr
+# 前端整合與完整投影片顯示回歸
 TEST_BASE_URL=http://localhost:3002 npm run test:visuals
+TEST_BASE_URL=http://localhost:3002 npm run test:visual-fit
 ```
-
-雲端 Node 版的 `/api/slide-explanation` 只接受索引中的頁面 ID，將該頁圖片交給官方 `@google/genai` 的 `gemini-3.8-flash`，搭配 Google Search 回傳三句導讀與實際引用。GitHub Pages 保留逐頁離線導讀，明確標示即時 AI 僅在雲端版提供，不從瀏覽器暴露 API 金鑰。
-
-尚未收到第 2 份長壽 PDF、產品優越性春訓 PDF、企業榮譽 PDF 或活動海報原始圖；不虛構它們的原頁、獎牌、實拍或認證。來源示意圖也不標成顯微照片。詳細來源清單與驗證紀錄見 [原圖導覽交付紀錄](docs/visual-first-delivery.md)。
 
 ## 驗證
 
@@ -96,7 +96,7 @@ npm run start -- --port 3001
 npm run test:browser
 ```
 
-瀏覽器測試使用 `/usr/bin/chromium` 與 3001 埠，可透過 `CHROMIUM_PATH`、`TEST_BASE_URL` 調整。涵蓋 1440、768、390 像素、48px 頂欄、屋頂標籤與旋轉暫停、297 頁簡報、朗讀自動切頁、全螢幕與焦點返回，產生 `test-results/` 截圖及 axe 報告。AI 前端測試使用合成 SSE；真實 Flash 連線另行驗證。TTS 測試驗證語言、速率與控制契約，不代表每台裝置均已實際播音。
+瀏覽器測試使用 `/usr/bin/chromium`；新圖解測試預設 3002 埠，可透過 `CHROMIUM_PATH`、`TEST_BASE_URL` 調整。涵蓋 1440、768、390 像素、48px 頂欄、屋頂標籤與旋轉暫停、六專題與 147 頁科學圖解、朗讀自動切頁、全螢幕與焦點返回，產生 `test-results/` 截圖及 axe 報告。AI 前端測試使用合成 SSE；真實 Flash 連線另行驗證。TTS 測試驗證語言、速率與控制契約，不代表每台裝置均已實際播音。
 
 60fps 取決於實體裝置 GPU 與瀏覽器；headless Chromium 不是 iPad／手機效能認證。首句延遲受網路與模型影響，不能保證低於一秒。
 
@@ -133,7 +133,7 @@ npm run test:triangle # TEST_BASE_URL 預設 http://localhost:3002
 
 ## 白話閱讀與集中說明
 
-所有主要閱讀內容採生活故事：十二款產品、17 張健康金三角閱讀卡、完整原始 PDF 簡報、知識館與語音導讀。`everyday-copy.json` 提供產品與閱讀卡的白話版本；原始產品標示與科學說明保留在「🔬 看科學實證（醫師專業版）」展開區。講師學經歷依原稿保留，原始投影片依最新指示保留各自來源署名。
+所有主要閱讀內容採生活故事：十二款產品、17 張健康金三角閱讀卡、科學圖解簡報、知識館與語音導讀。`everyday-copy.json` 提供產品與閱讀卡的白話版本；原始產品標示與科學說明保留在「🔬 看科學實證（醫師專業版）」展開區。講師學經歷依原稿保留，公開科學圖解依最新指示去識別化，私人原始來源留存供校對。
 
 首頁最底部只有一則使用者指定的集中說明。產品卡、簡報與一般 AI 回答移除重複通用免責語；研究條件保存在科學資料內，與個人情況直接相關的急症、過敏與用藥資訊繼續提供。頁尾用小字、置中、低視覺權重呈現，保留可讀的文字對比；手機依寬度自然換行。
 

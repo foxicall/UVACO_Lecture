@@ -51,7 +51,7 @@ const definitions: DraftDeck[] = [
   },
   {
     id: 'products', shortTitle: '產品全覽', title: '葡眾 12 大產品優越性全覽',
-    files: ['張詩帷-產品優越性 春訓 (定版).pptx', 'Uvaco_失智症.pptx'],
+    files: ['-產品優越性 春訓 (定版).pptx', 'Uvaco_失智症.pptx'],
     description: '第六代生物科技保健食品｜從品牌到原料',
     slides: [
       { id: 'products-1', title: '美滿生活，就此展開', subtitle: 'UVACO 葡眾產品優越性', illustration: '360', blocks: [{ heading: 'Life at Its Fullest', text: '從發酵技術、原料到日常營養，認識十二種產品。原稿以「第六代生物科技保健食品」描述品牌理念。' }], note: '「第六代」為來源中的品牌用語，並非醫療療效分級。' },

@@ -45,6 +45,6 @@ export default function PdfSlideCanvas({fileUrl,pageNumber,label}:{fileUrl:strin
   },[fileUrl,pageNumber,width]);
   return <div ref={host} className="pdf-live-canvas" data-pdf-state={state}>
     {state==='loading'&&<p role="status">正在開啟高清原頁…</p>}
-    {state==='error'?<p role="status">此裝置未能繪製本頁。<a href={sitePath(fileUrl)+`#page=${pageNumber}`} target="_blank" rel="noopener noreferrer">開啟原始 PDF 第 {pageNumber} 頁 ↗</a></p>:<canvas ref={canvas} role="img" aria-label={label||`原始 PDF 第 ${pageNumber} 頁`} style={{visibility:state==='ready'?'visible':'hidden'}}/>}
+    {state==='error'?<p role="status">此裝置未能繪製本頁。<a href={sitePath(fileUrl)+`#page=${pageNumber}`} target="_blank" rel="noopener noreferrer">開啟圖解 PDF 第 {pageNumber} 頁 ↗</a></p>:<canvas ref={canvas} role="img" aria-label={label||`圖解 PDF 第 ${pageNumber} 頁`} style={{visibility:state==='ready'?'visible':'hidden'}}/>}
   </div>;
 }

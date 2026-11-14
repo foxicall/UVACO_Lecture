@@ -22,4 +22,3 @@ export const clinicalSources = [
 ];
 export const activeClinicalSources = clinicalSources.filter(source => !('archived' in source && source.archived));
 export const clinicalSourceById = new Map(clinicalSources.map(source => [source.id, source]));
-export const sourceAuthorNames = ['歐瀚文', '王偉全', '歐忠儒', '洪佳琪', '劉士銘', '王凱瑜'];

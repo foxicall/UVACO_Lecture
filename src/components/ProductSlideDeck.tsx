@@ -11,8 +11,10 @@ import ScienceDetails from './ScienceDetails';
 import { productStoryBridge } from '@/data/four-pillars-story';
 import { everydayProducts } from '@/data/everyday-language';
 import { pillarById } from '@/data/lecture-poster';
+import BiochemicalPathwayCard from './BiochemicalPathwayCard';
+import {productPathwayIds} from '@/data/biochemical-pathways';
 
-export default function ProductSlideDeck({ product: p, onSelect, onClose }: { product: Product; onSelect: (id: string) => void; onClose: () => void }) {
+export default function ProductSlideDeck({ product: p, onSelect, onProducts, onClose }: { product: Product; onSelect: (id: string) => void; onProducts?: (ids: string[]) => void; onClose: () => void }) {
   const [tab, setTab] = useState(0);
   const source = sources.products.find(s => s.id === p.id)!;
   const sections = ['身體的需要', '原料小故事', '一起認識'];
@@ -23,7 +25,8 @@ export default function ProductSlideDeck({ product: p, onSelect, onClose }: { pr
   return <aside className="product-deck" aria-label={`${p.name}產品說明`}>
     <div className="deck-top"><span>{pillarById.get(p.lecturePillar!)!.name}</span><button className="icon-button" aria-label="關閉產品說明" onClick={onClose}><X /></button></div>
     <div className="product-intro visual-product-intro"><div><h2>{p.name}</h2><p>{bridge.connection}</p></div></div>
-    <VisualCarousel key={p.id} items={productVisuals[p.id]} label={`${p.name}原頁圖解`} caption={false} narration={false}/>
+    <BiochemicalPathwayCard key={`pathway-${p.id}`} pathwayIds={productPathwayIds[p.id]||[]} productId={p.id} showProducts onProducts={onProducts||((ids)=>onSelect(ids[0]))}/>
+    <details className="product-source-gallery"><summary>延伸看科學圖解</summary><VisualCarousel key={p.id} items={productVisuals[p.id]} label={`${p.name}科學圖解`} caption={false} narration={false}/></details>
     <div className="deck-tabs" role="tablist" aria-label="產品資訊分類">{sections.map((name, i) => {
       const Icon = [Leaf, BookOpen, Network][i];
       return <button key={name} role="tab" id={`tab-${i}`} aria-controls={`panel-${i}`} aria-selected={tab === i} tabIndex={tab === i ? 0 : -1} onClick={() => setTab(i)} onKeyDown={e => { const next = e.key === 'ArrowRight' ? (i + 1) % 3 : e.key === 'ArrowLeft' ? (i + 2) % 3 : e.key === 'Home' ? 0 : e.key === 'End' ? 2 : -1; if (next >= 0) { e.preventDefault(); setTab(next); document.getElementById(`tab-${next}`)?.focus(); } }}><Icon size={18} />{name}</button>;

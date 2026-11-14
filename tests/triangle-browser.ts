@@ -5,7 +5,9 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import { clinicalRequestSchema, localClinicalAnalysis } from '../src/lib/clinical-analysis';
 import { mechanismCards, triangleAxes } from '../src/data/health-triangle';
 import { pptxDecks } from '../src/data/pptx-decks';
-import { sourceAuthorNames, activeClinicalSources } from '../src/data/clinical-sources';
+import { activeClinicalSources } from '../src/data/clinical-sources';
+import redactionPolicy from '../scripts/source-redaction-policy.json';
+const sourceAuthorNames=redactionPolicy.names;
 
 const base=process.env.TEST_BASE_URL||'http://localhost:3002';
 const browser=await chromium.launch({executablePath:process.env.CHROMIUM_PATH||'/usr/bin/chromium',headless:true,args:['--no-sandbox','--enable-unsafe-swiftshader']});

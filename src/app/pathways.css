@@ -1,0 +1,84 @@
+/* The existing lecture palette carries the diagrams; the selected scientific
+   node gets the accent, while controls and source information stay quiet. */
+.medical-diagram-gallery,.biochemical-pathway-card,.story-medical-visuals { min-width:0; }
+.medical-view-switch,.medical-region-controls,.pathway-lanes { display:flex; flex-wrap:wrap; gap:8px; margin:0 0 18px; }
+.medical-view-switch button,.medical-region-controls button,.pathway-lanes button { min-height:60px; padding:12px 18px; border:1px solid #B8C7B6; border-radius:14px; color:#203C30; background:#F1F3EA; font-size:17px; line-height:1.5; }
+.medical-view-switch button[aria-pressed=true],.medical-region-controls button[aria-pressed=true],.pathway-lanes button[aria-pressed=true] { background:#1B4D3E; color:#fff; border-color:#1B4D3E; }
+.medical-stat-hero,.medical-anatomy-hero { overflow:hidden; border-radius:20px; background:#EFF2E9; }
+.medical-stat-svg,.medical-anatomy-svg { width:100%; display:block; height:auto; max-height:42dvh; }
+.medical-svg-kicker { font-size:24px; fill:#40584B; font-weight:600; }
+.medical-svg-number { font-size:94px; fill:#1B4D3E; font-weight:680; letter-spacing:-.035em; }
+.medical-svg-label { font-size:25px; fill:#182220; font-weight:550; }
+.medical-stat-caption,.medical-anatomy-caption { margin:22px 0; }
+.medical-stat-caption h4,.medical-anatomy-caption h4 { font-size:24px; line-height:1.55; margin:0 0 10px; }
+.medical-stat-caption p,.medical-anatomy-caption p,.medical-opening { font-size:1.375rem; line-height:1.75; margin:0 0 16px; }
+.medical-stat-caption a { font-size:16px; color:#254F3A; text-decoration:underline; text-underline-offset:3px; }
+.medical-region-controls { margin-top:18px; }
+.medical-diagram-gallery .voice-button { min-height:60px; }
+.biochemical-pathway-card { border-top:1px solid #CFD8C9; padding-top:20px; }
+.pathway-picker,.pathway-source-picker { display:grid; gap:8px; font-size:16px; color:#40584B; margin-bottom:20px; }
+.pathway-picker select,.pathway-source-picker select { width:100%; min-width:0; min-height:60px; max-width:100%; padding:12px 40px 12px 14px; font-size:18px; line-height:1.5; color:#182220; background:#FFFDF7; border:1px solid #AEBEAB; border-radius:12px; text-overflow:ellipsis; }
+.pathway-heading p { margin:0 0 6px; font-size:16px; color:#40584B; }
+.pathway-heading h4 { font-size:clamp(23px,2.2vw,30px); letter-spacing:-.02em; line-height:1.5; margin:0 0 20px; }
+.pathway-lanes button { font-size:16px; flex:1 1 130px; padding:10px 12px; }
+.pathway-diagram-frame { border:1px solid #CFD8C9; border-radius:20px; background:#EEF2E7; max-height:560px; overflow:auto; overscroll-behavior:contain; scrollbar-color:#8B9F80 #EEF2E7; }
+.pathway-flow-svg { display:block; width:100%; height:auto; min-width:0; }
+.pathway-node { width:100%; height:100%; padding:12px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:5px; border-radius:16px; border:2px solid #AEBFA4; background:#FAF9F2; color:#20392C; line-height:1.4; box-sizing:border-box; transition:border-color .15s,background .15s; }
+.pathway-node strong { font-size:21px; font-weight:650; line-height:1.35; overflow-wrap:anywhere; }
+.pathway-node-number { font-size:13px; font-weight:550; color:#536B59; }
+.pathway-node-via { font-size:13px; font-weight:450; line-height:1.3; color:#3B5B47; }
+.pathway-node[aria-pressed=true] { background:#1B4D3E; border-color:#A66D22; color:white; box-shadow:0 0 0 3px #D5AB62; }
+.pathway-node[aria-pressed=true] .pathway-node-via,.pathway-node[aria-pressed=true] .pathway-node-number { color:#ECF2E5; }
+.pathway-node-products { max-width:100%; font-size:13px; line-height:1.3; font-weight:600; padding:3px 7px; border-radius:8px; color:#513707; background:#EEDCB4; overflow-wrap:anywhere; }
+.pathway-step-controls { display:flex; gap:12px; justify-content:space-between; align-items:center; margin:12px 0 22px; }
+.pathway-step-controls button { width:56px; min-height:56px; padding:10px; flex-shrink:0; }
+.pathway-step-controls span { color:#40584B; font-size:15px; text-align:center; }
+.pathway-metaphor { font-size:1.375rem; line-height:1.75; color:#1B4D3E; font-weight:600; margin:0 0 18px; }
+.pathway-node-explanation { padding:0 0 20px; }
+.pathway-node-explanation h5 { font-size:22px; margin:0 0 10px; line-height:1.5; }
+.pathway-node-explanation p,.pathway-reading p,.pathway-reading li { margin:0 0 16px; font-size:1.375rem; line-height:1.75; overflow-wrap:anywhere; }
+.pathway-node-explanation .pathway-reaction { color:#1B4D3E; font-size:20px; }
+.pathway-product-links { display:grid; gap:16px; margin-top:20px; }
+.pathway-product-links>div { padding:16px 0; border-top:1px solid #D3DDCC; }
+.pathway-product-links button { min-height:60px; font-size:20px; border-radius:14px; background:#E3ECDD; color:#1B4D3E; }
+.pathway-product-links p { font-size:20px; margin:12px 0 4px; }
+.pathway-product-links small { font-size:14px; color:#4B6253; }
+.pathway-reading { margin:0 0 22px; }
+.pathway-reading summary,.story-source-gallery>summary,.product-source-gallery>summary { display:list-item; cursor:pointer; padding:16px 0; min-height:60px; font-size:18px; line-height:1.6; color:#1B4D3E; }
+.pathway-reading ol { padding-left:28px; }
+.pathway-reading .pathway-references { padding-left:22px; }
+.pathway-reading .pathway-references li { font-size:16px; }
+.pathway-reading a { color:#1B4D3E; text-decoration:underline; text-underline-offset:3px; }
+.pathway-source-picker { font-size:15px; }
+.pathway-source-picker select { font-size:16px; }
+.pathway-actions { display:flex; flex-wrap:wrap; gap:10px; margin-top:14px; }
+.pathway-actions>button,.pathway-actions>div { flex:1 1 180px; }
+.pathway-actions button { width:100%; min-height:60px; padding:12px 14px; font-size:17px; border-radius:14px; background:#E5EBDC; color:#1B4D3E; }
+.pathway-actions .voice-button { margin:0; }
+.story-source-gallery,.product-source-gallery { border-top:1px solid #CCD6C7; margin-top:24px; margin-bottom:24px; }
+.story-source-gallery>.visual-carousel { margin-top:12px; }
+.product-deck .biochemical-pathway-card { margin:0 0 20px; }
+.product-deck .pathway-diagram-frame { max-height:420px; }
+.product-deck .pathway-heading h4 { font-size:24px; }
+.product-deck .pathway-node-explanation p { font-size:1.375rem; }
+@media(max-width:1000px){
+ .visual-story-dialog .visual-story-grid { grid-template-columns:minmax(0,1fr); }
+ .medical-stat-hero,.medical-anatomy-hero { max-width:900px; }
+ .pathway-diagram-frame { max-height:500px; }
+}
+@media(max-width:600px){
+ .medical-view-switch button { flex:1 1 130px; font-size:15px; padding:10px 12px; }
+ .medical-region-controls { gap:6px; }
+ .medical-region-controls button { flex:1; font-size:18px; padding:10px 6px; }
+ .medical-stat-hero,.medical-anatomy-hero { border-radius:12px; }
+ .medical-stat-caption h4,.medical-anatomy-caption h4 { font-size:22px; }
+ .pathway-heading h4 { font-size:24px; }
+ .pathway-lanes { gap:6px; }
+ .pathway-lanes button { font-size:15px; min-width:0; }
+ .pathway-diagram-frame { max-height:430px; }
+ .pathway-actions { gap:8px; }
+ .pathway-actions>button,.pathway-actions>div { flex-basis:100%; }
+ .pathway-picker select { font-size:16px; }
+ .pathway-step-controls span { font-size:13px; }
+}
+@media(prefers-reduced-motion:reduce){.pathway-node { transition:none; }}

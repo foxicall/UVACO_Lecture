@@ -2,6 +2,7 @@ import { genaiClient } from '@/lib/genai-client';
 import { z } from 'zod';
 import { pillarStories } from '@/data/four-pillars-story';
 import { extractGrounding } from '@/lib/search-grounding';
+import { anonymizeSourceText, anonymizeData, anonymizeGrounding } from '@/lib/public-copy';
 import { answerSchema, completedSentences, isUrgent, MODELS, requestSchema, systemInstruction, urgentAnswer } from '@/lib/concierge';
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -59,24 +60,24 @@ export async function POST(req: Request) {
         const topic=/忘|記憶|麻木|神經/.test(question)?'neural':/睡|放鬆|焦慮/.test(question)?'autonomic':/排便|肚子|腸|發炎/.test(question)?'inflammation':'repair';
         const story=pillarStories[topic];
         const research=await ai.models.generateContent({model:MODELS.concierge,contents:JSON.stringify({topic,statistic:story.stat,chemicalTopics:story.chemicals.map(item=>item.name)}),config:{tools:[{googleSearch:{}}],temperature:.1,maxOutputTokens:1200,abortSignal:abort.signal,systemInstruction:'請使用Google Search查核這個一般健康教育主題的公開統計與化學物質正常角色，優先官方衛生機關、學會與PubMed，保留年份與研究對象，整理三項簡短觀察與實際來源。不要推測個人病因、宣稱產品療效或編造引用。這些輸入只有通用主題，不包含使用者的個人問題。'}});
-        const retrieval=extractGrounding(research);
+        const retrieval=anonymizeGrounding(extractGrounding(research));
         const stream = await ai.models.generateContentStream({
-          model: MODELS.concierge, contents: JSON.stringify({question,evidence:retrieval.searched?{summary:research.text,citations:retrieval.citations}:{notice:'此次沒有取得搜尋引用；使用既有來源的生活故事，不宣稱查證完成。'}}),
+          model: MODELS.concierge, contents: JSON.stringify(anonymizeData({question,evidence:retrieval.searched?{summary:research.text,citations:retrieval.citations}:{notice:'此次沒有取得搜尋引用；使用既有來源的生活故事，不宣稱查證完成。'}})),
           config: { systemInstruction, temperature: 0.25, maxOutputTokens: 2048, responseMimeType: 'application/json', responseJsonSchema: z.toJSONSchema(answerSchema), abortSignal: abort.signal },
         });
         let buffer = ''; let sent = 0;
         let grounding:ReturnType<typeof extractGrounding>|null=retrieval.citations.length?retrieval:null;
         for await (const chunk of stream) {
           if (abort.signal.aborted) break;
-          const found=extractGrounding(chunk);
+          const found=anonymizeGrounding(extractGrounding(chunk));
           if(found.citations.length)grounding=found;
           buffer += chunk.text ?? '';
           if (buffer.length > 20_000) throw new Error('Invalid response');
           const completed = completedSentences(buffer);
-          while (sent < completed.length) emit('sentence', { text: completed[sent++] });
+          while (sent < completed.length) emit('sentence', { text: anonymizeSourceText(completed[sent++]) });
         }
         if (abort.signal.aborted) throw new Error('Timeout');
-        const answer = answerSchema.parse(JSON.parse(buffer));
+        const answer = answerSchema.parse(anonymizeData(JSON.parse(buffer)));
         if(grounding)emit('references',grounding);
         emit('done', { ...answer, targetProductIds: [...new Set(answer.targetProductIds)] });
       } catch (error) {

@@ -9,14 +9,15 @@ import { clinicalSources } from '../src/data/clinical-sources';
 import { products } from '../src/data/uvaco-products';
 import { pptxDecks } from '../src/data/pptx-decks';
 import { markdownSections, parseProductSource } from '../src/lib/markdown-source';
+import { anonymizeSourceText } from '../src/lib/public-copy';
 
-test('all uploaded and existing clinical documents preserve exact bytes and complete section coverage', async () => {
+test('private originals preserve exact bytes while indexed copy is anonymous with complete section coverage', async () => {
   assert.equal(corpus.documents.length,clinicalSources.length);
   assert.equal(corpus.documents.filter(d=>/^L/.test(d.id)).length,6);
   for (const doc of corpus.documents) {
     const bytes=await readFile(doc.path);
     assert.equal(createHash('sha256').update(bytes).digest('hex'),doc.sha256);
-    assert.equal(doc.raw,bytes.toString('utf8'));
+    assert.equal(doc.raw,anonymizeSourceText(bytes.toString('utf8')));
     assert.equal(doc.sections[0].line,1);
     assert.equal(doc.sections.at(-1)!.endLine,doc.raw.split(/\r?\n/).length);
     for (let i=1;i<doc.sections.length;i++) assert.equal(doc.sections[i].line,doc.sections[i-1].endLine+1);

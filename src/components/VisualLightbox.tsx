@@ -9,6 +9,7 @@ import {sitePath} from '@/lib/site';
 export default function VisualLightbox({page,onClose}:{page:VisualPage;onClose:()=>void}){
  const [live,setLive]=useState(false);
  const deck=visualDeckById.get(page.deckId)!;
+ const pdfPageNumber=page.pdfPageNumber;
  return <Dialog title="全螢幕原圖檢視" onClose={onClose} className="visual-lightbox">
   <div className="visual-lightbox-body" onKeyDown={e=>e.stopPropagation()}>
    <TransformWrapper minScale={1} maxScale={5} centerOnInit wheel={{step:.15}} doubleClick={{mode:'toggle'}}>
@@ -17,7 +18,7 @@ export default function VisualLightbox({page,onClose}:{page:VisualPage;onClose:(
      <TransformComponent wrapperClass="visual-zoom-window" contentClass="visual-zoom-content"><PdfVisual key={`${page.id}-${live}`} page={page} live={live}/></TransformComponent>
     </>}
    </TransformWrapper>
-   <p className="visual-provenance">{deck.title} · 原始第 {page.pageNumber} 頁 · 可雙指縮放或拖曳<a href={sitePath(deck.fileUrl)+`#page=${page.pageNumber}`} target="_blank" rel="noopener noreferrer">開啟原始 PDF ↗</a></p>
+   <p className="visual-provenance">{deck.title} · {page.deckId==='longevity-2'?'文稿重製':'來源'}第 {page.pageNumber} 頁 · 可雙指縮放或拖曳<a href={sitePath(deck.fileUrl)+`#page=${pdfPageNumber}`} target="_blank" rel="noopener noreferrer">開啟科學圖解 PDF ↗</a></p>
   </div>
  </Dialog>;
 }

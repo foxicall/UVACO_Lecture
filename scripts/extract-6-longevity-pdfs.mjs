@@ -16,7 +16,7 @@ const index=content.map(deck=>{
  if(md.length!==1||pdf.length>1)throw new Error(`Ambiguous/missing source for deck ${deck.number}`);
  const record=pdf.length?extracted.find(r=>r.number===deck.number):null;
  if(pdf.length&&(!record||record.sha256!==hash(readFileSync(pdf[0]))))throw new Error(`PDF ${deck.number} changed; run extraction and review slide page references`);
- return {number:deck.number,markdown:relative(root,md[0]),markdownSha256:hash(readFileSync(md[0])),...(record||{pdf:null,pageCount:0,sha256:null,rasterDpi:null,ocr:false})};
+ return {number:deck.number,markdown:relative(root,md[0]),markdownSha256:hash(readFileSync(md[0])),...(record?{...record,pdf:relative(root,pdf[0])}:{pdf:null,pageCount:0,sha256:null,rasterDpi:null,ocr:false})};
 });
 const escape=s=>s.replace(/[<>&"']/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&apos;'}[c]));
 function lines(s,max=18){const out=[];let line='',width=0;for(const c of s){const n=c.charCodeAt(0)>255?1:.57;if(width+n>max){out.push(line);line='';width=0;}line+=c;width+=n;}if(line)out.push(line);return out;}
@@ -42,7 +42,7 @@ const manifest=content.map(deck=>{
 });
 writeFileSync('src/data/longevity-private-index.json',JSON.stringify(index,null,2)+'\n');
 writeFileSync('src/data/longevity-decks-manifest.json',JSON.stringify(manifest,null,2)+'\n');
-let synthesis='# 六套長壽醫學講座：來源校對與公開圖解\n\n此文件為可追溯的整理版本，不宣稱已驗證所有來源療效。原始 PDF 與 Markdown 保留署名；早期公開圖解採無講者署名的重製版本；依最新原圖發布指示，完整 PDF 與原頁另由 visual-assets-manifest 收錄，保留來源署名。活動講師顯示林煒醫師，不將其他作者原話改署名。\n\n本次收到五份 PDF、六份 Markdown；第 2 套 PDF 尚未提供。五份 PDF 共 233 頁，包含一份 10 頁掃描圖文資料。文字層與 OCR 不是逐字校勘，圖像以原始檔為準。舊三套播放器已退休，僅保留來源存檔。\n\n校對要點：AA 形成 Lipoxins，EPA／DHA 形成其他部分 SPM 家族；LPC-DHA 不等同一般卵磷脂；MitoCORE 不是葡眾成品；DunedinPACE 不是個人生理年齡；單一 5R 個案亦有未改善指標。\n';
+let synthesis='# 六套長壽醫學講座：來源校對與公開圖解\n\n此文件為可追溯的整理版本，不宣稱已驗證所有來源療效。原始 PDF 與 Markdown 保留署名；公開版採無講者署名的重製圖解與去識別化科學頁；原始檔保留於私人來源目錄供校對。活動講師顯示林煒醫師，不將其他作者原話改署名。\n\n本次收到五份 PDF、六份 Markdown；第 2 套 PDF 尚未提供。五份 PDF 共 233 頁，包含一份 10 頁掃描圖文資料。文字層與 OCR 不是逐字校勘，圖像以原始檔為準。舊三套播放器已退休，僅保留來源存檔。\n\n校對要點：AA 形成 Lipoxins，EPA／DHA 形成其他部分 SPM 家族；LPC-DHA 不等同一般卵磷脂；MitoCORE 不是葡眾成品；DunedinPACE 不是個人生理年齡；單一 5R 個案亦有未改善指標。\n';
 for(const deck of manifest){const source=index.find(r=>r.number===deck.number);synthesis+=`\n## 第 ${deck.number} 套：${deck.title}\n\n文稿：${source.markdown}\n文稿 SHA-256：${source.markdownSha256}\nPDF：${source.pdf||'尚未提供'}\nPDF SHA-256：${source.sha256||'無'}\n公開圖解：${deck.slides.length} 頁；${deck.sourceStatus}\n`;
  for(const slide of deck.slides)synthesis+=`\n### ${slide.id} ${slide.title}\n\n來源：${slide.sourcePages.length?'PDF 第 '+slide.sourcePages.join('、')+' 頁＋對應文稿':'既有文稿，未取得 PDF 頁碼'}\n\n${slide.summary}\n\n${slide.blocks.map(b=>`**${b.heading}**：${b.text}`).join('\n\n')}\n\n圖解：${slide.diagram.nodes.map(n=>n.label+'（'+n.detail+'）').join('；')}\n\n科學資料：${slide.science.summary}\n\n${slide.science.blocks.map(b=>b.heading+'：'+b.text).join('\n\n')}\n\n研究條件：${slide.science.note}\n\n產品閱讀對照：${slide.productIds.join('、')}。${slide.productNote}\n`;
 }

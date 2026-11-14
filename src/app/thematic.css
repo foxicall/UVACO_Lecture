@@ -1,0 +1,33 @@
+/* Six clinical topics share the same reading frame as the image galleries. */
+.thematic-keynote-dialog .keynote-byline { display:flex; flex-wrap:wrap; align-items:center; column-gap:16px; row-gap:2px; flex-shrink:0; }
+.thematic-keynote-dialog .keynote-byline strong { font-weight:600; }
+.thematic-keynote-dialog .keynote-deck-tabs button { text-align:left; align-items:flex-start; }
+.thematic-reading-mode { display:flex; align-items:center; flex-wrap:wrap; flex-shrink:0; gap:8px; padding:0 24px 12px; }
+.thematic-reading-mode>button { min-height:52px; padding:10px 16px; font-size:16px; }
+.thematic-reading-mode>button[aria-pressed=true] { color:#fff; background:#1B4D3E; }
+.thematic-reading-mode>p { flex:1 1 300px; color:#34443B; font-size:15px; line-height:1.6; margin:0 0 0 10px; }
+.thematic-pathway-link { width:100%; min-height:60px; font-size:18px; text-align:left; line-height:1.6; margin-top:16px; }
+.pdf-keynote-workspace.thematic-pathway-workspace { display:block; }
+.thematic-pathway-stage { width:100%; max-width:1240px; margin:0 auto; min-width:0; }
+.thematic-introduction { font-size:20px; line-height:1.75; margin:0 0 20px; }
+.thematic-keynote-dialog .pdf-keynote-image .pdf-visual { height:clamp(200px,40vh,620px); }
+@media(max-width:1000px){
+ .thematic-keynote-dialog .pdf-keynote-image .pdf-visual { height:auto; max-height:42vh; }
+}
+@media(max-width:600px){
+ .thematic-keynote-dialog .keynote-byline { display:block; }
+ .thematic-keynote-dialog .keynote-byline>span { display:block; }
+ .thematic-keynote-dialog .keynote-byline>span:first-of-type { display:none; }
+ .thematic-reading-mode { padding:0 12px 8px; gap:6px; }
+ .thematic-reading-mode>button { min-height:48px; padding:8px 12px; font-size:14px; }
+ .thematic-reading-mode>p { font-size:13px; margin:0; }
+ .thematic-introduction { font-size:20px; }
+}
+@media(max-height:600px){
+ .thematic-keynote-dialog .keynote-byline>span:first-of-type { display:none; }
+ .thematic-reading-mode>p { display:none; }
+ .thematic-keynote-dialog .keynote-toolbar { padding-top:8px; }
+ .thematic-keynote-dialog .keynote-deck-tabs { padding-bottom:8px; }
+ .thematic-keynote-dialog .keynote-deck-tabs button { min-height:48px; }
+ .thematic-keynote-dialog .pdf-filmstrip { display:none; }
+}

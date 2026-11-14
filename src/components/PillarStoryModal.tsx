@@ -2,7 +2,7 @@
 import {useEffect,useRef,useState} from 'react';
 import {ArrowRight,ArrowLeft,Check,X,MapPin} from 'lucide-react';
 import Dialog from './Dialog';
-import ScienceDetails from './ScienceDetails';
+import MedicalDiagramGallery from './MedicalDiagramGallery';
 import VisualCarousel from './VisualCarousel';
 import {pillarById,pillars,type PillarId} from '@/data/lecture-poster';
 import {pillarStories,storyStages} from '@/data/four-pillars-story';
@@ -10,7 +10,7 @@ import {productById} from '@/data/uvaco-products';
 import {pillarVisuals,productVisuals,getVisualPage} from '@/data/visual-assets-manifest';
 import {sitePath} from '@/lib/site';
 
-export default function PillarStoryModal({pillarId,onClose,onProduct,onNextStory}:{pillarId:PillarId;onClose:()=>void;onProduct:(id:string)=>void;onNextStory:(id:PillarId)=>void}){
+export default function PillarStoryModal({pillarId,onClose,onProduct,onProducts,onNextStory}:{pillarId:PillarId;onClose:()=>void;onProduct:(id:string)=>void;onProducts?:(ids:string[])=>void;onNextStory:(id:PillarId)=>void}){
  const [stage,setStage]=useState(0);const [visited,setVisited]=useState(0);const [selected,setSelected]=useState<string[]>([]);
  const heading=useRef<HTMLHeadingElement>(null);const story=pillarStories[pillarId];const pillar=pillarById.get(pillarId)!;
  useEffect(()=>{heading.current?.focus({preventScroll:true});heading.current?.scrollIntoView({block:'nearest'});},[stage]);
@@ -22,13 +22,13 @@ export default function PillarStoryModal({pillarId,onClose,onProduct,onNextStory
    <p className="story-eyebrow">第{['一','二','三'][stage]}幕 · 看圖，認識身體</p>
    <h3 id="story-stage-title" tabIndex={-1} ref={heading}>{['身體的感受，從哪裡開始？','跟著圖，看看身體怎麼了','懂了身體，再認識原料'][stage]}</h3>
    <div className="visual-story-grid">
-    <VisualCarousel key={`${pillarId}-${stage}`} items={pillarVisuals[pillarId][stage]} label={`${pillar.name}第 ${stage+1} 幕原圖畫廊`}/>
+    <div className="story-medical-visuals"><MedicalDiagramGallery key={`${pillarId}-${stage}`} pillarId={pillarId} stage={stage as 0|1|2} onProducts={onProducts||((ids)=>onProduct(ids[0]))}/>{stage===2&&<details className="story-source-gallery"><summary>延伸看科學圖解</summary><VisualCarousel key={`${pillarId}-${stage}`} items={pillarVisuals[pillarId][stage]} label={`${pillar.name}第 ${stage+1} 幕圖解畫廊`}/></details>}</div>
     <div className="visual-story-companion">
      {stage===0&&<>
       <fieldset className="story-symptoms"><legend>您也有這些感受嗎？</legend>{story.symptoms.map(symptom=><label key={symptom}><input type="checkbox" checked={selected.includes(symptom)} onChange={e=>setSelected(v=>e.target.checked?[...v,symptom]:v.filter(s=>s!==symptom))}/><span>{symptom}</span></label>)}</fieldset>
       <details className="visual-source-note"><summary>一起看數字的來源</summary><strong>{story.stat.value} · {story.stat.label}</strong><p>{story.stat.context}</p><a href={story.stat.url} target="_blank" rel="noopener noreferrer">{story.stat.source} ↗</a></details>
      </>}
-     {stage===1&&<><h4>看圖的小訣竅</h4><p>先找身體裡的主角，再順著箭頭看它們怎麼合作。</p><p>左右翻圖，慢慢認識不同的訊息。</p><ScienceDetails><h4>把比喻對回研究</h4>{story.science.map(text=><p key={text}>{text}</p>)}</ScienceDetails></>}
+     {stage===1&&<><h4>每個箭頭，都有分工</h4><p>{story.causeIntro}</p><p>先選一條路徑，再點選圖中的化學物質，看酵素、營養素與細胞如何接力。</p><p>不同分流各有用途。下一幕，再把生活照護與原料接到對應位置。</p></>}
      {stage===2&&<><h4>今天先做一件小事</h4><p>{story.firstAction}</p><div className="visual-product-bridges">{story.bridges.map(bridge=>{const page=getVisualPage(productVisuals[bridge.productId][0].pageId);return <button key={bridge.productId} onClick={()=>onProduct(bridge.productId)}><img src={sitePath(page.thumbnail)} alt="相關原頁圖解" loading="lazy" width={160} height={90}/><span><strong>{productById.get(bridge.productId)!.name}</strong><small>{bridge.connection}</small><span><MapPin size={16}/>到島上看配方</span></span><ArrowRight size={20}/></button>;})}</div></>}
     </div>
    </div>

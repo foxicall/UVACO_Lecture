@@ -1,10 +1,24 @@
-import {chromium,type Locator} from 'playwright-core';
+import {chromium,type Locator,type Page} from 'playwright-core';
 import assert from 'node:assert/strict';
 import {mkdir} from 'node:fs/promises';
 
 const base=process.env.TEST_BASE_URL||'http://localhost:3002';
 const browser=await chromium.launch({executablePath:'/usr/bin/chromium',args:['--no-sandbox','--enable-unsafe-swiftshader']});
 await mkdir('test-results',{recursive:true});
+
+/** Short landscape screens intentionally hide thumbnails to leave room for the
+ * slide. Reach the same source page using the visible paging controls. */
+async function selectSourcePage(page:Page,id:string){
+ const target=page.locator(`.pdf-filmstrip>[data-page-id="${id}"]`);
+ await target.waitFor({state:'attached'});
+ if(await target.isVisible()){await target.click();return;}
+ const targetIndex=await target.evaluate(el=>Array.from(el.parentElement!.children).indexOf(el));
+ const current=Number((await page.locator('.slide-counter').innerText()).split('/')[0])-1;
+ for(let index=current;index!==targetIndex;index+=targetIndex>current?1:-1){
+  await page.getByRole('button',{name:targetIndex>current?'下一頁':'上一頁',exact:true}).click();
+ }
+ assert.equal(await target.getAttribute('aria-current'),'page',`${id}: visible paging selected the requested source page`);
+}
 
 /** Check the painted page, not just whether an image loaded successfully.
  * A contained image can still be cropped when its element exceeds its parent. */
@@ -38,16 +52,20 @@ async function assertFullscreen(box:Locator,label:string){
 }
 
 try{
- for(const {width,height,large=false} of [{width:1600,height:820},{width:1366,height:650},{width:1024,height:768},{width:390,height:844},{width:844,height:390},{width:390,height:844,large:true}]){
+ const requested=process.env.TEST_FIT_VIEWPORTS?.split(',');
+ const viewports=[{width:1600,height:820},{width:1366,height:650},{width:1024,height:768},{width:390,height:844},{width:844,height:390},{width:390,height:844,large:true}];
+ for(const {width,height,large=false} of viewports.filter(v=>!requested||requested.includes(`${v.width}x${v.height}${v.large?'-large':''}`))){
   const context=await browser.newContext({viewport:{width,height},reducedMotion:'reduce'});
   const page=await context.newPage();page.setDefaultTimeout(30000);
   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
   await page.goto(base,{waitUntil:'networkidle'});
   if(large){await page.getByRole('button',{name:'字體大小：100%，點選切換'}).click();await page.getByRole('button',{name:'字體大小：125%，點選切換'}).click();}
   const label=`${width}×${height}${large?' 140%':''}`;
-  await page.getByRole('button',{name:'神經修復',exact:true}).click();
-  await assertCompleteSlide(page.locator('.visual-carousel-image .pdf-visual'),`${label} story preview`);
-  await page.locator('.visual-carousel .visual-expand').click();
+  await page.locator('.header-ppt').click();
+  await page.locator('#deck-tab-longevity-4').click();
+  await selectSourcePage(page,'brain-forest-002');
+  await assertCompleteSlide(page.locator('.pdf-keynote-image .pdf-visual'),`${label} scientific preview`);
+  await page.getByRole('button',{name:'全螢幕播放',exact:true}).click();
   const box=page.locator('.visual-lightbox');
   await assertFullscreen(box,`${label} landscape image`);
   await box.getByRole('button',{name:'放大原圖',exact:true}).click();
@@ -61,10 +79,12 @@ try{
   await page.screenshot({path:`test-results/slide-fit-landscape-${width}-${height}${large?'-large':''}.png`});
   await page.keyboard.press('Escape');await page.keyboard.press('Escape');
   await page.locator('#product-select').selectOption('huoyi');
+  await page.locator('.product-source-gallery>summary').click();
   await assertCompleteSlide(page.locator('.product-deck .pdf-visual'),`${label} product preview`);
   await page.getByRole('button',{name:'全島總覽',exact:true}).click();
   await page.locator('.header-ppt').click();
   await page.locator('#deck-tab-longevity-3').click();
+  await selectSourcePage(page,'longevity-3-001');
   await assertCompleteSlide(page.locator('.pdf-keynote-image .pdf-visual'),`${label} portrait preview`);
   await page.getByRole('button',{name:'全螢幕播放',exact:true}).click();
   await assertFullscreen(box,`${label} portrait image`);

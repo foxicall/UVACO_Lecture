@@ -5,7 +5,8 @@ import {createHash} from 'node:crypto';
 import {DOMParser} from '@xmldom/xmldom';
 import {longevityDecks} from '../src/data/longevity-decks-manifest';
 import privateIndex from '../src/data/longevity-private-index.json';
-import {sourceAuthorNames} from '../src/data/clinical-sources';
+import redactionPolicy from '../scripts/source-redaction-policy.json';
+const sourceAuthorNames=redactionPolicy.names;
 import {products} from '../src/data/uvaco-products';
 
 test('five uploaded PDFs preserve exact bytes and 233 source pages; missing deck two remains explicit',async()=>{

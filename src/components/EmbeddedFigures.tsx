@@ -8,7 +8,7 @@ export default function EmbeddedFigures({page}:{page:VisualPage}){
  const [open,setOpen]=useState(false);const [selected,setSelected]=useState<VisualPage|null>(null);
  if(!page.figureIds.length)return null;
  return <details className="embedded-figures visual-source-note" onToggle={e=>setOpen(e.currentTarget.open)}><summary>本頁內嵌圖像 · {page.figureIds.length} 張</summary>
-  {open&&<div>{page.figureIds.map((id,i)=>{const f=figureById.get(id)!;return <button key={id} onClick={()=>setSelected({...page,image:f.image,width:f.width,height:f.height,title:`${page.title} · 內嵌圖像 ${i+1}`})}><img src={sitePath(f.image)} alt={`原頁內嵌圖像 ${i+1}`} loading="lazy" width={f.width} height={f.height}/><span>{f.kind==='page-image'?'整頁原始圖片':`獨立圖像 ${i+1}`}</span></button>;})}</div>}
+  {open&&<div>{page.figureIds.map((id,i)=>{const f=figureById.get(id)!;return <button key={id} onClick={()=>setSelected({...page,image:f.image,width:f.width,height:f.height,title:`${page.title} · 內嵌圖像 ${i+1}`})}><img src={sitePath(f.image)} alt={`科學圖解 ${i+1}`} loading="lazy" width={f.width} height={f.height}/><span>{f.kind==='page-image'?'整頁科學圖解':`獨立圖像 ${i+1}`}</span></button>;})}</div>}
   {selected&&<VisualLightbox page={selected} onClose={()=>setSelected(null)}/>}
  </details>;
 }

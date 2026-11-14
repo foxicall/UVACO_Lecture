@@ -1,9 +1,9 @@
 [
   {
     "number": 1,
-    "markdown": "葡眾/lectures/1.歐瀚文醫師_探索老化生物學從功能醫學走向健康長壽.md",
+    "markdown": "葡眾/lectures/1.細胞能量與老化速率.md",
     "markdownSha256": "f7789732f27d376b0463f4316d6b2488426076c8bab8fb2cbf8a645f34ec762c",
-    "pdf": "葡眾/lectures-pdf/1.歐瀚文醫師_探索老化生物學從功能醫學走向健康長壽.pdf",
+    "pdf": "葡眾/lectures-pdf/1.細胞能量與老化速率.pdf",
     "sha256": "14a2eecf5ccd02f49dcfe360497849f1ac9d41064e3d20c6b61f11e0625b778d",
     "pageCount": 88,
     "rasterDpi": 180,
@@ -11,7 +11,7 @@
   },
   {
     "number": 2,
-    "markdown": "葡眾/lectures/2.王偉全醫師_排除環境促老因子×降低長壽路上的毒素負荷.md",
+    "markdown": "葡眾/lectures/2.環境促老毒素與引流.md",
     "markdownSha256": "8efeff959701f6195fad4405f324c350655976385f5c050353e92bb5ebf7ba6a",
     "pdf": null,
     "pageCount": 0,
@@ -21,9 +21,9 @@
   },
   {
     "number": 3,
-    "markdown": "葡眾/lectures/3.歐忠儒博士_探索老化生物學從功能醫學走向健康長壽.md",
+    "markdown": "葡眾/lectures/3.內分泌與神經類固醇.md",
     "markdownSha256": "bd10d02e654a4832e0dbeb3ef32b588b4c440f7c4ef380cd6f18609bcd31c29e",
-    "pdf": "葡眾/lectures-pdf/3.歐忠儒博士_探索老化生物學從功能醫學走向健康長壽.pdf",
+    "pdf": "葡眾/lectures-pdf/3.內分泌與神經類固醇.pdf",
     "sha256": "4aed2087e88601d86761cd02747300ba3078d04db1a084ad667956e8cd1db3f3",
     "pageCount": 10,
     "rasterDpi": 180,
@@ -31,9 +31,9 @@
   },
   {
     "number": 4,
-    "markdown": "葡眾/lectures/4.洪佳琪營養師_認識(腦)發炎老化風險x解析智能長壽秘訣.md",
+    "markdown": "葡眾/lectures/4.發炎消退與髓鞘修復.md",
     "markdownSha256": "06f7f6858122e16ca4f50b71b1abad2ba669fda3d4410f29af1b07481a007c96",
-    "pdf": "葡眾/lectures-pdf/4.洪佳琪營養師_認識(腦)發炎老化風險x解析智能長壽秘訣.pdf",
+    "pdf": "葡眾/lectures-pdf/4.發炎消退與髓鞘修復.pdf",
     "sha256": "778c891b66f09363b08981847e00624d595e1ae6e944ff07665516f1a4e15358",
     "pageCount": 37,
     "rasterDpi": 180,
@@ -41,9 +41,9 @@
   },
   {
     "number": 5,
-    "markdown": "葡眾/lectures/5.劉士銘醫師_代謝老化與長壽體質.md",
+    "markdown": "葡眾/lectures/5.血管內皮與脂蛋白代謝.md",
     "markdownSha256": "663db27546640c9b919146e06071fc4ff550f1283f8c7c7198e3a3da3dcbede6",
-    "pdf": "葡眾/lectures-pdf/5.劉士銘醫師_代謝老化與長壽體質.pdf",
+    "pdf": "葡眾/lectures-pdf/5.血管內皮與脂蛋白代謝.pdf",
     "sha256": "4a575c71d4b3bc7a4911534bd0e21d0d03d98a05818aa2809095764d73034553",
     "pageCount": 43,
     "rasterDpi": 180,
@@ -51,9 +51,9 @@
   },
   {
     "number": 6,
-    "markdown": "葡眾/lectures/6.王凱瑜醫師_腦腸軸與免疫老化x長壽健康的臨床洞見.md",
+    "markdown": "葡眾/lectures/6.腦腸軸與免疫老化.md",
     "markdownSha256": "556014ec20fd736ca5da3e257d52a7d97d92ae8784e5fa8a5c06e8f845e867de",
-    "pdf": "葡眾/lectures-pdf/6.王凱瑜醫師_腦腸軸與免疫老化x長壽健康的臨床洞見.pdf",
+    "pdf": "葡眾/lectures-pdf/6.腦腸軸與免疫老化.pdf",
     "sha256": "cec39713ddcc4f5d098774768102d16088ebcb8004dc099038e8130bd7b1f2ca",
     "pageCount": 55,
     "rasterDpi": 180,
