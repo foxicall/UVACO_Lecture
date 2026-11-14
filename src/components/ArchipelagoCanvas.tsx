@@ -8,6 +8,7 @@ import gsap from 'gsap';
 import { products, clusters, phases, productById } from '@/data/uvaco-products';
 import type { Phase, Product } from '@/types/product';
 import artwork from '@/data/generated-visuals.json';
+import { pillars, pillarById, lecture } from '@/data/lecture-poster';
 
 export function islandPosition(p: Product): [number, number, number] {
   const [q, r] = p.hexCoordinates;
@@ -45,7 +46,7 @@ function Island({ p, active, lit, onSelect, reduced }: { p: Product; active: boo
   return <group position={pos}><group ref={group}>
     <group onClick={e => { e.stopPropagation(); onSelect(p.id); }} onPointerOver={e => { e.stopPropagation(); setHover(true); }} onPointerOut={() => setHover(false)}>
       <mesh position={[0, -.25, 0]}><cylinderGeometry args={[1.38, 1.12, .75, 6]} /><meshStandardMaterial color="#8C8065" flatShading /></mesh>
-      <mesh position={[0, .16, 0]}><cylinderGeometry args={[1.4, 1.4, .16, 6]} /><meshStandardMaterial color={clusters[p.islandCluster].color} roughness={.95} /></mesh>
+      <mesh position={[0, .16, 0]}><cylinderGeometry args={[1.4, 1.4, .16, 6]} /><meshStandardMaterial color={pillarById.get(p.lecturePillar!)!.color} roughness={.95} /></mesh>
       {(active || hover || lit) && <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, .26, 0]}><ringGeometry args={[1.28, 1.4, 6]} /><meshBasicMaterial color={active || hover ? '#F4CE72' : '#D8E8CA'} /></mesh>}
       <group position={[0, .24, 0]}><Landmark p={p} /></group>
       {[0, 1, 2].map(i => <mesh key={i} position={[Math.cos(i * 2 + 1) * .98, .3, Math.sin(i * 2 + 1) * .98]} scale={[.16, .12, .21]}><dodecahedronGeometry /><meshStandardMaterial color="#DFD8BD" /></mesh>)}
@@ -83,7 +84,7 @@ function Camera({ active, reduced }: { active: string | null; reduced: boolean }
   useEffect(() => {
     if (!controls.current) return;
     const pos = active ? islandPosition(productById.get(active)!) : [0, 0, 0];
-    const distance = active ? 8 : size.width < 600 ? 25 : 18;
+    const distance = active ? 8 : size.width < 600 ? 32 : 23;
     const target = controls.current.target;
     const tween = gsap.timeline({ defaults: { duration: reduced ? 0 : 1.6, ease: 'power3.inOut' } });
     tween.to(target, { x: pos[0], y: 0, z: pos[2] }, 0);
@@ -107,19 +108,39 @@ class CanvasBoundary extends Component<{ children: ReactNode }, { failed: boolea
   static getDerivedStateFromError() { return { failed: true }; }
   render() { return this.state.failed ? <div className="map-fallback">這台裝置無法開啟 3D 地圖，請使用產品選單或下方導覽按鈕。</div> : this.props.children; }
 }
-export default function ArchipelagoCanvas({ active, route, phase, onSelect, reduced }: { active: string | null; route: string[]; phase: Phase; onSelect: (id: string) => void; reduced: boolean }) {
+function LectureHub({ onClick }: { onClick?: () => void }) {
+  return <group onClick={e => { e.stopPropagation(); onClick?.(); }}>
+    <mesh position={[0, -.28, 0]}><cylinderGeometry args={[1.9, 1.65, .9, 6]} /><meshStandardMaterial color="#AA9A78" /></mesh>
+    <mesh position={[0, .21, 0]}><cylinderGeometry args={[1.92, 1.92, .16, 6]} /><meshStandardMaterial color="#DFD8B5" /></mesh>
+    <mesh position={[0, .33, 0]}><cylinderGeometry args={[1.4, 1.5, .14, 12]} /><meshStandardMaterial color="#B6C7B1" /></mesh>
+    <group position={[0, .4, 0]} scale={1.35}><Pavilion /></group>
+    <Tree position={[-1.05, .25, .5]} size={.75} color="#5D8966" /><Tree position={[1.05, .25, -.4]} size={.65} color="#86A479" />
+    <mesh position={[0, 2.35, 0]}><octahedronGeometry args={[.22, 0]} /><meshStandardMaterial color="#E2B464" emissive="#D97706" emissiveIntensity={.5} /></mesh>
+  </group>;
+}
+function HubConnections({ reduced }: { reduced: boolean }) {
+  const lines = useMemo(() => pillars.map(p => {
+    const pos = islandPosition(productById.get(p.products[0])!);
+    return { id: p.id, a: [0, .5, 0] as [number, number, number], b: [pos[0], .4, pos[2]] as [number, number, number], mid: [pos[0] / 2, 1.5, pos[2] / 2] as [number, number, number] };
+  }), []);
+  return <>{lines.map(l => <SynergyArc key={l.id} {...l} reduced={reduced} />)}</>;
+}
+export default function ArchipelagoCanvas({ active, route, phase, onSelect, reduced, onHub }: { active: string | null; route: string[]; phase: Phase; onSelect: (id: string) => void; reduced: boolean; onHub?: () => void }) {
   const anchors = useRef<Record<string, HTMLButtonElement | null>>({});
+  const hub = useRef<HTMLButtonElement | null>(null);
   return <CanvasBoundary><div className="canvas-shell"><Canvas camera={{ position: [8, 17, 18], fov: 40, near: .1, far: 160 }} dpr={[1, 1.5]} gl={{ antialias: true, powerPreference: 'high-performance' }} aria-label="十二座葡眾產品島嶼地圖">
     <Lighting phase={phase} /><Water reduced={reduced} phase={phase} />
     {products.map(p => <Island key={p.id} p={p} active={active === p.id} lit={p.recommendedTimeOfDay === phase || route.includes(p.id)} onSelect={onSelect} reduced={reduced} />)}
+    <LectureHub onClick={onHub} />{!active && <HubConnections reduced={reduced} />}
     <SynergyBezierLines ids={route} active={active} reduced={reduced} /><Camera active={active} reduced={reduced} />
-    <ProjectLabels anchors={anchors} active={active} />
-  </Canvas><div className={`label-layer ${!active ? 'overview-labels' : ''}`}>{products.map(p => <button key={p.id} ref={el => { anchors.current[p.id] = el; }} className={`island-label ${active === p.id ? 'active' : ''}`} onClick={() => onSelect(p.id)} aria-label={p.name} aria-pressed={active === p.id}>{p.id === '995' ? '995' : p.name}</button>)}</div></div></CanvasBoundary>;
+    <ProjectLabels anchors={anchors} active={active} hub={hub} />
+  </Canvas><div className={`label-layer ${!active ? 'overview-labels' : ''}`}>{products.map(p => <button key={p.id} ref={el => { anchors.current[p.id] = el; }} className={`island-label ${active === p.id ? 'active' : ''}`} onClick={() => onSelect(p.id)} aria-label={p.name} aria-pressed={active === p.id}>{p.id === '995' ? '995' : p.name}</button>)}{!active && <button className="hub-label" ref={hub} onClick={onHub} disabled={!onHub}><strong>講座主島</strong><span>{lecture.speaker}</span></button>}</div></div></CanvasBoundary>;
 }
-function ProjectLabels({ anchors, active }: { anchors: React.RefObject<Record<string, HTMLButtonElement | null>>; active: string | null }) {
+function ProjectLabels({ anchors, active, hub }: { anchors: React.RefObject<Record<string, HTMLButtonElement | null>>; active: string | null; hub: React.RefObject<HTMLButtonElement | null> }) {
   const point = useMemo(() => new Vector3(), []);
   useFrame(({ camera, size }) => {
     const ordered = [...products].sort((a, b) => islandPosition(a)[2] - islandPosition(b)[2]);
+    if (hub.current) { point.set(0, .1, 1.8).project(camera); hub.current.style.transform = `translate(${(point.x * .5 + .5) * size.width}px, ${(-point.y * .5 + .5) * size.height}px) translate(-50%,-50%)`; }
     for (const [i, product] of ordered.entries()) {
       const element = anchors.current[product.id]; if (!element) continue;
       const p = islandPosition(product); point.set(p[0], .1, p[2] + 1.2).project(camera);

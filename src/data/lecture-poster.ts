@@ -35,3 +35,9 @@ export const pillars: { id: PillarId; name: string; color: string; theme: string
 export const pillarById = new Map(pillars.map(p => [p.id, p]));
 export const productPillar = new Map(pillars.flatMap(p => p.products.map(id => [id, p.id] as const)));
 export const lectureOrder = pillars.flatMap(p => p.products);
+export const lectureCoordinates: Record<string, [number, number]> = {
+  '995': [-1, -2], '360': [-2, -1], lisheng: [-2, -2],
+  huoyi: [2, -2], 'antrodia-drops': [3, -2], dikang: [2, -1],
+  kanger: [1, 1], 'kanger-n': [2, 1], antrodia: [1, 2],
+  kangbei: [-2, 1], kangyue: [-3, 2], ningkang: [-2, 2],
+};

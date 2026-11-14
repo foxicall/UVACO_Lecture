@@ -8,6 +8,7 @@ import type { Phase } from '@/types/product';
 import type { ConciergeAnswer } from '@/lib/concierge';
 import Concierge from './Concierge';
 import ProductSlideDeck from './ProductSlideDeck';
+import { pillars, pillarById } from '@/data/lecture-poster';
 
 const ArchipelagoCanvas = dynamic(() => import('./ArchipelagoCanvas'), { ssr: false, loading: () => <div className="map-loading" role="status">正在展開健康群島…</div> });
 export default function IslandExperience() {
@@ -34,8 +35,8 @@ export default function IslandExperience() {
     <div className="circadian-bar"><span className="circadian-title">跟著一天的節奏</span><div className="phase-options" role="group" aria-label="切換島嶼照明">{phases.map((p, i) => { const Icon = [Sunrise, Sun, Sunset, Moon][i]; return <button key={p.id} aria-pressed={phase === p.id} onClick={() => setPhase(p.id)}><Icon size={21} /><span>{p.name}</span></button>; })}</div><span className="phase-note">情境照明 · 非服用時刻</span></div>
     <main className={`island-main ${product ? 'with-deck' : ''}`}><section className="map-region" aria-label="健康群島互動導覽">
       <ArchipelagoCanvas active={active} route={route} phase={phase} onSelect={setActive} reduced={reduced} />
-      {!active ? <div className="map-welcome"><h1>把健康，<br />慢慢看懂。</h1><p>十二座小島，陪您認識<br />日常營養與身體的故事。</p><button onClick={() => setActive('995')}>開始我的島嶼之旅 <ArrowUpRight size={22} /></button></div> : <div className="map-selection"><h1>{product?.name}</h1><p>{route.length ? `您的閱讀路線 · ${route.length} 座島嶼` : clusters[product!.islandCluster].name}</p></div>}
-      <div className="map-key">{Object.values(clusters).map(c => <span key={c.name}><i style={{ background: c.color }} />{c.short}</span>)}</div>
+      {!active ? <div className="map-welcome"><h1>找回身體的<br />自癒力</h1><p>醫療改善症狀，<br />營養打造健康。</p><button onClick={() => setActive('995')}>開始講座重點巡禮 <ArrowUpRight size={22} /></button></div> : <div className="map-selection"><h1>{product?.name}</h1><p>{route.length ? `您的閱讀路線 · ${route.length} 座島嶼` : pillarById.get(product!.lecturePillar!)!.name}</p></div>}
+      <div className="map-key">{pillars.map(c => <span key={c.id}><i style={{ background: c.color }} />{c.name}</span>)}</div>
       {!active && <div className="map-caption">點選島嶼，開始認識</div>}
     </section><AnimatePresence initial={false}>{product && <motion.div key={product.id} className="deck-wrapper" initial={{ opacity: 0, x: reduced ? 0 : 28 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: reduced ? 0 : .3 }}><ProductSlideDeck product={product} onSelect={setActive} onClose={overview} /></motion.div>}</AnimatePresence></main>
     <footer className="senior-dock"><p className="tour-status" aria-live="polite">{active ? `${Math.max(stops.indexOf(active), 0) + 1} / ${stops.length} 站` : '慢慢走，每一站都為您停留'}</p><nav aria-label="主要產品導覽"><button onClick={() => move(-1)}><ChevronLeft size={24} /><span>上一站</span></button><button className="primary" onClick={() => move(1)}><span>下一站導覽</span><ChevronRight size={24} /></button><button onClick={overview}><Map size={23} /><span>全島總覽</span></button></nav><a className="text-view-link" href="/products">產品文字版 ↗</a></footer>

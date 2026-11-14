@@ -6,6 +6,7 @@ import { clusters, productById, timingNote } from '@/data/uvaco-products';
 import sources from '@/data/source-materials.json';
 import visuals from '@/data/generated-visuals.json';
 import VoiceGuide from './VoiceGuide';
+import { pillarById } from '@/data/lecture-poster';
 
 export default function ProductSlideDeck({ product: p, onSelect, onClose }: { product: Product; onSelect: (id: string) => void; onClose: () => void }) {
   const [tab, setTab] = useState(0);
@@ -14,7 +15,7 @@ export default function ProductSlideDeck({ product: p, onSelect, onClose }: { pr
   const sections = ['給長輩的話', '科學與成分', '一起認識'];
   const ingredients = Object.entries(source.fields).filter(([k]) => /成分|組成|規格/.test(k));
   return <aside className="product-deck" aria-label={`${p.name}產品說明`}>
-    <div className="deck-top"><span>{clusters[p.islandCluster].name}</span><button className="icon-button" aria-label="關閉產品說明" onClick={onClose}><X /></button></div>
+    <div className="deck-top"><span>{pillarById.get(p.lecturePillar!)!.name}</span><button className="icon-button" aria-label="關閉產品說明" onClick={onClose}><X /></button></div>
     <div className="product-intro"><div><h2>{p.name}</h2><p>{p.elderlyHook}</p></div>{art && <img alt={`${p.name}的植物與細胞意象插畫`} src={`data:image/svg+xml;charset=utf-8,${encodeURIComponent(art.svg)}`} width={180} height={180} />}</div>
     <div className="deck-tabs" role="tablist" aria-label="產品資訊分類">{sections.map((name, i) => {
       const Icon = [Leaf, BookOpen, Network][i];
