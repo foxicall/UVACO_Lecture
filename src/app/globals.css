@@ -207,3 +207,95 @@ textarea::placeholder { color: #56675D; }
  html[data-font-scale="140"] .concierge-launch { bottom: 124px; }
  html[data-font-scale="140"] .experience { padding-bottom: 118px; }
 }
+
+.knowledge-button { background: transparent; border-radius: 6px; font-size: 1.125rem; padding: 8px 16px; color: var(--pine); }
+.education-nav { display: flex; gap: 4px; padding: 4px; background: #E8EAE2; border-radius: 8px; margin-bottom: 28px; overflow-x: auto; }
+.education-nav button { flex: 1; border-radius: 6px; white-space: nowrap; font-size: 1.25rem; padding: 8px 14px; }
+.education-nav button[aria-selected=true], .memory-choice button[aria-pressed=true], .metabolism-route button[aria-pressed=true] { background: var(--pine); color: var(--paper); }
+.education-content h3 { font-size: 1.625rem; margin-bottom: 20px; }
+.education-content h4 { font-size: 1.375rem; margin-bottom: 12px; }
+.education-content p { font-size: 1.375rem; line-height: 1.75; }
+.education-content .small-copy { font-size: 1.125rem; }
+.memory-choice { display: flex; gap: 12px; margin: 24px 0; }
+.memory-choice button { flex: 1; font-size: 1.25rem; border-radius: 8px; padding: 16px; }
+.learning-answer { background: #E8EAE2; border-radius: 8px; padding: 24px; margin: 20px 0 32px; }
+.learning-answer p:last-child { margin-bottom: 0; }
+.education-content details { margin: 24px 0; }
+.education-content summary, .education-source summary { min-height: 60px; cursor: pointer; font-size: 1.25rem; padding: 12px 0; }
+.education-source { margin-top: 32px; border-top: 1px solid #D6DDD2; padding-top: 16px; }
+.education-source summary svg { display: inline-block; vertical-align: middle; margin-right: 8px; }
+.metabolism-route { display: flex; gap: 16px; margin: 28px 0; }
+.metabolism-route button { position: relative; flex: 1; flex-direction: column; border-radius: 8px; min-height: 125px; padding: 20px 12px; font-size: 1.25rem; }
+.route-arrow { position: absolute; right: -20px; color: var(--pine); z-index: 1; }
+.corporate-years { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin: 32px 0; }
+.corporate-years strong { font-size: 2.75rem; line-height: 1.3; font-weight: 500; color: var(--pine); display: block; font-variant-numeric: tabular-nums; }
+.corporate-years span { font-size: 1.25rem; }
+.company-facts>div { margin: 24px 0; }
+.company-facts dt { font-size: 1.375rem; font-weight: 700; }
+.company-facts dd { margin: 8px 0 0; font-size: 1.375rem; line-height: 1.75; }
+.lecture-strip { width: 100%; border-radius: 0; display: flex; flex-wrap: wrap; justify-content: flex-start; gap: 12px 28px; padding: 12px 32px; background: #E3E8DB; font-size: 1.25rem; text-align: left; }
+.event-badge { color: var(--pine); font-size: 1.125rem; font-weight: 600; }
+.strip-action { margin-left: auto; display: inline-flex; align-items: center; gap: 6px; }
+.pillar-filter { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; padding: 14px 32px; }
+.pillar-filter button { border-radius: 8px; background: #EBEDE4; padding: 8px 12px; min-height: 68px; font-size: 1.25rem; }
+.pillar-filter button[aria-pressed=true] { background: var(--pine); color: var(--paper); }
+.pillar-filter img { width: 44px; height: 44px; }
+.symptom-search { padding: 0 32px; font-size: 1.125rem; }
+.symptom-search summary { min-height: 60px; cursor: pointer; display: list-item; align-content: center; }
+.symptom-search summary svg { display: inline-block; vertical-align: middle; margin-right: 8px; }
+.symptom-search .symptom-chips { padding-bottom: 12px; }
+.lecture-poster { display: flex; align-items: center; gap: 24px; margin: 28px 0; }
+.lecture-poster h3 { font-size: 2.5rem; line-height: 1.35; margin: 12px 0; letter-spacing: -.04em; }
+.lecture-poster p { font-size: 1.375rem; margin-bottom: 0; }
+.lecture-poster img { margin-left: auto; width: 150px; height: 150px; }
+.event-facts { background: #E8EAE2; padding: 24px; border-radius: 8px; margin: 24px 0; }
+.event-facts p { display: flex; align-items: center; gap: 14px; font-size: 1.5rem; margin-bottom: 10px; }
+.event-facts p:last-child { margin: 0; }
+.event-facts svg { flex-shrink: 0; }
+.lecture-invitation { font-size: 1.375rem; }
+.event-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 20px; }
+.button-link { display: inline-flex; align-items: center; gap: 8px; min-height: 60px; padding: 10px 24px; border-radius: 999px; text-decoration: none; font-size: 1.25rem; font-weight: 600; }
+.speaker-profile, .lecture-comparison { margin-top: 40px; }
+.speaker-profile h3, .lecture-comparison h3 { font-size: 1.75rem; }
+.speaker-profile h4 { font-size: 1.375rem; }
+.speaker-specialties { display: grid; grid-template-columns: 1fr 1fr; list-style: none; padding: 0; gap: 12px; margin-bottom: 32px; }
+.speaker-specialties li { background: #E8EAE2; border-radius: 6px; font-size: 1.25rem; padding: 12px 16px; }
+.speaker-profile summary { min-height: 60px; cursor: pointer; font-size: 1.375rem; padding: 12px 0; }
+.speaker-credentials { padding-left: 26px; font-size: 1.25rem; line-height: 1.8; }
+.speaker-credentials li { margin-bottom: 12px; }
+.lecture-comparison>[role=group] { display: flex; gap: 12px; }
+.lecture-comparison button { flex: 1; }
+.lecture-comparison button[aria-pressed=true] { background: var(--pine); color: var(--paper); }
+.lecture-beliefs { list-style: none; padding: 0; }
+.lecture-beliefs li { display: flex; gap: 12px; align-items: center; font-size: 1.375rem; padding: 8px 0; }
+.dock-voice .voice-button { border: none; font-size: 1.125rem; }
+@media (max-width: 1100px) { .strip-address { display: none; } .dock-voice { display: none; } }
+@media (max-width: 700px) {
+ .lecture-strip { padding: 12px 16px; gap: 4px 12px; font-size: 1.125rem; }
+ .lecture-strip .event-badge { font-size: 1rem; }
+ .lecture-strip .strip-action { font-size: 1rem; }
+ .pillar-filter { grid-template-columns: repeat(2, 1fr); gap: 8px; padding: 12px 16px; }
+ .pillar-filter button { font-size: 1.125rem; padding: 8px; gap: 6px; }
+ .pillar-filter img { width: 34px; height: 34px; }
+ .symptom-search { padding: 0 16px; }
+ .lecture-poster { flex-direction: column-reverse; align-items: flex-start; }
+ .lecture-poster img { width: 110px; height: 110px; margin: 0; }
+ .lecture-poster h3 { font-size: 2.125rem; }
+ .event-facts { padding: 20px; }
+ .event-facts p { font-size: 1.25rem; }
+ .speaker-specialties { grid-template-columns: 1fr; }
+ .speaker-credentials { font-size: 1.25rem; }
+ .speaker-profile h3, .lecture-comparison h3 { font-size: 1.5rem; }
+}
+@media (max-width: 1100px) { .circadian-bar { gap: 8px; } .circadian-title { display: none; } .knowledge-button { margin-left: auto; } }
+@media (max-width: 700px) {
+ .circadian-bar { flex-direction: row; align-items: center; padding: 6px 16px; }
+ .phase-options { flex: 1; }
+ .phase-options button { font-size: 1rem; padding: 6px; }
+ .knowledge-button { font-size: 1rem; width: 82px; padding: 6px; line-height: 1.5; }
+ .education-nav button { font-size: 1.125rem; flex-direction: column; flex: 0 0 auto; }
+ .memory-choice { flex-direction: column; }
+ .education-content h3 { font-size: 1.5rem; }
+ .metabolism-route { gap: 10px; }
+ .metabolism-route button { font-size: 1.125rem; }
+}
