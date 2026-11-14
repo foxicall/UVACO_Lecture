@@ -1,6 +1,7 @@
 {
-  "version": 1,
+  "version": 2,
   "sourceDigest": "3086d65aceb4b55999d7741446281a58fa3c373cf86ca18870e6291fcf44c6b3",
+  "curationDigest": "5846c3530dc949d06ac15fd0718f3f7b2172212997b4fbcca0476f4d6ce199ca",
   "engine": {
     "model": "gemini-3.8-pro",
     "status": "unavailable",
@@ -15,11 +16,16 @@
         "sourceIds": [
           "L6",
           "P1",
+          "Q6",
           "L4",
+          "Q4",
           "L1",
+          "Q1",
           "L2",
           "L3",
-          "L5"
+          "Q3",
+          "L5",
+          "Q5"
         ]
       },
       {
@@ -28,11 +34,15 @@
         "sourceIds": [
           "L1",
           "L6",
+          "Q1",
+          "Q6",
           "L3",
           "L5",
           "P1",
-          "D2",
-          "L4"
+          "Q3",
+          "Q5",
+          "L4",
+          "Q4"
         ]
       },
       {
@@ -41,9 +51,11 @@
         "sourceIds": [
           "L3",
           "P1",
-          "D2",
+          "Q3",
           "L6",
-          "L1"
+          "Q6",
+          "L1",
+          "Q1"
         ]
       }
     ],

@@ -14,11 +14,12 @@ export const clinicalSources = [
   { id: 'L5', title: '代謝老化與血管健康', summary: '血管健康需要整體看待血壓、血糖、脂蛋白、生活習慣與用藥，而非只追逐單一「理想數字」。', limit: '研究型指標和參考區間依方法與族群而異；原稿的血管年齡變化不能當成產品承諾。卵磷脂補充也須同時考量膽鹼與 TMAO 的研究脈絡。', productIds: ['995', '360', 'dikang', 'lisheng'], topics: ['ApoB／sdLDL／HDL 功能', 'ADMA／eNOS／NO', '同半胱胺酸／TMAO'] },
   { id: 'L6', title: '腦腸軸與免疫老化', summary: '腸道屏障、菌相、免疫和肌肉代謝互相影響，照護應以飲食、活動、病史與適切檢查共同評估。', limit: '5R 是整理照護的框架，不能依本頁自行停用藥物、排毒、補胃酸或套用研究劑量；菌株效果不能跨配方推論。', productIds: ['kanger', 'kanger-n', 'kangyue', '995'], topics: ['LPS／TLR4／NLRP3', '腦腸軸／腸肌軸', '5R／SCFA／自噬'] },
   { id: 'P1', title: '葡眾十二產品與三軸機轉文件', summary: '本次上傳的產品成分、三軸主張與十二列對照矩陣。', limit: '來源的機轉或行銷說法需與成品人體證據分開，實際規格依包裝標示。', productIds: ['995','antrodia','antrodia-drops','kanger','kanger-n','kangyue','huoyi','ningkang','360','dikang','lisheng','kangbei'], topics: ['產品原料', '三軸對照', '閱讀組合'] },
-  { id: 'P0', title: '先前產品資料', summary: '原有十二產品文件的保留版本。', limit: '供版本比對，不合併不同版本的規格數字。', productIds: [], topics: ['版本比對'] },
+  { id: 'P0', archived: true, title: '先前產品資料', summary: '原有十二產品文件的保留版本。', limit: '供版本比對，不合併不同版本的規格數字。', productIds: [], topics: ['版本比對'] },
   { id: 'D1', title: '林煒醫師講座海報', summary: '找回身體的自癒力：醫療改善症狀，營養打造健康。', limit: '海報中的講座資訊，不代表對本站訪客的個別診療。', productIds: [], topics: ['四大講座重點'] },
-  { id: 'D2', title: '三套簡報逐頁文稿', summary: '記憶健康、疼痛與修復、產品全覽，共二十三頁。', limit: '依提供文稿重製，保留來源並區分研究與產品效果。', productIds: [], topics: ['記憶', '疼痛', '產品'] },
-  { id: 'D3', title: '大腦與企業簡報擷取', summary: '大腦森林、企業沿革與簡報數字。', limit: '企業獎項與特定治療研究不能當成保健品效果。', productIds: [], topics: ['腦健康', '企業資訊'] },
-  { id: 'D4', title: '既有產品補充資料', summary: '前期整理的詳細原料與機轉補充。', limit: '歷史資料保留供比對，實際規格依現行標示。', productIds: [], topics: ['原料補充'] },
+  { id: 'D2', archived: true, title: '三套簡報逐頁文稿', summary: '記憶健康、疼痛與修復、產品全覽，共二十三頁。', limit: '依提供文稿重製，保留來源並區分研究與產品效果。', productIds: [], topics: ['記憶', '疼痛', '產品'] },
+  { id: 'D3', archived: true, title: '大腦與企業簡報擷取', summary: '大腦森林、企業沿革與簡報數字。', limit: '企業獎項與特定治療研究不能當成保健品效果。', productIds: [], topics: ['腦健康', '企業資訊'] },
+  { id: 'D4', archived: true, title: '既有產品補充資料', summary: '前期整理的詳細原料與機轉補充。', limit: '歷史資料保留供比對，實際規格依現行標示。', productIds: [], topics: ['原料補充'] },
 ];
+export const activeClinicalSources = clinicalSources.filter(source => !('archived' in source && source.archived));
 export const clinicalSourceById = new Map(clinicalSources.map(source => [source.id, source]));
 export const sourceAuthorNames = ['歐瀚文', '王偉全', '歐忠儒', '洪佳琪', '劉士銘', '王凱瑜'];

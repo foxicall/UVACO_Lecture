@@ -1,6 +1,6 @@
 """Private PDF verification artifacts. Public slides are separately redrawn SVGs."""
 from pathlib import Path
-import concurrent.futures, hashlib, json, os, subprocess
+import concurrent.futures, hashlib, json, os, shutil, subprocess
 import fitz
 
 root=Path(__file__).resolve().parents[1]
@@ -10,7 +10,13 @@ TESSDATA=Path(os.environ.get('UVACO_TESSDATA','/tmp/uvaco-tessdata'))
 records=[]
 for pdf in sorted((root/'葡眾/lectures-pdf').glob('*.pdf')):
     number=int(pdf.name.split('.')[0]); doc=fitz.open(pdf)
-    target=cache/f'deck-{number}'; target.mkdir(exist_ok=True)
+    digest=hashlib.sha256(pdf.read_bytes()).hexdigest()
+    target=cache/f'deck-{number}'
+    marker=target/'source.sha256'
+    if target.exists() and (not marker.exists() or marker.read_text().strip()!=digest):
+        shutil.rmtree(target)
+    target.mkdir(exist_ok=True)
+    marker.write_text(digest+'\n')
     pages=[]
     for index,page in enumerate(doc):
         path=target/f'page-{index+1:03}.png'
@@ -25,7 +31,6 @@ for pdf in sorted((root/'葡眾/lectures-pdf').glob('*.pdf')):
                 text_path.write_text(result.stdout)
             return {**page,'text':text_path.read_text(),'method':'Traditional Chinese OCR; verify against PDF'}
         with concurrent.futures.ThreadPoolExecutor(max_workers=2) as pool: pages=list(pool.map(ocr,pages))
-    digest=hashlib.sha256(pdf.read_bytes()).hexdigest()
     text=f'# 第 {number} 套 PDF 文字擷取\n\n原始檔案：{pdf.name}\nSHA-256：{digest}\n頁數：{len(doc)}\n\n文字層與 OCR 擷取僅供檢索，不等同逐字校勘。圖像中的箭頭、數值與版面以原始 PDF 為準。來源的說法不是產品療效或居家處方。\n\n'
     text+='\n\n'.join(f"## PDF 第 {page['page']} 頁\n\n擷取方式：{page['method']}\n\n{page['text']}" for page in pages)
     (root/f'葡眾/pdf-extracted/deck-{number}.md').write_text(text)

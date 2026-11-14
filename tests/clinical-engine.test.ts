@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { GenerateContentResponse } from '@google/genai';
 import { clinicalPlan, clinicalRequestSchema, clinicalResultSchema, localClinicalAnalysis } from '../src/lib/clinical-analysis';
-import { parseClinicalResponse, CLINICAL_MODELS } from '../src/services/geminiClinicalEngine';
+import { parseClinicalResponse, CLINICAL_MODELS, clinicalSourceContext, clinicalSlideContext } from '../src/services/geminiClinicalEngine';
 import { extractGrounding, safeCitationUrl } from '../src/lib/search-grounding';
 import { POST } from '../src/app/api/clinical-analysis/route';
 import { concernChoices } from '../src/data/health-triangle';
@@ -47,4 +47,15 @@ test('clinical API validates requests and sends urgent or medication contexts to
   assert.equal(urgent.status,200);const data=await urgent.json();assert.equal(data.review,'urgent');assert.ok(data.summary.includes('119'));assert.deepEqual(data.productIds,[]);
   const professional=await POST(request(JSON.stringify({concernIds:['sleep'],professionalContext:true})));
   const result=await professional.json();assert.equal(result.mode,'local');assert.deepEqual(result.productIds,[]);
+});
+
+
+test('AI context cites the new PDF pages and links only the six redrawn decks',()=>{
+  const sources=clinicalSourceContext(gut);
+  assert.ok(sources.some(source=>source.id==='Q6' && source.passages.length));
+  assert.ok(sources.every(source=>!['P0','D2','D3','D4'].includes(source.id)));
+  const slides=clinicalSlideContext(gut);
+  assert.ok(slides.some(slide=>slide.slideId==='longevity-6-2' && slide.sourcePages.length));
+  assert.ok(slides.every(slide=>slide.deckId.startsWith('longevity-') && slide.format.includes('重製')));
+  assert.doesNotMatch(JSON.stringify({sources,slides}),/歐瀚文|歐忠儒|王偉全|洪佳琪|劉士銘|王凱瑜/);
 });

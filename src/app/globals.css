@@ -481,6 +481,9 @@ textarea::placeholder { color:#526357; }
 .diagram-pan { width:100%; height:min(66dvh,900px); overflow:auto; border:1px solid #C5D0C4; border-radius:18px; background:#fff; }
 .diagram-pan img { display:block; height:auto; }
 .diagram-lightbox .source-labels { margin:18px 0 0; }
+.source-deck-links { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:12px; margin:28px 0; }
+.source-deck-links button { min-height:72px; justify-content:space-between; text-align:left; background:#E5EBE1; font-size:1.25rem; }
+.source-deck-links small { display:block; font-size:.9375rem; font-weight:400; }
 @media (max-width:1000px) {
  .longevity-workspace { grid-template-columns:1fr; overflow-y:auto; display:block; }
  .longevity-visual { overflow:visible; }
