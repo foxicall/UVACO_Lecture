@@ -5,6 +5,7 @@ import Dialog from './Dialog';
 import { answerSchema, localReadingRoute, presets, type ConciergeAnswer } from '@/lib/concierge';
 import { readEvents } from '@/lib/sse';
 import { productById } from '@/data/uvaco-products';
+import { sitePath, staticSite } from '@/lib/site';
 
 interface Recognition {
   lang: string; interimResults: boolean; continuous: boolean;
@@ -31,13 +32,19 @@ export default function Concierge({ onClose, onNavigate }: { onClose: () => void
   }, []);
   async function ask(text: string) {
     if (busy.current || text.trim().length < 2) return;
+    if (staticSite) {
+      recognition.current?.stop(); setQuestion(text); setError('');
+      const local = localReadingRoute(text);
+      setSentences(local.sentences); setAnswer(local); onNavigate(local);
+      return;
+    }
     busy.current = true; recognition.current?.stop();
     setQuestion(text); setLoading(true); setError(''); setSentences([]); setAnswer(null);
     const request = new AbortController(); abort.current = request;
     const timer = setTimeout(() => request.abort(), 55_000);
     let completed = false;
     try {
-      const res = await fetch('/api/concierge', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ question: text }), signal: request.signal });
+      const res = await fetch(sitePath('/api/concierge'), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ question: text }), signal: request.signal });
       if (!res.ok) { const data = await res.json(); throw new Error(data.error ?? '服務暫時無法連線。'); }
       if (!res.body) throw new Error('未收到回答，請重試。');
       await readEvents(res.body, (event, payload) => {
@@ -68,13 +75,14 @@ export default function Concierge({ onClose, onNavigate }: { onClose: () => void
   return <Dialog title="健康小幫手" className="concierge-dialog" onClose={onClose}>
     <p className="concierge-intro">一起認識，身體需要的照顧。</p>
     <p className="small-copy">我是講座資訊小幫手，陪您從四大主題認識日常營養，不代表林醫師提供個別診療。</p>
+    {staticSite && <p className="small-copy">此公開版本提供本機文件導覽，這不是 AI 回答。點選問題，就能閱讀相關資料。</p>}
     <div className="preset-list">{presets.map(p => <button disabled={loading} onClick={() => ask(p)} key={p}>{p}<span aria-hidden>↗</span></button>)}</div>
     <form onSubmit={e => { e.preventDefault(); ask(question); }}>
       <label htmlFor="health-question">您的問題</label>
       <textarea id="health-question" maxLength={300} rows={3} value={question} onChange={e => setQuestion(e.target.value)} placeholder="例如：想了解腸道與日常飲食" disabled={loading} aria-describedby="privacy-note" />
-      <div className="question-actions">{voice && <button type="button" onClick={speak} disabled={loading} aria-pressed={listening}><Mic size={20} />{listening ? '停止錄音' : '用說的'}</button>}{loading ? <button type="button" onClick={() => abort.current?.abort()}><Square size={18} />停止詢問</button> : <button className="primary" type="submit" disabled={question.trim().length < 2}><ArrowUp size={22} />送出問題</button>}</div>
+      <div className="question-actions">{voice && <button type="button" onClick={speak} disabled={loading} aria-pressed={listening}><Mic size={20} />{listening ? '停止錄音' : '用說的'}</button>}{loading ? <button type="button" onClick={() => abort.current?.abort()}><Square size={18} />停止詢問</button> : <button className="primary" type="submit" disabled={question.trim().length < 2}><ArrowUp size={22} />{staticSite ? '查看導覽' : '送出問題'}</button>}</div>
     </form>
-    <p id="privacy-note" className="small-copy">送出後，問題會傳至 Google Gemini。請勿輸入姓名、電話或病歷；語音由瀏覽器辨識，文字可先修改再送出。</p>
+    <p id="privacy-note" className="small-copy">{staticSite ? '文字由本機文件導覽處理，不會傳送至 AI。若使用語音輸入，語音由瀏覽器的辨識服務處理；請勿輸入姓名、電話或病歷。' : '送出後，問題會傳至 Google Gemini。請勿輸入姓名、電話或病歷；語音由瀏覽器辨識，文字可先修改再送出。'}</p>
     <div aria-live="polite" aria-busy={loading} className="ai-answer">
       {loading && <p className="loading-text">正在為您整理資訊…</p>}
       {error && <><p role="alert">{error}</p><button onClick={() => { const local = localReadingRoute(question); setSentences(local.sentences); setAnswer(local); setError(''); onNavigate(local); }}>改看本機文件導覽</button></>}

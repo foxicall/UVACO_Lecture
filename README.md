@@ -16,7 +16,21 @@ npm run start
 
 若雲端 npm 快取不可寫，使用 `npm ci --cache /workspace/.npm`。每個雲端任務已有獨立工作區，直接使用現有 checkout，不需建立 worktree。
 
-`prebuild` 重新擷取本地文件並執行素材生成。首頁和文字版會預先產生，3D 模組延遲載入；AI API 需要 Node.js 伺服器。可部署至 Vercel 或支援 Node 的主機，不能以純靜態 `output: 'export'` 執行 API。本專案沒有自動部署或環境發布指令。
+`prebuild` 重新擷取本地文件並執行素材生成。首頁和文字版會預先產生，3D 模組延遲載入；AI API 需要 Node.js 伺服器。預設正式建置保留 API，可部署至 Vercel 或支援 Node 的主機。GitHub Pages 使用獨立的靜態建置模式。
+
+## GitHub Pages 自動發布
+
+`.github/workflows/deploy.yml` 在 `main`、`work` 推送或手動執行時，使用 Node 24、`npm ci`、`npm run build`，將 `out/` 經 `actions/upload-pages-artifact@v3` 與 `actions/deploy-pages@v4` 發布。先在儲存庫 **Settings → Pages → Build and deployment → Source** 選擇 **GitHub Actions**。環境發布與 GitHub Pages 網站發布是不同操作。
+
+```bash
+DEPLOY_TARGET=pages npm run build
+# 對應專案網址 /UVACO_Lecture/，可用 PAGES_BASE_PATH 覆寫
+# 靜態檔案輸出至 out/，中間檔放在 .next/
+```
+
+Pages 不提供 Node.js 路由，這個模式會排除 `route.ts`，保留全部講座、島嶼、產品、語音與文件導覽。小幫手明確標示「這不是 AI 回答」，以本機文件選擇閱讀路線，不呼叫 Gemini、不送出文字，也不需要把金鑰放進 GitHub Actions 或瀏覽器。預設 `npm run build && npm run start -- -H 0.0.0.0 -p 3000` 仍提供完整 Gemini API。
+
+本機驗證 Pages 時，讓靜態伺服器把 `out/` 掛載在 `/UVACO_Lecture/`，再執行 `npm run test:pages`。預設測試 8080 埠，也可以用 `PAGES_TEST_BASE_URL` 指定完整網址；測試子目錄資源、12 座島、文件導覽、不呼叫 API，以及文字版返回首頁。
 
 ## Gemini 與離線行為
 
