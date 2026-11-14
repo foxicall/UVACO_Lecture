@@ -10,7 +10,7 @@ export default function VisualLightbox({page,onClose}:{page:VisualPage;onClose:(
  const [live,setLive]=useState(false);
  const deck=visualDeckById.get(page.deckId)!;
  return <Dialog title="全螢幕原圖檢視" onClose={onClose} className="visual-lightbox">
-  <div onKeyDown={e=>e.stopPropagation()}>
+  <div className="visual-lightbox-body" onKeyDown={e=>e.stopPropagation()}>
    <TransformWrapper minScale={1} maxScale={5} centerOnInit wheel={{step:.15}} doubleClick={{mode:'toggle'}}>
     {({zoomIn,zoomOut,resetTransform})=><>
      <div className="visual-zoom-tools"><button aria-label="縮小原圖" onClick={()=>zoomOut()}><ZoomOut/></button><button aria-label="放大原圖" onClick={()=>zoomIn()}><ZoomIn/></button><button onClick={()=>resetTransform()}><RotateCcw size={20}/>適合畫面</button><button aria-pressed={live} onClick={()=>{resetTransform();setLive(v=>!v);}}>{live?'切回高清圖':'以 PDF 繪製'}</button></div>

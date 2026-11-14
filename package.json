@@ -24,7 +24,8 @@
     "test:stories": "tsx tests/pillar-story-browser.ts",
     "visuals:extract": "python scripts/extract-all-pdf-visuals.py && node scripts/prepare-pdf-visuals.mjs",
     "visuals:prepare": "node scripts/prepare-pdf-visuals.mjs",
-    "test:visuals": "tsx tests/visual-browser.ts"
+    "test:visuals": "tsx tests/visual-browser.ts",
+    "test:visual-fit": "tsx tests/visual-fit-browser.ts"
   },
   "engines": {
     "node": ">=22"
