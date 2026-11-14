@@ -11,7 +11,8 @@
     "test:browser": "tsx tests/browser.ts",
     "assets:generate": "tsx scripts/generate-ui-assets.ts",
     "materials:ingest": "tsx scripts/ingest-drive-materials.ts",
-    "build:with-ai": "npm run assets:generate && npm run build"
+    "build:with-ai": "npm run assets:generate && npm run build",
+    "prebuild": "npm run materials:ingest && npm run assets:generate"
   },
   "engines": {
     "node": ">=22"
@@ -40,7 +41,7 @@
     "playwright-core": "1.65.1",
     "tailwindcss": "4.3.5",
     "tsx": "4.23.15",
-    "typescript": "7.0.2"
+    "typescript": "5.9.3"
   },
   "type": "module"
 }
