@@ -25,6 +25,8 @@ jobs:
           cache: npm
       - name: Install dependencies
         run: npm ci
+      - name: Verify sources, routes and evidence boundaries
+        run: npm test
       - name: Build static lecture website
         run: npm run build
         env:
@@ -33,6 +35,8 @@ jobs:
           NEXT_TELEMETRY_DISABLED: '1'
       - name: Check exported entry points
         run: test -f out/index.html && test -f out/products/index.html && test ! -d out/api
+      - name: Verify public diagrams and attribution
+        run: node scripts/verify-longevity-export.mjs
       - uses: actions/upload-pages-artifact@v3
         with:
           path: out

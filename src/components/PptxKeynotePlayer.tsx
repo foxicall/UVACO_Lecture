@@ -24,7 +24,7 @@ export default function PptxKeynotePlayer({ onClose, initialSlide, onProducts }:
   const root = useRef<HTMLDivElement>(null);
   const slideCanvas = useRef<HTMLElement>(null);
   const workspace = useRef<HTMLDivElement>(null);
-  const thumb = useRef<HTMLButtonElement | null>(null);
+  const visual = useRef<HTMLElement>(null);
   const touch = useRef<{ x: number; y: number } | null>(null);
   const deck = pptxDecks[deckIndex];
   const slide = deck.slides[index];
@@ -39,7 +39,8 @@ export default function PptxKeynotePlayer({ onClose, initialSlide, onProducts }:
     window.addEventListener('uvaco-speech-reset', interrupted);
     return () => { document.removeEventListener('fullscreenchange', changed); window.removeEventListener('uvaco-speech-reset', interrupted); if ('speechSynthesis' in window) window.speechSynthesis.cancel(); };
   }, []);
-  useEffect(() => { slideCanvas.current?.scrollTo({ top: 0, behavior: 'instant' }); workspace.current?.scrollTo({ top: 0, behavior: 'instant' }); }, [deckIndex, index]);
+  function resetReadingScroll() { for (const ref of [slideCanvas, workspace, visual]) ref.current?.scrollTo({ top: 0, behavior: 'instant' }); }
+  useEffect(() => { resetReadingScroll(); }, [deckIndex, index]);
   useEffect(() => {
     if (!auto || !supported) return;
     const synth = window.speechSynthesis;
@@ -57,8 +58,8 @@ export default function PptxKeynotePlayer({ onClose, initialSlide, onProducts }:
     synth.speak(speech);
     return () => { current = false; synth.cancel(); };
   }, [auto, supported, slide, index, deck.slides.length]);
-  function move(next: number) { setIndex(Math.max(0, Math.min(deck.slides.length - 1, next))); setNotice(''); }
-  function switchDeck(next: number) { setAuto(false); setPaused(false); setDeckIndex(next); setIndex(0); setNotice(''); }
+  function move(next: number) { resetReadingScroll(); setIndex(Math.max(0, Math.min(deck.slides.length - 1, next))); setNotice(''); }
+  function switchDeck(next: number) { resetReadingScroll(); setAuto(false); setPaused(false); setDeckIndex(next); setIndex(0); setNotice(''); }
   function toggleNarration() {
     if (!supported) return;
     if (!auto) { window.dispatchEvent(new CustomEvent('uvaco-speech-reset', { detail: { owner: 'keynote' } })); setAuto(true); }
@@ -85,13 +86,13 @@ export default function PptxKeynotePlayer({ onClose, initialSlide, onProducts }:
       <p className="keynote-byline">林煒醫師健康講座・找回身體的自癒力</p>
       <div className="keynote-deck-tabs" role="tablist" aria-label="選擇簡報">{pptxDecks.map((item,i)=><button key={item.id} id={`deck-tab-${item.id}`} aria-controls="keynote-panel" role="tab" aria-selected={deckIndex===i} tabIndex={deckIndex===i?0:-1} onClick={()=>switchDeck(i)} onKeyDown={event=>{const next=event.key==='ArrowRight'?(i+1)%pptxDecks.length:event.key==='ArrowLeft'?(i+pptxDecks.length-1)%pptxDecks.length:-1;if(next>=0){event.preventDefault();switchDeck(next);(event.currentTarget.parentElement?.children[next] as HTMLButtonElement)?.focus();}}}><span>{item.shortTitle}</span><small>{item.slides.length} 頁</small></button>)}</div>
       <div ref={workspace} className="longevity-workspace" id="keynote-panel" role="tabpanel" aria-labelledby={`deck-tab-${deck.id}`}>
-        <section className="longevity-visual" aria-label="本頁圖解與縮圖">
+        <section ref={visual} className="longevity-visual" aria-label="本頁圖解與縮圖">
           <button className="slide-visual-button" onClick={()=>{setZoom(100);setLightbox(true);}} aria-label={`放大圖解：${slide.title}`}>
             {failed?<div className="diagram-fallback"><strong>{slide.title}</strong>{slide.diagram.nodes.map(node=><p key={node.label}>{node.label}：{node.detail}</p>)}</div>:<img src={sitePath(slide.image)} width={1600} height={1000} alt={slide.title+'，依資料重製的機轉圖解'} onError={()=>setFailedImages(ids=>[...ids,slide.id])}/>}
             <span><ZoomIn size={21}/>點擊放大圖解</span>
           </button>
           <p className="slide-provenance">{sourceLabel}<span>依資料重製，非原始投影片</span></p>
-          <nav className="keynote-thumbnails" aria-label="投影片縮圖">{deck.slides.map((item,i)=><button key={item.id} ref={i===index?thumb:undefined} onClick={()=>move(i)} aria-current={i===index?'page':undefined} aria-label={`第 ${i+1} 頁：${item.title}`}><span className="thumbnail-preview"><img alt="" src={sitePath(item.image)} width={160} height={100} loading="lazy"/></span><span className="thumbnail-caption">{i+1}<span>{item.title}</span></span></button>)}</nav>
+          <nav className="keynote-thumbnails" aria-label="投影片縮圖">{deck.slides.map((item,i)=><button key={item.id} onClick={()=>move(i)} aria-current={i===index?'page':undefined} aria-label={`第 ${i+1} 頁：${item.title}`}><span className="thumbnail-preview"><img alt="" src={sitePath(item.image)} width={160} height={100} loading="lazy"/></span><span className="thumbnail-caption">{i+1}<span>{item.title}</span></span></button>)}</nav>
         </section>
         <article ref={slideCanvas} className="longevity-summary" tabIndex={0} aria-label={`第 ${index+1} 頁，共 ${deck.slides.length} 頁：${slide.title}`} onTouchStart={event=>{touch.current={x:event.touches[0].clientX,y:event.touches[0].clientY};}} onTouchEnd={event=>{const start=touch.current;touch.current=null;if(!start)return;const x=event.changedTouches[0].clientX-start.x,y=event.changedTouches[0].clientY-start.y;if(Math.abs(x)>65&&Math.abs(y)<35)move(index+(x<0?1:-1));}}>
           <p className="slide-series">{deck.title}・{index+1} / {deck.slides.length}</p><h3>{slide.title}</h3><p className="slide-summary-lead">{slide.summary}</p>

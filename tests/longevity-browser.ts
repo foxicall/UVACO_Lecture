@@ -24,6 +24,7 @@ try {
       for (const [index, slide] of deck.slides.entries()) {
         await page.locator('.keynote-thumbnails button').nth(index).click();
         assert.equal(await page.locator('.longevity-summary h3').innerText(), slide.title);
+        await page.waitForFunction(() => document.querySelector('.longevity-visual')?.scrollTop === 0);
         await page.locator('.slide-visual-button img').evaluate(async (img: HTMLImageElement) => { if (!img.complete) await new Promise<void>((resolve, reject) => { img.onload = () => resolve(); img.onerror = reject; }); });
         assert.equal(await page.locator('.slide-visual-button img').evaluate((img: HTMLImageElement) => img.naturalWidth), 1600);
         assert.equal(await page.locator('.longevity-workspace').evaluate(el => el.scrollWidth > el.clientWidth + 1), false);

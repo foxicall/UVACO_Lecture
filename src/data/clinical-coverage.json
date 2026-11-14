@@ -4,14 +4,14 @@
   "inventory": [
     {
       "path": "README.md",
-      "bytes": 11550,
-      "sha256": "ceea3289e4027433c3301f7ca8254304efe546c32559b3db269c6bbe4fb9b4d4",
+      "bytes": 13049,
+      "sha256": "1221bc67f68f632166850647ef3e806ed30112760ee7e74f9cd26745287dda73",
       "kind": "project-document"
     },
     {
       "path": "docs/design-notes.md",
-      "bytes": 5531,
-      "sha256": "fcc77d356cbc2f0dfa78f8da0e11732ddbc87511ecfbd33b4dcafbc4f5c33d39",
+      "bytes": 4484,
+      "sha256": "da9e8377252ea672d2a4fe016100fa3147e2d56edb05660809d05504970db8d1",
       "kind": "project-document"
     },
     {

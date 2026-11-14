@@ -16,7 +16,7 @@ npm run start
 
 若雲端 npm 快取不可寫，使用 `npm ci --cache /workspace/.npm`。每個雲端任務已有獨立工作區，直接使用現有 checkout，不需建立 worktree。
 
-`prebuild` 重新擷取本地文件、建立臨床來源索引與整合快取，再執行素材生成。首頁和文字版會預先產生，3D 模組延遲載入；AI API 需要 Node.js 伺服器。預設正式建置保留 API，可部署至 Vercel 或支援 Node 的主機。GitHub Pages 使用獨立的靜態建置模式。
+`prebuild` 校驗 PDF 雜湊、重建公開 SVG，擷取本地文稿、建立臨床來源索引與整合快取，再執行素材生成。首頁和文字版會預先產生，3D 模組延遲載入；AI API 需要 Node.js 伺服器。預設正式建置保留 API，可部署至 Vercel 或支援 Node 的主機。GitHub Pages 使用獨立的靜態建置模式。
 
 ## GitHub Pages 自動發布
 
@@ -57,17 +57,30 @@ npm run assets:generate -- --require-ai
 
 `pro-partner-health-mechanisms.md` 與 `pdf-extracted-sources.md` 保存使用者提供的來源文字；較早的詳細資料保留在 `supplementary-source-details.md`。`npm run materials:ingest` 擷取十二個完整段落至 `src/data/source-materials.json`，不足十二個會失敗。`src/data/uvaco-products.ts` 提供產品、原料、注意事項、來源機轉與閱讀路線；`lecture-poster.ts` 管理四主題、座標及巡禮順序。
 
-四個主題是人體修復能力、神經修復、慢性發炎、自律神經，每組三座產品島，中央健康金三角開啟三大機轉專區，講座資訊由頂欄與活動卡進入。固定 48px 浮動頂欄包含講座資訊、四主題、健康金三角、簡報與字級入口；底部五顆按鈕提供上一站、下一站、全島總覽、語音導讀與播放 PPT。保留可展開的症狀入口、100%／125%／140% 字體、鍵盤分頁、對話框焦點限制與 Escape 關閉。無 JavaScript 時可閱讀 `/products`。
+四個主題是人體修復能力、神經修復、慢性發炎、自律神經，每組三座產品島，中央健康金三角開啟三大機轉專區，講座資訊由頂欄與活動卡進入。固定 48px 浮動頂欄包含講座資訊、四主題、健康金三角、簡報與字級入口；底部五顆按鈕提供上一站、下一站、全島總覽、語音導讀與六套簡報。保留可展開的症狀入口、100%／125%／140% 字體、鍵盤分頁、對話框焦點限制與 Escape 關閉。無 JavaScript 時可閱讀 `/products`。
 
 國語語音使用 `speechSynthesis`，`zh-TW`、速度 0.92，支援暫停與繼續。語音輸入需瀏覽器支援及麥克風許可；辨識後先確認文字再送出。群島採固定正交視角與暖日光，沒有晝夜切換、自由旋轉、縮放或浮動動畫。選取產品僅顯示光圈、閱讀連線與玻璃閱讀面板；視窗尺寸改變才重新適配地圖邊界。按需繪製避免閒置時持續消耗 GPU。
 
 來源機轉原文可在產品科學頁展開閱讀。介面區分研究機制與成品療效，專利、企業獎項與醫師資歷不作為保健品治病的證明。ECFMG 證書不等同美國各州行醫執照。
 
-## 三套講座簡報
+## 六套長壽醫學圖解
 
-`src/components/PptxKeynotePlayer.tsx` 提供 16:9 投影片、縮圖、全螢幕與大字講稿：記憶健康 8 頁、疼痛與修復 7 頁、產品全覽 8 頁。左右鍵、Home／End、觸控滑動與前後按鈕切頁；自動朗讀支援暫停、繼續、停止，讀完本頁才切到下一頁，最後一頁結束播放。系統沒有國語語音時仍可閱讀全文。
+六套共 22 頁：健康長壽 4 頁、環境暴露 3 頁、荷爾蒙 4 頁、發炎消退 4 頁、代謝血管 3 頁、腦腸免疫 4 頁。桌面為 55% 圖解／45% 大字閱讀，平板與手機垂直排列。每頁提供來源頁碼、研究限制、國語朗讀與葡眾產品原料比較。放大圖解支援 100–300% 與捲動；左右鍵、Home／End、觸控、全螢幕及自動朗讀皆保留。
 
-目前收到逐頁文稿，沒有原始 PPTX 檔。本版本是原生網頁重製，並非原始 PowerPoint 版面還原。`葡眾/keynote-source.md` 保存原稿，`src/data/keynote-originals.json` 提供逐頁來源對照，`src/data/pptx-decks.ts` 提供完整閱讀與朗讀內容。播放器可展開來源原文，展示文字區分原料研究、治療研究與成品療效，避免將醫學研究數字直接套用於保健品。
+本次實際收到 **5 份 PDF，共 233 頁**（第 1／3／4／5／6 套）及六份 Markdown；第 2 套 PDF 未提供，介面明確標示依文稿重製。原檔保存在 `葡眾/lectures-pdf/`，原始文稿保存在 `葡眾/lectures/`，SHA-256 與頁數記錄於 `src/data/longevity-private-index.json`。第 3 套為 10 頁掃描資料，另以繁體中文 OCR 輔助檢索；擷取文字不是逐字校勘。
+
+依使用者的署名選擇，**網站只公開無原始講者署名的重製 SVG，不公開原 PDF 或原始頁面截圖**。主介面顯示林煒醫師，來源保留原作者，不把其他講者原話改署林醫師。`public/longevity-pdf-assets/` 只含 22 張 1600×1000 向量圖，缺圖時仍顯示文字圖解。這些圖解是程式繪製，並非 Pro 生成或原始 PDF 版面。
+
+`src/data/longevity-content.json` 管理校對後內容，`longevity-decks-manifest.ts` 提供播放器資料；`葡眾/longevity-6-lectures-source.md` 保存整合版本。舊三套簡報僅保存在 `archived-pptx-decks.ts` 與來源文件中，不再由播放器載入。
+
+```bash
+npm run longevity:prepare # 不需 PDF/OCR 套件；驗證原檔並重建 SVG、manifest、整合文稿
+# 更新原 PDF 後，先重新擷取、人工檢查頁碼及內容，再執行建置：
+UVACO_TESSDATA=/path/to/tessdata npm run longevity:extract
+npm run test:longevity # TEST_BASE_URL 預設 http://localhost:3002
+```
+
+完整擷取使用 Python PyMuPDF、Tesseract 的 chi_tra 與 eng 語料；180 dpi 原始 PNG 僅保存在忽略提交的 `.longevity-extracted/`。CI 使用已提交的文字與原檔雜湊，不需重新 OCR。來源變更會阻擋過期 PDF 索引；重新擷取時依雜湊清除舊影像快取。發布前 `scripts/verify-longevity-export.mjs` 逐張核對 SVG，拒絕原 PDF 或原始講者姓名進入靜態網站。
 
 ## 驗證
 
@@ -80,7 +93,7 @@ npm run start -- --port 3001
 npm run test:browser
 ```
 
-瀏覽器測試使用 `/usr/bin/chromium` 與 3001 埠，可透過 `CHROMIUM_PATH`、`TEST_BASE_URL` 調整。涵蓋 1440、768、390 像素、48px 頂欄、固定地圖標籤、23 頁簡報、朗讀自動切頁、全螢幕與焦點返回，產生 `test-results/` 截圖及 axe 報告。AI 前端測試使用合成 SSE；真實 Flash 連線另行驗證。TTS 測試驗證語言、速率與控制契約，不代表每台裝置均已實際播音。
+瀏覽器測試使用 `/usr/bin/chromium` 與 3001 埠，可透過 `CHROMIUM_PATH`、`TEST_BASE_URL` 調整。涵蓋 1440、768、390 像素、48px 頂欄、固定地圖標籤、22 頁簡報、朗讀自動切頁、全螢幕與焦點返回，產生 `test-results/` 截圖及 axe 報告。AI 前端測試使用合成 SSE；真實 Flash 連線另行驗證。TTS 測試驗證語言、速率與控制契約，不代表每台裝置均已實際播音。
 
 60fps 取決於實體裝置 GPU 與瀏覽器；headless Chromium 不是 iPad／手機效能認證。首句延遲受網路與模型影響，不能保證低於一秒。
 
@@ -95,13 +108,13 @@ SVG 僅允許白名單節點／屬性，拒絕腳本、事件及外部資源，�
 
 `葡眾/lectures/` 保留六份新上傳講座原始 Markdown，產品機轉文件採用本次上傳版本，前版保存在 `葡眾/archive/`。原始姓名與檔名保留在來源層；網站以「林煒醫師健康講座」作為活動識別，參考文件用主題名稱呈現，不將其他講者引述改署為林醫師，也不宣稱林醫師為個別使用者開立處方。
 
-`npm run clinical:synthesize` 掃描儲存庫所有 Markdown，區分工程文件與臨床來源。12 份新舊臨床來源的完整內容、SHA-256、分段行號、12 列原始應用矩陣與產品資料保存在 `clinical-corpus.json`；此完整 corpus 僅供腳本與伺服器使用。`clinical-coverage.json` 記錄來源與 17 張機轉卡的對照，`gemini-3.8-insights.json` 提供有來源版本的建置摘要。新增未登記的臨床 Markdown 會使建置失敗，避免靜默遺漏。可用 `--refresh` 重試 Pro，或 `--require-ai` 要求真實模型生成；Pro 不可用時不改用其他模型。
+`npm run clinical:synthesize` 掃描儲存庫所有 Markdown，區分工程文件與臨床來源。18 份新舊臨床來源的完整內容、SHA-256、分段行號、12 列原始應用矩陣與產品資料保存在 `clinical-corpus.json`；此完整 corpus 僅供腳本與伺服器使用。`clinical-coverage.json` 記錄來源與 17 張機轉卡的對照，`gemini-3.8-insights.json` 提供有來源及內容校訂版本的建置摘要；舊來源保留於完整索引，現行分析排除舊三套簡報。新增未登記的臨床 Markdown 會使建置失敗，避免靜默遺漏。可用 `--refresh` 重試 Pro，或 `--require-ai` 要求真實模型生成；Pro 不可用時不改用其他模型。
 
-專區提供慢性發炎、細胞自癒力、自律神經三軸互動圖、17 張機轉卡、12 款產品原料對照、12 份來源筆記與直達既有投影片的連結。原稿完整保留，公眾閱讀卡則區分生物機轉、原料研究、不同配方及成品人體證據，涵蓋發炎消退、環境暴露、荷爾蒙、代謝內皮、甲基化、腸腦軸等主題。未將 MitoCORE、SPM、LPC-DHA、荷爾蒙或侵入性療程等同葡眾成品作用。
+專區提供慢性發炎、細胞自癒力、自律神經三軸互動圖、17 張機轉卡、12 款產品原料對照、14 份現行來源筆記與直達六套圖解指定頁的連結。原稿完整保留，公眾閱讀卡則區分生物機轉、原料研究、不同配方及成品人體證據，涵蓋發炎消退、環境暴露、荷爾蒙、代謝內皮、甲基化、腸腦軸等主題。未將 MitoCORE、SPM、LPC-DHA、荷爾蒙或侵入性療程等同葡眾成品作用。
 
 「我的關注」提供六項複選。圖表計算每個主題涉及幾項選擇，**不是身體失衡百分比或檢測值**；產品為原料閱讀選項，早／日／晚內容為生活照護，不提供補充品劑量、個別服用時間、用藥調整或協同療效保證。急症、用藥與恢復期情境先顯示醫療評估方向，不自動導向產品。
 
-Node API `/api/clinical-analysis` 使用官方 SDK、固定 `gemini-3.8-flash` 與 `googleSearch`。先搜尋證據，再以相同模型產生受 schema 約束的答案；只顯示真實 `groundingMetadata` 引用與搜尋建議，無引用時如實標示。2026-11-14 的實測約 36 秒，取得 NIH、葡萄王等來源；前端立即顯示本地文件整理，再更新 AI 結果。建置端 Pro 仍回傳 404，建置快取明確標示文件整理，並非 Gemini 生成。
+Node API `/api/clinical-analysis` 使用官方 SDK、固定 `gemini-3.8-flash` 與 `googleSearch`。先搜尋證據，再以相同模型產生受 schema 約束的答案；只顯示真實 `groundingMetadata` 引用與搜尋建議，無引用時如實標示。已以真實請求驗證搜尋引用；前端立即顯示本地文件整理，再更新 AI 結果，本輪延遲見下方驗證紀錄。建置端 Pro 仍回傳 404，建置快取明確標示文件整理，並非 Gemini 生成。
 
 新 API 限制 4096 bytes、六項有效選項、300 字補充問題、每實例每分鐘 12 次、同時 2 次、55 秒伺服器逾時；前端 65 秒可取消，錯誤仍可閱讀本機文件。產品動作須通過預先限定範圍驗證。搜尋建議 HTML 僅在禁止腳本、不同來源的 sandbox iframe 中呈現。API 不記錄健康問題；送出前會告知 Google 資料傳送。靜態 Pages 不呼叫新 API、不傳送使用者輸入，不需要使用者金鑰。
 
@@ -113,4 +126,4 @@ npm run test:triangle # TEST_BASE_URL 預設 http://localhost:3002
 新測試涵蓋三種尺寸、17 張卡、12 款產品、來源主題、三軸關聯數、搜尋引用、醫療分流、API 失敗續讀、簡報指定頁及國語語音契約；引用介面使用合成回應，真實 Flash 搜尋另行驗證。
 
 
-最終驗證：19 項資料／API 測試、Node 正式建置與 GitHub Pages 建置通過。1440／768／390 像素的原有流程與健康金三角共 24 個 axe 檢查畫面零違規（不含隔離的 Google 搜尋建議內頁）。靜態版驗證簡報指定頁、產品導覽及零 API 請求。初版正式 API 曾在 55 秒逾時並正常提供本地文件；縮減重複搜尋與無關內容後，真實 Node HTTP 請求約 32.6 秒回傳 Gemini 3.8 Flash 分析、12 筆外部引用與有效產品閱讀動作。這是單次測試結果，不是延遲保證。
+本輪資料與 API 測試共 22 項；三尺寸一般流程、健康金三角與圖解放大共 30 個 axe 檢查畫面零違規（不含隔離的 Google 搜尋建議內頁）。新增實測 Flash 請求約 55.9 秒，回傳新 PDF 來源 Q3／Q4／Q6、4 筆外部引用與康爾喜／康悅兒原料閱讀動作；這是單次測試結果，不是延遲保證。Node 與 GitHub Pages 正式建置均通過；靜態版另驗證全部圖解與產品導覽不發送 API 請求。
