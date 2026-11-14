@@ -445,3 +445,62 @@ textarea::placeholder { color:#526357; }
  .source-notebooks details { padding:12px 20px; }
  .daily-care>div { grid-template-columns:1fr; gap:8px; }
 }
+/* Six longevity decks: diagram and large reading column. */
+.longevity-dialog .keynote-player { grid-template-rows:auto auto auto minmax(0,1fr) auto; }
+.keynote-byline { margin:0; padding:0 20px 12px; color:var(--muted); font-size:1rem; }
+.longevity-dialog .keynote-deck-tabs { width:auto; display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); overflow:visible; padding:5px; margin:0 20px 16px; }
+.longevity-dialog .keynote-deck-tabs button { min-width:0; white-space:normal; padding:10px 6px; min-height:60px; }
+.longevity-workspace { display:grid; grid-template-columns:minmax(0,55fr) minmax(0,45fr); gap:24px; min-height:0; padding:0 20px 20px; overflow:hidden; }
+.longevity-visual { display:flex; flex-direction:column; min-width:0; min-height:0; overflow-y:auto; gap:12px; }
+.slide-visual-button { display:block; padding:0; flex-shrink:0; overflow:hidden; background:#FAF7F2; width:100%; border-radius:20px; border:1px solid #D0D9D0; }
+.slide-visual-button img { width:100%; height:auto; display:block; }
+.slide-visual-button>span { display:flex; justify-content:center; align-items:center; gap:10px; padding:16px 12px; min-height:60px; background:#E5EBE1; color:var(--pine); font-size:1.125rem; }
+.slide-provenance { margin:0; color:var(--muted); font-size:.9375rem; line-height:1.75; }
+.slide-provenance span { display:block; }
+.longevity-dialog .keynote-thumbnails { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); padding:4px; gap:8px; min-height:140px; flex-shrink:0; border:0; }
+.longevity-dialog .keynote-thumbnails>button { min-width:0; width:auto; padding:6px; min-height:120px; justify-content:flex-start; background:#fff; border:1px solid #D0D9D0; }
+.longevity-dialog .keynote-thumbnails>button[aria-current=page] { border-color:var(--pine); box-shadow:inset 0 0 0 1px var(--pine); }
+.longevity-dialog .thumbnail-preview { display:block; width:100%; height:auto; aspect-ratio:1.6; }
+.longevity-dialog .thumbnail-preview img { width:100%; height:100%; object-fit:contain; }
+.longevity-dialog .thumbnail-caption { font-size:.875rem; white-space:normal; line-height:1.5; }
+.longevity-summary { min-height:0; overflow-y:auto; padding:28px; border-radius:20px; background:#fff; font-size:1.375rem; line-height:1.75; }
+.longevity-summary h3 { font-size:2rem; }
+.longevity-summary h4 { font-size:1.375rem; }
+.longevity-summary .voice-button { margin:8px 0 24px; min-height:60px; background:#E5EBE1; }
+.slide-summary-lead { font-size:1.5rem; }
+.longevity-copy section { padding:20px 0; border-top:1px solid #D5DDD2; }
+.slide-evidence { padding:22px; border-radius:18px; background:#F8F2E6; margin:12px 0 28px; }
+.slide-evidence p { margin:0; }
+.slide-products>div { display:flex; flex-wrap:wrap; gap:10px; margin:20px 0; }
+.slide-products button { min-height:60px; font-size:1.125rem; text-align:left; }
+.slide-route-button { margin-bottom:24px; width:100%; justify-content:space-between; }
+.diagram-fallback { padding:28px; background:#FAF7F2; color:var(--ink); font-size:1.375rem; }
+.dialog.diagram-lightbox { width:calc(100vw - 32px); max-width:1600px; background:#FAF7F2; padding:24px; }
+.diagram-zoom-controls { display:flex; align-items:center; justify-content:center; gap:12px; margin:8px 0 20px; flex-wrap:wrap; }
+.diagram-zoom-controls button { min-height:60px; }
+.diagram-pan { width:100%; height:min(66dvh,900px); overflow:auto; border:1px solid #C5D0C4; border-radius:18px; background:#fff; }
+.diagram-pan img { display:block; height:auto; }
+.diagram-lightbox .source-labels { margin:18px 0 0; }
+@media (max-width:1000px) {
+ .longevity-workspace { grid-template-columns:1fr; overflow-y:auto; display:block; }
+ .longevity-visual { overflow:visible; }
+ .longevity-summary { overflow:visible; margin-top:24px; }
+ .longevity-dialog .keynote-deck-tabs { grid-template-columns:repeat(3,minmax(0,1fr)); }
+ .longevity-dialog .keynote-deck-tabs button { min-height:52px; }
+ .slide-visual-button { max-width:740px; margin:auto; }
+}
+@media (max-width:600px) {
+ .longevity-dialog .keynote-deck-tabs { margin:0 12px 12px; }
+ .longevity-dialog .keynote-deck-tabs button { font-size:1rem; }
+ .longevity-workspace { padding:0 12px 16px; }
+ .keynote-byline { padding:0 16px 12px; font-size:.875rem; }
+ .longevity-summary { padding:22px 18px; }
+ .longevity-summary h3 { font-size:1.75rem; }
+ .longevity-dialog .thumbnail-caption { font-size:.8125rem; }
+ .longevity-dialog .keynote-thumbnails { gap:6px; }
+ .longevity-dialog .keynote-thumbnails>button { min-height:104px; }
+ .dialog.diagram-lightbox { width:calc(100vw - 16px); max-width:calc(100vw - 16px); padding:18px; }
+ .diagram-zoom-controls { gap:8px; }
+ .diagram-zoom-controls button { padding:10px 16px; }
+ html[data-font-scale="140"] .longevity-dialog .keynote-deck-tabs { grid-template-columns:repeat(2,minmax(0,1fr)); }
+}

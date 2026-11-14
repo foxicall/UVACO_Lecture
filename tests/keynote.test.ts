@@ -1,9 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { pptxDecks, slideNarration } from '../src/data/pptx-decks';
+import { pptxDecks, slideNarration } from '../src/data/archived-pptx-decks';
 import visuals from '../src/data/generated-visuals.json';
 
-test('three lecture decks preserve every supplied slide and offer complete narration', () => {
+test('three archived lecture decks preserve every supplied slide and offer complete narration', () => {
   assert.deepEqual(pptxDecks.map(deck => deck.slides.length), [8, 7, 8]);
   const ids = new Set<string>();
   for (const deck of pptxDecks) for (const slide of deck.slides) {

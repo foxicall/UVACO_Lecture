@@ -17,7 +17,8 @@
     "clinical:synthesize": "tsx scripts/synthesize-md-with-gemini.ts",
     "test:triangle": "tsx tests/triangle-browser.ts",
     "longevity:prepare": "node scripts/extract-6-longevity-pdfs.mjs",
-    "longevity:extract": "node scripts/extract-6-longevity-pdfs.mjs --extract"
+    "longevity:extract": "node scripts/extract-6-longevity-pdfs.mjs --extract",
+    "test:longevity": "tsx tests/longevity-browser.ts"
   },
   "engines": {
     "node": ">=22"

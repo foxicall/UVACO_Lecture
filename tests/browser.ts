@@ -11,6 +11,7 @@ try {
   for (const width of [1440, 768, 390]) {
     const context = await browser.newContext({ viewport: { width, height: 1000 }, reducedMotion: 'reduce' });
     const page = await context.newPage();
+    page.setDefaultTimeout(20000);
     const errors: string[] = [];
     page.on('pageerror', error => errors.push(error.message));
     await page.addInitScript({ content: `
@@ -120,51 +121,51 @@ try {
     await page.getByRole('button', { name: '活逸康 →', exact: true }).click();
     assert.equal(await page.locator('.product-intro h2').innerText(), '活逸康');
     assert.equal(await page.locator('.circadian-header').count(), 0);
-    await page.getByRole('button', { name: '講座簡報播放，3套PPT', exact: true }).click();
+    await page.getByRole('button', { name: '六大長壽簡報播放', exact: true }).click();
     await page.locator('.keynote-player').waitFor();
-    for (const [name, count] of [['記憶健康', 8], ['疼痛與修復', 7], ['產品全覽', 8]] as const) {
+    for (const [name, count] of [['健康長壽', 4], ['環境暴露', 3], ['荷爾蒙', 4], ['發炎消退', 4], ['代謝血管', 3], ['腦腸免疫', 4]] as const) {
       await page.getByRole('tab', { name: `${name} ${count} 頁`, exact: true }).click();
       assert.equal(await page.locator('.keynote-thumbnails button').count(), count);
       assert.equal(await page.getByRole('button', { name: '上一頁', exact: true }).isDisabled(), true);
       for (let i = 0; i < count; i++) {
         await page.locator('.keynote-thumbnails button').nth(i).click();
         assert.equal(await page.locator('.slide-counter').innerText(), `${i + 1} / ${count}`);
-        assert.ok((await page.locator('.slide-canvas h3').innerText()).length > 2);
-        assert.equal(await page.locator('.slide-canvas').evaluate(el => el.scrollWidth > el.clientWidth + 1), false);
+        assert.ok((await page.locator('.longevity-summary h3').innerText()).length > 2);
+        assert.equal(await page.locator('.longevity-summary').evaluate(el => el.scrollWidth > el.clientWidth + 1), false);
       }
       assert.equal(await page.getByRole('button', { name: '下一頁', exact: true }).isDisabled(), true);
     }
-    await page.locator('.slide-canvas').focus();
+    await page.locator('.longevity-summary').focus();
     await page.keyboard.press('Home');
-    assert.equal(await page.locator('.slide-counter').innerText(), '1 / 8');
+    assert.equal(await page.locator('.slide-counter').innerText(), '1 / 4');
     await page.keyboard.press('ArrowRight');
-    assert.equal(await page.locator('.slide-counter').innerText(), '2 / 8');
+    assert.equal(await page.locator('.slide-counter').innerText(), '2 / 4');
     await page.keyboard.press('ArrowLeft');
     await page.getByRole('button', { name: '自動朗讀', exact: true }).click();
     await page.getByRole('button', { name: '暫停朗讀', exact: true }).click();
     await page.getByRole('button', { name: '繼續朗讀', exact: true }).click();
     await page.evaluate(() => (window as any).__voiceTest.current.onend());
-    await page.locator('.slide-counter').filter({ hasText: '2 / 8' }).waitFor();
+    await page.locator('.slide-counter').filter({ hasText: '2 / 4' }).waitFor();
     const latestVoice = await page.evaluate(() => (window as any).__voiceTest.calls.at(-1));
     assert.equal(latestVoice.lang, 'zh-TW');
     assert.ok(Math.abs(latestVoice.rate - .92) < .00001);
-    assert.ok(latestVoice.text.includes(await page.locator('.slide-canvas h3').innerText()));
+    assert.ok(latestVoice.text.includes(await page.locator('.longevity-summary h3').innerText()));
     await page.getByRole('button', { name: '停止朗讀', exact: true }).click();
     await page.getByRole('button', { name: '全螢幕播放' }).click();
     await page.getByRole('button', { name: '離開全螢幕' }).waitFor();
     await page.getByRole('button', { name: '離開全螢幕' }).click();
-    await page.locator('.slide-canvas').focus();
+    await page.locator('.longevity-summary').focus();
     await page.keyboard.press('End');
     await page.getByRole('button', { name: '自動朗讀', exact: true }).click();
     await page.evaluate(() => (window as any).__voiceTest.current.onend());
     await page.getByRole('button', { name: '自動朗讀', exact: true }).waitFor();
-    assert.equal(await page.locator('.slide-counter').innerText(), '8 / 8');
-    await page.getByRole('tab', { name: '記憶健康 8 頁', exact: true }).click();
+    assert.equal(await page.locator('.slide-counter').innerText(), '4 / 4');
+    await page.getByRole('tab', { name: '健康長壽 4 頁', exact: true }).click();
     await page.screenshot({ path: `test-results/final-${width}-keynote.png`, fullPage: false });
     const keynoteAxe = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag2aaa']).analyze();
     report.push({ width, state: 'keynote', accessibility: keynoteAxe.violations.map(v => ({ id: v.id, nodes: v.nodes.map(n => ({ target: n.target, summary: n.failureSummary })) })) });
     await page.getByRole('button', { name: '關閉簡報播放器' }).click();
-    assert.equal(await page.getByRole('button', { name: '講座簡報播放，3套PPT', exact: true }).evaluate(el => el === document.activeElement), true);
+    assert.equal(await page.getByRole('button', { name: '六大長壽簡報播放', exact: true }).evaluate(el => el === document.activeElement), true);
     await page.getByRole('button', { name: '播放PPT', exact: true }).click();
     await page.locator('.keynote-player').waitFor();
     await page.keyboard.press('Escape');

@@ -9,7 +9,7 @@ export default function Dialog({ title, children, onClose, className = '', hideH
     dialog.showModal();
     return () => { dialog.close(); prior?.focus(); };
   }, []);
-  return <dialog ref={ref} className={`dialog ${className}`} aria-label={title} onCancel={e => { e.preventDefault(); onClose(); }} onClick={e => { if (e.target === ref.current) onClose(); }}>
+  return <dialog ref={ref} className={`dialog ${className}`} aria-label={title} onCancel={e => { e.preventDefault(); e.stopPropagation(); onClose(); }} onClick={e => { if (e.target === ref.current) onClose(); }}>
     {!hideHeading && <div className="dialog-heading"><h2>{title}</h2><button className="icon-button" onClick={onClose} aria-label="關閉視窗"><X /></button></div>}
     {children}
   </dialog>;

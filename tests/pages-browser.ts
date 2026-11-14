@@ -23,10 +23,10 @@ try {
     await page.keyboard.press('Escape');
     assert.equal(await page.locator('.product-intro h2').innerText(), '康爾喜');
     await page.getByRole('button', { name: '播放PPT', exact: true }).click();
-    await page.getByRole('tab', { name: '疼痛與修復 7 頁', exact: true }).click();
-    assert.equal(await page.locator('.keynote-thumbnails button').count(), 7);
+    await page.getByRole('tab', { name: '環境暴露 3 頁', exact: true }).click();
+    assert.equal(await page.locator('.keynote-thumbnails button').count(), 3);
     await page.getByRole('button', { name: '下一頁', exact: true }).click();
-    assert.equal(await page.locator('.slide-counter').innerText(), '2 / 7');
+    assert.equal(await page.locator('.slide-counter').innerText(), '2 / 3');
     await page.keyboard.press('Escape');
     await page.getByRole('button', { name: '三大核心機轉專區', exact: true }).click();
     await page.getByRole('tab', { name: '我的關注', exact: true }).click();
@@ -36,7 +36,7 @@ try {
     assert.equal(await page.locator('.result-products>div').count(), 2);
     await page.locator('.related-slides button').first().click();
     await page.locator('.slide-counter').waitFor();
-    assert.equal(await page.locator('.slide-counter').innerText(), '5 / 8');
+    assert.equal(await page.locator('.slide-counter').innerText(), '2 / 4');
     await page.keyboard.press('Escape');
     const catalog = await page.goto(`${base}/products/`, { waitUntil: 'networkidle' });
     assert.equal(catalog?.status(), 200);
