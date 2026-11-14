@@ -18,4 +18,5 @@ export interface Product {
   motif: string;
   source: 'user-brief' | 'drive-extracted-text';
   sourceMechanisms?: Record<string, string>;
+  lecturePillar?: import('@/data/lecture-poster').PillarId;
 }

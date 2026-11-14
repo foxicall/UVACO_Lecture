@@ -1,5 +1,6 @@
 import type { Cluster, Phase, Product } from '@/types/product';
 import sourceMaterials from './source-materials.json';
+import { productPillar } from './lecture-poster';
 
 export const clusters: Record<Cluster, { name: string; color: string; short: string }> = {
   cellular_energy: { name: '細胞營養島', short: '日常營養', color: '#DBB66D' },
@@ -97,7 +98,7 @@ const baseProducts: Product[] = [
 export const products: Product[] = baseProducts.map(p => {
   const source = sourceMaterials.products.find(s => s.id === p.id)!;
   const entries = Object.entries(source.fields);
-  return { ...p, source: 'drive-extracted-text',
+  return { ...p, lecturePillar: productPillar.get(p.id), source: 'drive-extracted-text',
     ingredients: entries.filter(([key]) => /成分|組成|規格/.test(key)).map(([, value]) => value),
     sourceMechanisms: Object.fromEntries(entries.filter(([key]) => /發炎|自癒|神經/.test(key))),
     patentsAndHonors: entries.filter(([key]) => /專利|認證/.test(key)).map(([, value]) => value),
