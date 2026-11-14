@@ -1,4 +1,4 @@
-import { products } from '@/data/uvaco-products';
+import IslandExperience from '@/components/IslandExperience';
 export default function Page() {
-  return <main><h1>葡眾健康群島</h1>{products.map(p => <article key={p.id}><h2>{p.name}</h2><p>{p.introduction}</p><details><summary>原料與來源文件</summary>{p.ingredients.map(s => <p key={s}>{s}</p>)}</details></article>)}</main>;
+  return <><IslandExperience /><noscript><p>此互動導覽需要 JavaScript。您也可以閱讀<a href="/products">產品文字版</a>。</p></noscript></>;
 }
