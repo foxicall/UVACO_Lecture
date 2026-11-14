@@ -12,7 +12,7 @@ import { pillars, pillarById, lecture } from '@/data/lecture-poster';
 
 export function islandPosition(p: Product): [number, number, number] {
   const [q, r] = p.hexCoordinates;
-  return [Math.sqrt(3) * 1.66 * (q + r / 2), 0, 1.66 * 1.5 * r];
+  return [Math.sqrt(3) * 2 * (q + r / 2), 0, 2 * 1.5 * r];
 }
 function Tree({ position = [0, 0, 0], size = 1, color = '#436C45' }: { position?: [number, number, number]; size?: number; color?: string }) {
   return <group position={position} scale={size}>
@@ -43,7 +43,7 @@ function Island({ p, active, lit, onSelect, reduced }: { p: Product; active: boo
   const [hover, setHover] = useState(false);
   const pos = islandPosition(p);
   useFrame(({ clock }) => { if (group.current) group.current.position.y = reduced ? 0 : Math.sin(clock.elapsedTime * .6 + pos[0]) * .045; });
-  return <group position={pos}><group ref={group}>
+  return <group position={pos} scale={1.1}><group ref={group}>
     <group onClick={e => { e.stopPropagation(); onSelect(p.id); }} onPointerOver={e => { e.stopPropagation(); setHover(true); }} onPointerOut={() => setHover(false)}>
       <mesh position={[0, -.25, 0]}><cylinderGeometry args={[1.38, 1.12, .75, 6]} /><meshStandardMaterial color="#8C8065" flatShading /></mesh>
       <mesh position={[0, .16, 0]}><cylinderGeometry args={[1.4, 1.4, .16, 6]} /><meshStandardMaterial color={pillarById.get(p.lecturePillar!)!.color} roughness={.95} /></mesh>
@@ -59,9 +59,12 @@ function Water({ reduced, phase }: { reduced: boolean; phase: Phase }) {
   useFrame(({ clock }, delta) => {
     if (!shader.current) return;
     shader.current.uniforms.time.value = reduced ? 0 : clock.elapsedTime;
-    shader.current.uniforms.base.value.lerp(new Color(phase === 'night' ? '#153843' : '#1E4E5F'), Math.min(delta * 2, 1));
+    shader.current.uniforms.base.value.lerp(new Color(phase === 'night' ? '#153843' : '#1E4E5F'), reduced ? 1 : Math.min(delta * 2, 1));
   });
-  return <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -.68, 0]}><planeGeometry args={[200, 200, 70, 70]} /><shaderMaterial ref={shader} uniforms={uniforms} vertexShader={`uniform float time; uniform float amplitude; uniform float speed; varying vec2 vUv; varying float vHeight; void main(){vUv=uv;vec3 p=position;p.z=sin(p.x*1.2+time*speed)*cos(p.y*.9+time*speed)*amplitude;vHeight=p.z;gl_Position=projectionMatrix*modelViewMatrix*vec4(p,1.);}`} fragmentShader={`uniform vec3 base;uniform float time;varying vec2 vUv;varying float vHeight;void main(){float ripple=sin(vUv.x*550.+sin(vUv.y*350.+time*.2)*2.);float foam=smoothstep(.98,1.,ripple)*.04;gl_FragColor=vec4(base+vHeight*.18+foam,1.);}`} /></mesh>;
+  return <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -.68, 0]}><planeGeometry args={[200, 200, 70, 70]} /><shaderMaterial toneMapped={false} ref={shader} uniforms={uniforms} vertexShader={`uniform float time; uniform float amplitude; uniform float speed; varying vec2 vUv; varying float vHeight; void main(){vUv=uv;vec3 p=position;p.z=sin(p.x*1.2+time*speed)*cos(p.y*.9+time*speed)*amplitude;vHeight=p.z;gl_Position=projectionMatrix*modelViewMatrix*vec4(p,1.);}`} fragmentShader={`uniform vec3 base;uniform float time;varying vec2 vUv;varying float vHeight;void main(){float ripple=sin(vUv.x*550.+sin(vUv.y*350.+time*.2)*2.);float foam=smoothstep(.985,1.,ripple)*.008;gl_FragColor=vec4(base+vHeight*.18+foam,1.);
+#include <tonemapping_fragment>
+#include <colorspace_fragment>
+}`} /></mesh>;
 }
 function SynergyArc({ a, b, mid, reduced }: { a: [number, number, number]; b: [number, number, number]; mid: [number, number, number]; reduced: boolean }) {
   const curve = useMemo(() => new QuadraticBezierCurve3(new Vector3(...a), new Vector3(...mid), new Vector3(...b)), [a, b, mid]);
@@ -80,26 +83,26 @@ export function SynergyBezierLines({ ids, active, reduced }: { ids: string[]; ac
 }
 function Camera({ active, reduced }: { active: string | null; reduced: boolean }) {
   const controls = useRef<OrbitControlsImpl>(null);
-  const { camera, size } = useThree();
+  const { camera, size, invalidate } = useThree();
   useEffect(() => {
     if (!controls.current) return;
     const pos = active ? islandPosition(productById.get(active)!) : [0, 0, 0];
-    const distance = active ? 8 : size.width < 600 ? 32 : 23;
+    const distance = active ? 8 : Math.max(22, 22 / (size.width / size.height));
     const target = controls.current.target;
-    const tween = gsap.timeline({ defaults: { duration: reduced ? 0 : 1.6, ease: 'power3.inOut' } });
+    const tween = gsap.timeline({ onUpdate: () => invalidate(), defaults: { duration: reduced ? 0 : 1.6, ease: 'power3.inOut' } });
     tween.to(target, { x: pos[0], y: 0, z: pos[2] }, 0);
     tween.to(camera.position, { x: pos[0] + distance * .45, y: distance * .92, z: pos[2] + distance * .92 }, 0);
     return () => { tween.kill(); };
-  }, [active, camera, reduced, size.width]);
+  }, [active, camera, reduced, size.width, size.height, invalidate]);
   return <OrbitControls ref={controls} enablePan={false} enableRotate={false} enableZoom={false} minPolarAngle={Math.PI / 6} maxPolarAngle={Math.PI / 2.8} target={[0, 0, 0]} />;
 }
-function Lighting({ phase }: { phase: Phase }) {
+function Lighting({ phase, reduced }: { phase: Phase; reduced: boolean }) {
   const light = useRef<DirectionalLight>(null);
   const { scene } = useThree();
   const target = useMemo(() => phases.find(p => p.id === phase)!, [phase]);
   useFrame((_, delta) => {
-    if (light.current) light.current.color.lerp(new Color(target.light), Math.min(delta * 2, 1));
-    if (scene.fog instanceof Fog) scene.fog.color.lerp(new Color(target.sky), Math.min(delta * 2, 1));
+    if (light.current) light.current.color.lerp(new Color(target.light), reduced ? 1 : Math.min(delta * 2, 1));
+    if (scene.fog instanceof Fog) scene.fog.color.lerp(new Color(target.sky), reduced ? 1 : Math.min(delta * 2, 1));
   });
   return <><ambientLight intensity={phase === 'night' ? 1.1 : 1.8} /><directionalLight ref={light} position={[-6, 16, 8]} intensity={2.7} /><directionalLight position={[8, 5, -8]} intensity={.8} color="#B1DBD2" /><fog attach="fog" args={['#B7D3D6', 28, 95]} /></>;
 }
@@ -128,8 +131,8 @@ function HubConnections({ reduced }: { reduced: boolean }) {
 export default function ArchipelagoCanvas({ active, route, phase, onSelect, reduced, onHub }: { active: string | null; route: string[]; phase: Phase; onSelect: (id: string) => void; reduced: boolean; onHub?: () => void }) {
   const anchors = useRef<Record<string, HTMLButtonElement | null>>({});
   const hub = useRef<HTMLButtonElement | null>(null);
-  return <CanvasBoundary><div className="canvas-shell"><Canvas camera={{ position: [8, 17, 18], fov: 40, near: .1, far: 160 }} dpr={[1, 1.5]} gl={{ antialias: true, powerPreference: 'high-performance' }} aria-label="十二座葡眾產品島嶼地圖">
-    <Lighting phase={phase} /><Water reduced={reduced} phase={phase} />
+  return <CanvasBoundary><div className="canvas-shell"><Canvas role="img" frameloop={reduced ? 'demand' : 'always'} camera={{ position: [8, 17, 18], fov: 40, near: .1, far: 160 }} dpr={[1, 1.5]} gl={{ antialias: true, powerPreference: 'high-performance' }} aria-label="十二座葡眾產品島嶼地圖">
+    <Lighting phase={phase} reduced={reduced} /><Water reduced={reduced} phase={phase} />
     {products.map(p => <Island key={p.id} p={p} active={active === p.id} lit={p.recommendedTimeOfDay === phase || route.includes(p.id)} onSelect={onSelect} reduced={reduced} />)}
     <LectureHub onClick={onHub} />{!active && <HubConnections reduced={reduced} />}
     <SynergyBezierLines ids={route} active={active} reduced={reduced} /><Camera active={active} reduced={reduced} />
@@ -138,15 +141,34 @@ export default function ArchipelagoCanvas({ active, route, phase, onSelect, redu
 }
 function ProjectLabels({ anchors, active, hub }: { anchors: React.RefObject<Record<string, HTMLButtonElement | null>>; active: string | null; hub: React.RefObject<HTMLButtonElement | null> }) {
   const point = useMemo(() => new Vector3(), []);
+  const measurements = useRef({ key: '', widths: {} as Record<string, number>, heights: {} as Record<string, number> });
   useFrame(({ camera, size }) => {
+    const scale = Number.parseFloat(document.documentElement.style.fontSize) || 100;
+    const key = `${size.width}:${size.height}:${scale}`;
+    if (measurements.current.key !== key) {
+      measurements.current.key = key;
+      for (const p of products) { const el = anchors.current[p.id]; if (el) { measurements.current.widths[p.id] = el.offsetWidth; measurements.current.heights[p.id] = el.offsetHeight; } }
+    }
+    const placed: { x: number; y: number; width: number; height: number }[] = [];
     const ordered = [...products].sort((a, b) => islandPosition(a)[2] - islandPosition(b)[2]);
-    if (hub.current) { point.set(0, .1, 1.8).project(camera); hub.current.style.transform = `translate(${(point.x * .5 + .5) * size.width}px, ${(-point.y * .5 + .5) * size.height}px) translate(-50%,-50%)`; }
+    if (hub.current) { point.set(0, .1, 1.8).project(camera); const x = (point.x * .5 + .5) * size.width, y = (-point.y * .5 + .5) * size.height; hub.current.style.transform = `translate(${x}px, ${y}px) translate(-50%,-50%)`; placed.push({ x, y, width: 112, height: 72 }); }
     for (const [i, product] of ordered.entries()) {
       const element = anchors.current[product.id]; if (!element) continue;
       const p = islandPosition(product); point.set(p[0], .1, p[2] + 1.2).project(camera);
       const narrow = size.width < 520;
-      const x = narrow && !active ? (i % 2 === 0 ? 70 : size.width - 70) : (point.x * .5 + .5) * size.width;
-      const y = narrow && !active ? 260 + Math.floor(i / 2) * 64 : (-point.y * .5 + .5) * size.height;
+      let x = narrow && !active ? (i % 2 === 0 ? 70 : size.width - 70) : (point.x * .5 + .5) * size.width;
+      const y = narrow && !active ? (scale > 100 ? 340 : 260) + Math.floor(i / 2) * 64 : (-point.y * .5 + .5) * size.height;
+      const width = measurements.current.widths[product.id] || 110, height = measurements.current.heights[product.id] || 60;
+      if (!active && !narrow) {
+        const blocked = placed.filter(p => Math.abs(y - p.y) < (height + p.height) / 2 + 4)
+          .map(p => ({ left: p.x - (width + p.width) / 2 - 6, right: p.x + (width + p.width) / 2 + 6 }));
+        const candidates = [x, ...blocked.flatMap(p => [p.left, p.right])]
+          .filter(candidate => candidate >= width / 2 + 8 && candidate <= size.width - width / 2 - 8)
+          .filter(candidate => !blocked.some(p => candidate > p.left && candidate < p.right));
+        candidates.sort((a, b) => Math.abs(a - x) - Math.abs(b - x));
+        x = candidates[0] ?? x;
+      }
+      placed.push({ x, y, width, height });
       element.style.visibility = active && narrow && product.id !== active ? 'hidden' : 'visible';
       element.style.transform = `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px) translate(-50%, -50%)`;
     }

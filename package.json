@@ -11,7 +11,7 @@
     "test:browser": "tsx tests/browser.ts",
     "assets:generate": "tsx scripts/generate-ui-assets.ts",
     "materials:ingest": "tsx scripts/ingest-drive-materials.ts",
-    "build:with-ai": "npm run assets:generate && npm run build",
+    "build:with-ai": "npm run assets:generate -- --require-ai && npm run build",
     "prebuild": "npm run materials:ingest && npm run assets:generate"
   },
   "engines": {
@@ -33,6 +33,7 @@
     "zod": "4.6.7"
   },
   "devDependencies": {
+    "@axe-core/playwright": "4.14.0",
     "@tailwindcss/postcss": "4.3.5",
     "@types/node": "26.6.6",
     "@types/react": "19.3.0",

@@ -1,5 +1,7 @@
 node_modules/
 .next/
+.next-dev/
+src/data/*.tmp
 .env*
 !.env.example
 test-results/

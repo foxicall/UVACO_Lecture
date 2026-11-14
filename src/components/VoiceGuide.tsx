@@ -6,12 +6,14 @@ export default function VoiceGuide({ text }: { text: string }) {
   const [status, setStatus] = useState<'idle' | 'speaking' | 'paused'>('idle');
   const [error, setError] = useState('');
   useEffect(() => { setSupported('speechSynthesis' in window); return () => { if ('speechSynthesis' in window) window.speechSynthesis.cancel(); }; }, []);
+  useEffect(() => { const reset = () => setStatus('idle'); window.addEventListener('uvaco-speech-reset', reset); return () => window.removeEventListener('uvaco-speech-reset', reset); }, []);
   useEffect(() => { if ('speechSynthesis' in window) window.speechSynthesis.cancel(); setStatus('idle'); }, [text]);
   function toggle() {
     if (!supported) return;
     const synth = window.speechSynthesis;
     if (status === 'speaking') { synth.pause(); setStatus('paused'); return; }
     if (status === 'paused') { synth.resume(); setStatus('speaking'); return; }
+    window.dispatchEvent(new Event('uvaco-speech-reset')); synth.cancel();
     const speech = new SpeechSynthesisUtterance(text);
     speech.lang = 'zh-TW'; speech.rate = .92;
     const voice = synth.getVoices().find(v => v.lang === 'zh-TW'); if (voice) speech.voice = voice;
