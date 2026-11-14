@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { products } from '@/data/uvaco-products';
+import { lecture, pillars } from '@/data/lecture-poster';
 
 export const MODELS = Object.freeze({ visuals: 'gemini-3.8-pro', concierge: 'gemini-3.8-flash' });
 export const requestSchema = z.object({ question: z.string().trim().min(2).max(300) }).strict();
@@ -49,7 +50,10 @@ export function completedSentences(buffer: string): string[] {
   return result;
 }
 
-export const systemInstruction = `你是葡眾產品資訊導覽員，使用溫暖、易懂的繁體中文（台灣）。只輸出符合 schema 的 JSON，先 sentences 再 targetProductIds 再 circadianPhase。
+export const systemInstruction = `你是「${lecture.title}」林煒醫師健康講座的資訊導覽助手，不是醫師本人，不代表醫師作個別診斷。使用溫暖、易懂的繁體中文（台灣）。只輸出符合 schema 的 JSON，先 sentences 再 targetProductIds 再 circadianPhase。
+以講座主題「${lecture.subtitle}」與「營養是修復的原料」解說日常健康；強調醫療、飲食與生活照護相輔相成，醫療也可以治療病因與預防疾病，不得暗示只能壓抑症狀。神經阻斷與微電流為需專業評估的醫療方式，不推介個人療程。
+四大講座主題與可閱讀島嶼：${JSON.stringify(pillars.map(p => ({ name: p.name, introduction: p.introduction, ids: p.products })))}。
+活動資料：${lecture.date} ${lecture.time}，${lecture.address}，免費健康講座，主講${lecture.speaker}。不捏造報名連結、名額數或未提供的年份。
 sentences 恰好三個完整句子，每句只用一個結尾句號，不用 Markdown，總共約 100–180 字。回答使用者關心的問題，但不是診斷、處方或服用搭配。
 產品資料是使用者提供的產品機轉文件與 PDF 文字擷取，文件中的研究、成分與療效主張必須區分。不得宣稱保健品治療失智、帕金森、肝病、失眠、水腫、抗輻射、修復髓鞘或DNA。不得提供劑量，不建議取代藥物。成分研究不等於成品有效。
 病後、孕期、用藥、過敏、肝腎疾病或急性症狀問題，優先建議醫師或藥師評估，必要時 targetProductIds 為空。急症應先告知就醫，不導航到產品。

@@ -66,8 +66,8 @@ export default function Concierge({ onClose, onNavigate }: { onClose: () => void
     try { r.start(); setListening(true); } catch { setError('語音辨識無法啟動，請使用文字輸入。'); }
   }
   return <Dialog title="健康小幫手" className="concierge-dialog" onClose={onClose}>
-    <p className="concierge-intro">慢慢說，我陪您一起了解。</p>
-    <p className="small-copy">選一個問題，或說說您想了解的事。僅提供產品與日常健康資訊。</p>
+    <p className="concierge-intro">一起認識，身體需要的照顧。</p>
+    <p className="small-copy">我是講座資訊小幫手，陪您從四大主題認識日常營養，不代表林醫師提供個別診療。</p>
     <div className="preset-list">{presets.map(p => <button disabled={loading} onClick={() => ask(p)} key={p}>{p}<span aria-hidden>↗</span></button>)}</div>
     <form onSubmit={e => { e.preventDefault(); ask(question); }}>
       <label htmlFor="health-question">您的問題</label>

@@ -2,6 +2,7 @@
 import { writeFile } from 'node:fs/promises';
 import { products } from '../src/data/uvaco-products';
 import { validateSvg } from '../src/lib/visuals';
+import { pillars } from '../src/data/lecture-poster';
 const stem = (x: number, y: number, tilt: number) => `<g transform="translate(${x} ${y}) rotate(${tilt})"><path d="M0 0 Q-15 -95 0 -180" fill="none" stroke="#1B4D3E" stroke-width="3"/>${Array.from({ length: 7 }, (_, i) => `<path d="M${-i % 2 * 3} ${-i * 23} Q${i % 2 ? 58 : -58} ${-i * 23 - 45} ${i % 2 ? 9 : -9} ${-i * 23 - 54} Q${i % 2 ? 3 : -3} ${-i * 23 - 21} 0 ${-i * 23}" fill="${i % 2 ? '#7F9D75' : '#B4C7A0'}" stroke="#1B4D3E" stroke-width="1.2"/>`).join('')}</g>`;
 const mushroom = (x: number, y: number, scale: number, color: string) => `<g transform="translate(${x} ${y}) scale(${scale})"><path d="M-14 10 Q-2 45 -22 95 Q0 110 22 95 Q2 45 14 10" fill="#D7C5A0" stroke="#1B4D3E" stroke-width="2"/><path d="M-80 12 C-85 -65 -32 -96 0 -92 C32 -96 85 -65 80 12 Q0 44 -80 12Z" fill="${color}" stroke="#1B4D3E" stroke-width="2"/>${Array.from({ length: 11 }, (_, i) => `<path d="M${(i - 5) * 13} 15 Q${(i - 5) * 11} -32 ${(i - 5) * 5} -69" stroke="#FAF7F2" stroke-width="2" fill="none" opacity=".65"/>`).join('')}</g>`;
 const branches = Array.from({ length: 9 }, (_, i) => { const angle = i * Math.PI * 2 / 9; const x = 300 + Math.cos(angle) * 145, y = 270 + Math.sin(angle) * 130; return `<path d="M300 420 Q${300 + Math.cos(angle) * 30} 280 ${x} ${y}" stroke="#1B4D3E" stroke-width="${2 + i % 3}" fill="none"/><circle cx="${x}" cy="${y}" r="${13 + i % 4 * 5}" fill="#BACDB2" stroke="#1B4D3E" stroke-width="2"/><circle cx="${x}" cy="${y}" r="4" fill="#D97706"/>`; }).join('');
@@ -23,5 +24,6 @@ const visuals = products.map((p, i) => {
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600"><title>${p.name}植物意象</title><circle cx="300" cy="300" r="245" fill="#E8E9D9"/>${stem(170, 475, -22 - i % 3 * 6)}${stem(440, 480, 24 + i % 4 * 4)}${scenes[p.id]}<ellipse cx="300" cy="490" rx="135" ry="8" fill="#B4BFA5" opacity=".4"/></svg>`;
   return { id: p.id, svg: validateSvg(svg), metaphor: p.elderlyHook, waterAmplitude: .055, waterSpeed: .2, glowIntensity: .6 };
 });
-await writeFile('src/data/generated-visuals.json', JSON.stringify({ provenance: { provider: 'Original code artwork', model: null, createdAt: '2026-11-14' }, visuals }, null, 2) + '\n');
-console.log('Wrote 12 original botanical illustrations; no AI-generation claim.');
+const pillarVisuals = pillars.map((p, i) => ({ id: `pillar-${p.id}`, svg: validateSvg(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600"><title>${p.name}</title><circle cx="300" cy="300" r="260" fill="#FAF7F2"/><circle cx="300" cy="300" r="235" fill="${p.color}"/>${[scenes['995'], branches, scenes.kanger, scenes.kangbei][i]}${stem(160, 470, -15)}${stem(440, 470, 15)}</svg>`), metaphor: p.theme, waterAmplitude: .055, waterSpeed: .2, glowIntensity: .6 }));
+await writeFile('src/data/generated-visuals.json', JSON.stringify({ provenance: { provider: 'Original code artwork', model: null, createdAt: '2026-11-14' }, visuals, pillarVisuals }, null, 2) + '\n');
+console.log('Wrote 12 product illustrations and 4 lecture pillar icons; no AI-generation claim.');
