@@ -5,6 +5,8 @@ import Dialog from './Dialog';
 import { answerSchema, localReadingRoute, presets, type ConciergeAnswer } from '@/lib/concierge';
 import { readEvents } from '@/lib/sse';
 import { productById } from '@/data/uvaco-products';
+import SearchReferences from './SearchReferences';
+import { groundingSchema, type ClinicalResult } from '@/lib/clinical-analysis';
 import { sitePath, staticSite } from '@/lib/site';
 
 interface Recognition {
@@ -17,6 +19,7 @@ type SpeechWindow = Window & { SpeechRecognition?: new () => Recognition; webkit
 export default function Concierge({ onClose, onNavigate }: { onClose: () => void; onNavigate: (answer: ConciergeAnswer) => void }) {
   const [question, setQuestion] = useState('');
   const [sentences, setSentences] = useState<string[]>([]);
+  const [grounding,setGrounding]=useState<ClinicalResult['grounding']|null>(null);
   const [answer, setAnswer] = useState<ConciergeAnswer | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -32,6 +35,7 @@ export default function Concierge({ onClose, onNavigate }: { onClose: () => void
   }, []);
   async function ask(text: string) {
     if (busy.current || text.trim().length < 2) return;
+    setGrounding(null);
     if (staticSite) {
       recognition.current?.stop(); setQuestion(text); setError('');
       const local = localReadingRoute(text);
@@ -41,7 +45,7 @@ export default function Concierge({ onClose, onNavigate }: { onClose: () => void
     busy.current = true; recognition.current?.stop();
     setQuestion(text); setLoading(true); setError(''); setSentences([]); setAnswer(null);
     const request = new AbortController(); abort.current = request;
-    const timer = setTimeout(() => request.abort(), 55_000);
+    const timer = setTimeout(() => request.abort(), 65_000);
     let completed = false;
     try {
       const res = await fetch(sitePath('/api/concierge'), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ question: text }), signal: request.signal });
@@ -50,6 +54,7 @@ export default function Concierge({ onClose, onNavigate }: { onClose: () => void
       await readEvents(res.body, (event, payload) => {
         if (event === 'sentence' && typeof payload === 'object' && payload && 'text' in payload && typeof payload.text === 'string') setSentences(s => [...s, payload.text as string]);
         if (event === 'error') throw new Error((payload as { message: string }).message);
+        if(event==='references'){const result=groundingSchema.safeParse(payload);if(result.success)setGrounding(result.data);}
         if (event === 'done') {
           const result = answerSchema.parse(payload);
           completed = true; setSentences(result.sentences); setAnswer(result); onNavigate(result);
@@ -57,7 +62,7 @@ export default function Concierge({ onClose, onNavigate }: { onClose: () => void
       });
       if (!completed) throw new Error('回答中斷了，請再試一次。');
     } catch (e) {
-      if (!completed) { setSentences([]); setError(request.signal.aborted ? '已停止這次詢問，您可以重新提問。' : e instanceof Error ? e.message : '服務暫時無法連線。'); }
+      if (!completed) { setGrounding(null);setSentences([]); setError(request.signal.aborted ? '已停止這次詢問，您可以重新提問。' : e instanceof Error ? e.message : '服務暫時無法連線。'); }
     } finally { clearTimeout(timer); setLoading(false); busy.current = false; }
   }
   function speak() {
@@ -87,6 +92,7 @@ export default function Concierge({ onClose, onNavigate }: { onClose: () => void
       {loading && <p className="loading-text">正在為您整理資訊…</p>}
       {error && <><p role="alert">{error}</p><button onClick={() => { const local = localReadingRoute(question); setSentences(local.sentences); setAnswer(local); setError(''); onNavigate(local); }}>改看本機文件導覽</button></>}
       {sentences.map((s, i) => <p key={i}>{s}</p>)}
+      {grounding&&<SearchReferences grounding={grounding}/>}
       {answer && answer.targetProductIds.length > 0 && <div className="answer-islands"><p className="small-copy">已找到相關產品，點一站看看配方。</p>{answer.targetProductIds.map(id => <button key={id} onClick={() => { onNavigate({ ...answer, targetProductIds: [id, ...answer.targetProductIds.filter(i => i !== id)] }); onClose(); }}>{productById.get(id)?.name} →</button>)}</div>}
     </div>
   </Dialog>;

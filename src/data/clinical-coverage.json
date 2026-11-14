@@ -4,14 +4,20 @@
   "inventory": [
     {
       "path": "README.md",
-      "bytes": 15112,
-      "sha256": "53a3deca9b3ff5098000b27e0a6bc7775dc6226b1ce4d774f84812d5c968221e",
+      "bytes": 16970,
+      "sha256": "5637116d57ec6f72e5aa5b242d9b870206f6d90e8a06452e7f275acbfc195d2d",
       "kind": "project-document"
     },
     {
       "path": "docs/design-notes.md",
-      "bytes": 5797,
-      "sha256": "fcf19031cb4d726106f26f5a5945c11b907466d706c718d778d5fdf22e37d260",
+      "bytes": 6323,
+      "sha256": "4419880edf084ab566e3388e8d44eef158579855e47a178e331805f64b0d6aa1",
+      "kind": "project-document"
+    },
+    {
+      "path": "docs/story-content-review.md",
+      "bytes": 2945,
+      "sha256": "2908711dd016e4ed4fffc0fada109340a9ef7fe6aeb596594a722aa7040fbaa5",
       "kind": "project-document"
     },
     {

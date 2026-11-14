@@ -1,3 +1,4 @@
+import { followStory } from './helpers/story';
 import { chromium } from 'playwright-core';
 import assert from 'node:assert/strict';
 
@@ -15,6 +16,7 @@ try {
     await page.locator('.island-label').last().waitFor({state:'attached'});
     assert.equal(await page.locator('.island-label').count(), 12);
     await page.getByRole('button', { name: '下一站，講座重點巡禮', exact: true }).click();
+    await followStory(page,'995 生技營養品');
     assert.equal(await page.locator('.product-intro h2').innerText(), '995 生技營養品');
     await page.getByRole('button', { name: '💬 問問健康小幫手' }).click();
     await page.getByText('此公開版本提供本機文件導覽，這不是 AI 回答。點選問題，就能閱讀相關資料。').waitFor();

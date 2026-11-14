@@ -44,6 +44,7 @@ try {
   await page.getByRole('button',{name:'全島總覽',exact:true}).click();await moving();
   await page.getByRole('button',{name:'三個健康故事專區',exact:true}).click();await stopped();
   await page.keyboard.press('Escape');await moving();
+  await page.getByRole('button',{name:'人體修復能力',exact:true}).click();await stopped();await page.keyboard.press('Escape');await moving();
   await page.getByRole('button',{name:'暫停自動旋轉',exact:true}).click();await stopped();
   await page.locator('#product-select').selectOption('huoyi');await page.getByRole('button',{name:'全島總覽',exact:true}).click();await stopped();
   await layout();await shell.screenshot({path:`test-results/archipelago-${width}.png`});assert.deepEqual(errors,[]);

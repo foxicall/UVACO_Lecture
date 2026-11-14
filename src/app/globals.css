@@ -525,3 +525,74 @@ textarea::placeholder { color:#526357; }
 
 .roof-badges { position:absolute; inset:0; pointer-events:none; }
  .landmark-label[data-label-visible="false"] { visibility:hidden; pointer-events:none; }
+
+/* Three-act story sheet: everyday experience comes before product bridges. */
+.pillar-story-dialog { width:calc(100vw - 32px); max-width:1000px; padding:0; background:#FAF7F2; }
+.story-header { display:flex; align-items:center; justify-content:space-between; gap:20px; padding:24px 32px 20px; border-bottom:1px solid #D6DED5; }
+.story-header p { margin:0 0 4px; color:#40564A; font-size:16px; }
+.story-header h2 { margin:0; font-size:1.75rem; }
+.story-header .icon-button { flex-shrink:0; min-width:52px; min-height:52px; }
+.story-steps { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); list-style:none; margin:0; padding:20px 32px; gap:12px; }
+.story-steps button { width:100%; min-height:60px; border-radius:16px; padding:10px 12px; font-size:16px; color:#294537; background:#E6ECE2; }
+.story-steps button span { display:grid; place-items:center; width:28px; height:28px; border-radius:50%; background:#fff; flex-shrink:0; }
+.story-steps button[aria-current=step] { color:#fff; background:#1B4D3E; }
+.story-steps button[aria-current=step] span { color:#1B4D3E; }
+.story-steps button:disabled { opacity:.6; }
+.story-stage { padding:12px 40px 32px; font-size:1.375rem; line-height:1.75; }
+.story-eyebrow { font-size:16px; color:#40564A; font-weight:600; margin:0 0 12px; }
+.story-stage h3 { font-size:clamp(28px,3vw,40px); line-height:1.45; letter-spacing:-.025em; margin:0 0 28px; }
+.story-stage h4 { font-size:1.5rem; line-height:1.6; margin:0 0 12px; }
+.story-stat { display:grid; grid-template-columns:minmax(150px,.7fr) minmax(0,1.5fr); gap:28px; align-items:center; padding:28px 0; border-block:1px solid #CCD7CA; }
+.story-stat>strong { color:#1B4D3E; font-size:clamp(52px,7vw,80px); letter-spacing:-.055em; line-height:1.2; white-space:nowrap; }
+.story-stat h4 { font-size:1.375rem; }
+.story-stat p { font-size:1.125rem; margin:8px 0; }
+.story-stat a { display:inline-block; color:#1B4D3E; font-size:16px; text-decoration:underline; text-underline-offset:4px; }
+.story-lead { margin:28px 0; }
+.story-symptoms { border:0; padding:0; margin:32px 0; min-width:0; }
+.story-symptoms legend { font-size:1.5rem; font-weight:650; }
+.story-symptoms>p { font-size:1.125rem; color:#40564A; margin:12px 0 20px; }
+.story-symptoms label { display:flex; align-items:center; gap:16px; background:#fff; border:1px solid #CCD7CA; border-radius:16px; padding:16px 20px; min-height:64px; margin:10px 0; cursor:pointer; }
+.story-symptoms label:has(input:checked) { background:#E6ECE2; border-color:#1B4D3E; }
+.story-symptoms input { width:24px; height:24px; flex-shrink:0; accent-color:#1B4D3E; }
+.chemical-choices { display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:10px; margin:24px 0; }
+.chemical-choices button { min-height:68px; padding:14px; background:#E6ECE2; color:#1B4D3E; font-size:1.125rem; border:1px solid transparent; }
+.chemical-choices button span { font-size:16px; }
+.chemical-choices button[aria-pressed=true] { background:#1B4D3E; color:#fff; }
+.chemical-story { padding:28px; background:#fff; border:1px solid #CCD7CA; border-radius:24px; }
+.chemical-flow { display:flex; list-style:none; padding:0; gap:12px; margin:28px 0; }
+.chemical-flow li { display:flex; align-items:center; flex:1; gap:12px; }
+.chemical-flow li>span { display:grid; place-items:center; flex:1; align-self:stretch; min-height:96px; border-radius:16px; padding:16px 10px; text-align:center; background:#E6ECE2; color:#1B4D3E; font-size:1.125rem; }
+.chemical-flow svg { flex-shrink:0; color:#866120; }
+.story-care { padding:24px; border-left:4px solid #C39748; margin:24px 0 32px; background:#F0EBDD; }
+.story-care p { margin:0; }
+.product-bridges { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; margin:32px 0; }
+.product-bridges>button { display:flex; flex-direction:column; align-items:flex-start; justify-content:flex-start; text-align:left; gap:16px; padding:24px; min-height:280px; border-radius:20px; border:1px solid #B8C9BA; background:#fff; font-size:1.125rem; line-height:1.75; }
+.product-bridges strong { font-size:1.5rem; color:#1B4D3E; }
+.bridge-concept { font-size:16px; color:#40564A; }
+.bridge-action { display:flex; align-items:center; flex-wrap:wrap; gap:8px; padding-top:16px; margin-top:auto; color:#1B4D3E; font-weight:650; }
+.story-controls { position:sticky; bottom:0; display:grid; grid-template-columns:1fr 2fr; gap:12px; border-top:1px solid #CCD7CA; padding:20px 32px; background:#FAF7F2; z-index:2; }
+.story-controls button { min-height:60px; font-size:1.125rem; padding:12px 16px; }
+.story-controls svg { flex-shrink:0; }
+.story-stage .voice-button { min-height:60px; }
+@media(max-width:760px){
+ .product-bridges { grid-template-columns:1fr; }
+ .product-bridges>button { min-height:0; }
+ .story-header { padding:20px; }
+ .story-steps { padding:16px; gap:8px; }
+ .story-steps button { flex-direction:column; gap:5px; font-size:14px; padding:10px 4px; }
+ .story-stage { padding:12px 22px 28px; }
+ .story-stat { grid-template-columns:1fr; gap:18px; }
+ .story-stat>strong { font-size:64px; }
+ .chemical-choices { grid-template-columns:1fr 1fr; }
+ .chemical-story { padding:24px 20px; }
+ .chemical-flow { flex-direction:column; }
+ .chemical-flow li { flex-direction:column; }
+ .chemical-flow li>span { width:100%; min-height:64px; }
+ .chemical-flow svg { transform:rotate(90deg); }
+ .story-controls { padding:16px; grid-template-columns:1fr 1.7fr; gap:8px; }
+ .story-controls button { font-size:1rem; }
+ .story-symptoms label { padding:14px; }
+}
+@media(max-width:600px){ .pillar-segments button { font-size:11px; min-width:44px; padding:6px 0; } }
+@media(max-width:380px){ .ios-header .lecture-badge { display:none; } }
+@media(max-width:340px){ .header-tools .header-triangle { display:none; } }

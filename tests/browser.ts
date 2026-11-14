@@ -1,3 +1,4 @@
+import { followStory } from './helpers/story';
 import { chromium } from 'playwright-core';
 import AxeBuilder from '@axe-core/playwright';
 import assert from 'node:assert/strict';
@@ -60,6 +61,7 @@ try {
     const accessibility = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag2aaa']).analyze();
     report.push({ width, state: 'overview', accessibility: accessibility.violations.map(v => ({ id: v.id, impact: v.impact, nodes: v.nodes.map(n => ({ target: n.target, summary: n.failureSummary })) })) });
     await page.getByRole('button', { name: '下一站，講座重點巡禮', exact: true }).click();
+    await followStory(page,'995 生技營養品');
     await page.locator('.product-deck').waitFor();
     await page.waitForTimeout(350);
     assert.equal(await page.locator('.product-intro h2').innerText(), '995 生技營養品');
@@ -73,14 +75,15 @@ try {
     await page.getByRole('tab', { name: '原料小故事' }).click();
     await page.getByRole('tab', { name: '原料小故事' }).press('ArrowRight');
     assert.equal(await page.getByRole('tab', { name: '一起認識' }).getAttribute('aria-selected'), 'true');
-    await page.getByRole('tab', { name: '給長輩的話' }).click();
+    await page.getByRole('tab', { name: '身體的需要' }).click();
     await page.screenshot({ path: `test-results/final-${width}-product.png`, fullPage: true });
     await page.getByRole('button', { name: '全島總覽', exact: true }).click();
     await page.locator('.symptom-search summary').click();
     await page.getByRole('button', { name: '排便不順肚子脹', exact: true }).click();
     assert.equal(await page.locator('.product-intro h2').innerText(), '康爾喜');
     await page.getByRole('button', { name: '下一站，講座重點巡禮', exact: true }).click();
-    assert.equal(await page.locator('.product-intro h2').innerText(), '康爾喜 N');
+    await followStory(page,'康貝寧');
+    assert.equal(await page.locator('.product-intro h2').innerText(), '康貝寧');
     await page.getByRole('button', { name: '字體大小：100%，點選切換' }).click();
     await page.getByRole('button', { name: '字體大小：125%，點選切換' }).click();
     assert.equal(await page.locator('.ios-header').evaluate(el => el.getBoundingClientRect().height), 48);
@@ -95,6 +98,7 @@ try {
     await page.screenshot({ path: `test-results/final-${width}-lecture.png`, fullPage: true });
     await page.keyboard.press('Escape');
     await page.getByRole('button', { name: '神經修復', exact: true }).click();
+    await followStory(page,'活逸康');
     await page.locator('.product-intro h2').filter({ hasText: '活逸康' }).waitFor();
     await page.getByRole('button', { name: '健康知識館' }).click();
     await page.getByRole('button', { name: '反覆忘記，已影響生活' }).click();
@@ -112,10 +116,12 @@ try {
     await page.getByRole('button', { name: '改看本機文件導覽' }).click();
     assert.ok((await page.locator('.ai-answer').innerText()).includes('這不是 AI 回答'));
     await page.unroute('**/api/concierge');
+    const reference={citations:[{title:'衛福部・社區失智症調查',url:'https://www.mohw.gov.tw/cp-16-78102-1.html'}],queries:['台灣 社區 失智 盛行率'],supportCount:1,searchEntryHtml:'',searched:true};
     const answer = { sentences: ['我們一起慢慢認識大腦森林。', '您可以先看看相關產品的原料資訊。', '如有持續的記憶變化，請先向醫師諮詢。'], targetProductIds: ['huoyi', '995'] };
-    await page.route('**/api/concierge', route => route.fulfill({ status: 200, contentType: 'text/event-stream', body: answer.sentences.map(text => `event: sentence\ndata: ${JSON.stringify({ text })}\n\n`).join('') + `event: done\ndata: ${JSON.stringify(answer)}\n\n` }));
+    await page.route('**/api/concierge', route => route.fulfill({ status: 200, contentType: 'text/event-stream', body: answer.sentences.map(text => `event: sentence\ndata: ${JSON.stringify({ text })}\n\n`).join('') + `event: references\ndata: ${JSON.stringify(reference)}\n\nevent: done\ndata: ${JSON.stringify(answer)}\n\n` }));
     await page.getByRole('button', { name: '長輩常忘東忘西、睡不好怎麼搭配？' }).click();
     await page.getByRole('button', { name: '活逸康 →', exact: true }).waitFor();
+    await page.getByRole('link',{name:'衛福部・社區失智症調查 ↗',exact:true}).waitFor();
     await page.screenshot({ path: `test-results/final-${width}-concierge.png`, fullPage: true });
     const dialogAxe = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag2aaa']).analyze();
     report.push({ width, state: 'concierge', accessibility: dialogAxe.violations.map(v => ({ id: v.id, nodes: v.nodes.map(n => ({ target: n.target, summary: n.failureSummary })) })) });
@@ -183,6 +189,7 @@ try {
   await animatedPage.locator('.island-label').last().waitFor({state:'attached'});
   await animatedPage.waitForTimeout(1800);
   await animatedPage.getByRole('button', { name: '下一站，講座重點巡禮', exact: true }).click();
+  await followStory(animatedPage,'995 生技營養品');
   await animatedPage.waitForTimeout(1800);
   assert.equal(await animatedPage.locator('.product-intro h2').innerText(), '995 生技營養品');
   await animatedPage.getByRole('button', { name: '全島總覽', exact: true }).click();
