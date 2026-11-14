@@ -113,17 +113,20 @@ export default function ArchipelagoCanvas({ active, route, phase, onSelect, redu
     <Lighting phase={phase} /><Water reduced={reduced} phase={phase} />
     {products.map(p => <Island key={p.id} p={p} active={active === p.id} lit={p.recommendedTimeOfDay === phase || route.includes(p.id)} onSelect={onSelect} reduced={reduced} />)}
     <SynergyBezierLines ids={route} active={active} reduced={reduced} /><Camera active={active} reduced={reduced} />
-    <ProjectLabels anchors={anchors} />
-  </Canvas><div className="label-layer">{products.map(p => <button key={p.id} ref={el => { anchors.current[p.id] = el; }} className={`island-label ${active === p.id ? 'active' : ''}`} onClick={() => onSelect(p.id)} aria-pressed={active === p.id}>{p.name}</button>)}</div></div></CanvasBoundary>;
+    <ProjectLabels anchors={anchors} active={active} />
+  </Canvas><div className={`label-layer ${!active ? 'overview-labels' : ''}`}>{products.map(p => <button key={p.id} ref={el => { anchors.current[p.id] = el; }} className={`island-label ${active === p.id ? 'active' : ''}`} onClick={() => onSelect(p.id)} aria-label={p.name} aria-pressed={active === p.id}>{p.id === '995' ? '995' : p.name}</button>)}</div></div></CanvasBoundary>;
 }
-function ProjectLabels({ anchors }: { anchors: React.RefObject<Record<string, HTMLButtonElement | null>> }) {
+function ProjectLabels({ anchors, active }: { anchors: React.RefObject<Record<string, HTMLButtonElement | null>>; active: string | null }) {
   const point = useMemo(() => new Vector3(), []);
   useFrame(({ camera, size }) => {
-    for (const product of products) {
+    const ordered = [...products].sort((a, b) => islandPosition(a)[2] - islandPosition(b)[2]);
+    for (const [i, product] of ordered.entries()) {
       const element = anchors.current[product.id]; if (!element) continue;
       const p = islandPosition(product); point.set(p[0], .1, p[2] + 1.2).project(camera);
-      const x = (point.x * .5 + .5) * size.width;
-      const y = (-point.y * .5 + .5) * size.height;
+      const narrow = size.width < 520;
+      const x = narrow && !active ? (i % 2 === 0 ? 70 : size.width - 70) : (point.x * .5 + .5) * size.width;
+      const y = narrow && !active ? 260 + Math.floor(i / 2) * 64 : (-point.y * .5 + .5) * size.height;
+      element.style.visibility = active && narrow && product.id !== active ? 'hidden' : 'visible';
       element.style.transform = `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px) translate(-50%, -50%)`;
     }
   });
