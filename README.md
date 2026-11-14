@@ -22,6 +22,8 @@ npm run start
 
 `.github/workflows/deploy.yml` 在 `main`、`work` 推送或手動執行時，使用 Node 24、`npm ci`、`npm run build`，將 `out/` 經 `actions/upload-pages-artifact@v3` 與 `actions/deploy-pages@v4` 發布。先在儲存庫 **Settings → Pages → Build and deployment → Source** 選擇 **GitHub Actions**。環境發布與 GitHub Pages 網站發布是不同操作。
 
+目前 `github-pages` 保護環境只允許 `main` 部署，因此 `work` 執行建置與上傳驗證，`main` 才發布公開網站。各分支使用獨立 concurrency group，避免同時同步兩個分支時互相取消。若要開放其他發布分支，需先調整 GitHub 環境的部署分支規則與工作流程條件。
+
 ```bash
 DEPLOY_TARGET=pages npm run build
 # 對應專案網址 /UVACO_Lecture/，可用 PAGES_BASE_PATH 覆寫
