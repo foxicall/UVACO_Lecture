@@ -9,7 +9,7 @@ try {
     const errors: string[] = [], failedAssets: string[] = [], apiRequests: string[] = [];
     page.on('pageerror', error => errors.push(error.message));
     page.on('response', response => { if (response.url().startsWith(base) && response.status() >= 400) failedAssets.push(response.url()); });
-    page.on('request', request => { if (request.url().includes('/api/concierge')) apiRequests.push(request.url()); });
+    page.on('request', request => { if (/\/api\/(concierge|clinical-analysis)/.test(request.url())) apiRequests.push(request.url()); });
     const response = await page.goto(`${base}/`, { waitUntil: 'networkidle' });
     assert.equal(response?.status(), 200);
     await page.locator('.island-label').last().waitFor();
@@ -27,6 +27,16 @@ try {
     assert.equal(await page.locator('.keynote-thumbnails button').count(), 7);
     await page.getByRole('button', { name: '下一頁', exact: true }).click();
     assert.equal(await page.locator('.slide-counter').innerText(), '2 / 7');
+    await page.keyboard.press('Escape');
+    await page.getByRole('button', { name: '三大核心機轉專區', exact: true }).click();
+    await page.getByRole('tab', { name: '我的關注', exact: true }).click();
+    await page.locator('input[value=gut]').check();
+    await page.getByRole('button', { name: '依文件整理我的關注', exact: true }).click();
+    await page.getByText('靜態版文件整理・這不是AI回答', { exact: true }).waitFor();
+    assert.equal(await page.locator('.result-products>div').count(), 2);
+    await page.locator('.related-slides button').first().click();
+    await page.locator('.slide-counter').waitFor();
+    assert.equal(await page.locator('.slide-counter').innerText(), '5 / 8');
     await page.keyboard.press('Escape');
     const catalog = await page.goto(`${base}/products/`, { waitUntil: 'networkidle' });
     assert.equal(catalog?.status(), 200);

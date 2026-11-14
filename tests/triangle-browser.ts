@@ -1,0 +1,112 @@
+import { chromium } from 'playwright-core';
+import AxeBuilder from '@axe-core/playwright';
+import assert from 'node:assert/strict';
+import { mkdir, writeFile } from 'node:fs/promises';
+import { clinicalRequestSchema, localClinicalAnalysis } from '../src/lib/clinical-analysis';
+import { mechanismCards, triangleAxes } from '../src/data/health-triangle';
+import { pptxDecks } from '../src/data/pptx-decks';
+import { sourceAuthorNames } from '../src/data/clinical-sources';
+
+const base=process.env.TEST_BASE_URL||'http://localhost:3002';
+const browser=await chromium.launch({executablePath:process.env.CHROMIUM_PATH||'/usr/bin/chromium',headless:true,args:['--no-sandbox','--enable-unsafe-swiftshader']});
+await mkdir('test-results',{recursive:true});
+const reports:unknown[]=[];
+try {
+ for(const width of [1440,768,390]) {
+  const context=await browser.newContext({viewport:{width,height:1000},reducedMotion:'reduce'});
+  const page=await context.newPage();page.setDefaultTimeout(20000);
+  const errors:string[]=[];page.on('pageerror',error=>errors.push(error.message));
+  await page.addInitScript({content:`
+   const state={calls:[]};
+   Object.defineProperty(window,'speechSynthesis',{value:{speak:u=>state.calls.push({lang:u.lang,rate:u.rate,text:u.text}),cancel:()=>{},pause:()=>{},resume:()=>{},getVoices:()=>[]}});
+   window.voiceTest=state;
+  `});
+  await page.goto(base,{waitUntil:'networkidle'});
+  await page.locator('.island-label').last().waitFor();
+  assert.equal(await page.locator('.ios-header').evaluate(el=>el.getBoundingClientRect().height),48);
+  assert.equal(await page.locator('.pillar-segments').evaluate(el=>el.scrollWidth>el.clientWidth),false,`Header topics clipped at ${width}`);
+  await page.screenshot({path:`test-results/triangle-${width}-map.png`,fullPage:true});
+  await page.getByRole('button',{name:'三大核心機轉專區',exact:true}).click();
+  await page.getByRole('dialog',{name:'健康金三角',exact:true}).waitFor();
+  const audit=async(state:string)=>{
+   assert.equal(await page.locator('.triangle-dialog').evaluate(el=>el.scrollWidth>el.clientWidth+1),false,`${state} horizontal overflow at ${width}`);
+   assert.equal(await page.locator('.triangle-nav').evaluate(el=>el.scrollWidth>el.clientWidth+1),false,`${state} clipped section tabs at ${width}`);
+   const result=await new AxeBuilder({page}).exclude('.google-search-suggestions').withTags(['wcag2a','wcag2aa','wcag21aa','wcag2aaa']).analyze();
+   reports.push({width,state,violations:result.violations.map(v=>({id:v.id,nodes:v.nodes.map(n=>({target:n.target,summary:n.failureSummary}))}))});
+   await page.screenshot({path:`test-results/triangle-${width}-${state}.png`});
+  };
+  await audit('hub');
+  let count=0;
+  for(const axis of triangleAxes) {
+   await page.locator('.triangle-node').filter({hasText:axis.title}).click();
+   const cards=page.locator('.mechanism-card');count+=await cards.count();
+   await cards.first().locator('summary').click();
+   assert.ok((await cards.first().locator('.mechanism-boundary').innerText()).length>20);
+   await cards.first().getByRole('button',{name:'聽語音導覽',exact:true}).click();
+  }
+  assert.equal(count,17);
+  const voice=await page.evaluate(()=>(window as unknown as {voiceTest:{calls:{lang:string;rate:number}[]}}).voiceTest.calls);
+  assert.equal(voice.length,3);assert.equal(voice[0].lang,'zh-TW');assert.ok(Math.abs(voice[0].rate-.92)<.00001);
+  await page.getByRole('tab',{name:'產品對照',exact:true}).click();
+  assert.equal(await page.locator('#matrix-product option').count(),12);
+  await page.locator('#matrix-product').selectOption('huoyi');
+  await audit('matrix');
+  await page.getByRole('tab',{name:'來源筆記',exact:true}).click();
+  assert.equal(await page.locator('.source-notebooks details').count(),12);
+  await page.locator('.source-notebooks summary').first().click();
+  const sourceCopy=await page.locator('.triangle-dialog').innerText();
+  for(const name of sourceAuthorNames)assert.ok(!sourceCopy.includes(name));
+  await audit('sources');
+  await page.getByRole('tab',{name:'我的關注',exact:true}).click();
+  assert.equal(await page.locator('input[name=concern]').count(),6);
+  await page.locator('input[value=gut]').check();
+  let requests=0;
+  await page.route('**/api/clinical-analysis',async route=>{
+   requests++;const input=clinicalRequestSchema.parse(route.request().postDataJSON());
+   const result=localClinicalAnalysis(input);
+   await route.fulfill({json:{...result,mode:'gemini',model:'gemini-3.8-flash',label:'Gemini 3.8 搜尋整理・附外部參考',grounding:{citations:[{title:'NCCIH 益生菌安全性',url:'https://www.nccih.nih.gov/health/probiotics-usefulness-and-safety'}],queries:['probiotics safety'],supportCount:1,searchEntryHtml:'<p>Google Search</p><a href="https://www.google.com/search?q=probiotics" target="_blank">probiotics safety</a>',searched:true}}});
+  });
+  await page.getByRole('button',{name:'請 Gemini 3.8 搜尋分析',exact:true}).click();
+  await page.getByText('Gemini 3.8 搜尋整理・附外部參考',{exact:true}).waitFor();
+  assert.equal(requests,1);assert.equal(await page.locator('.topic-distribution dt').count(),3);
+  assert.ok((await page.locator('.topic-distribution').innerText()).includes('不是身體失衡比例'));
+  assert.equal(await page.locator('.result-products>div').count(),2);
+  assert.equal(await page.locator('.search-references a').first().getAttribute('href'),'https://www.nccih.nih.gov/health/probiotics-usefulness-and-safety');
+  assert.equal((await page.locator('.google-search-suggestions').getAttribute('sandbox'))?.includes('allow-scripts'),false);
+  await page.locator('.clinical-result').scrollIntoViewIfNeeded();await audit('analysis');
+  await page.getByRole('button',{name:'在群島查看這組產品',exact:true}).click();
+  await page.locator('.product-intro h2').waitFor();assert.equal(await page.locator('.product-intro h2').innerText(),'康爾喜');
+  await page.locator('.hub-label').click();
+  await page.getByRole('tab',{name:'我的關注',exact:true}).click();
+  await page.locator('input[value=gut]').check();
+  await page.locator('.professional-context input').check();
+  await page.getByRole('button',{name:'請 Gemini 3.8 搜尋分析',exact:true}).click();
+  await page.getByRole('heading',{name:'先確認醫療需求',exact:true}).waitFor();
+  assert.equal(requests,1);assert.equal(await page.locator('.result-products').count(),0);
+  await page.locator('.professional-context input').uncheck();
+  await page.locator('#clinical-question').fill('現在胸痛呼吸困難');
+  await page.getByRole('button',{name:'請 Gemini 3.8 搜尋分析',exact:true}).click();
+  await page.getByRole('heading',{name:'請先尋求即時醫療協助',exact:true}).waitFor();
+  assert.equal(requests,1);assert.ok((await page.locator('.result-summary').innerText()).includes('119'));
+  await page.unroute('**/api/clinical-analysis');
+  await page.route('**/api/clinical-analysis',route=>route.fulfill({status:503,body:'unavailable'}));
+  await page.locator('#clinical-question').fill('');
+  await page.getByRole('button',{name:'請 Gemini 3.8 搜尋分析',exact:true}).click();
+  await page.getByText('文件整理・這不是AI回答',{exact:true}).waitFor();
+  await page.getByRole('tab',{name:'三大機轉',exact:true}).click();
+  const target=mechanismCards.find(c=>c.axis==='inflammation')!.slide;
+  await page.locator('.mechanism-card summary').first().click();
+  await page.locator('.mechanism-card').first().getByRole('button',{name:'開啟對應簡報',exact:true}).click();
+  await page.locator('.slide-counter').waitFor();
+  const deck=pptxDecks.find(d=>d.id===target.deckId)!;
+  assert.equal(await page.locator('.slide-counter').innerText(),`${deck.slides.findIndex(s=>s.id===target.slideId)+1} / ${deck.slides.length}`);
+  await page.keyboard.press('Escape');
+  await page.getByRole('button',{name:'字體大小：100%，點選切換'}).click();
+  await page.getByRole('button',{name:'字體大小：125%，點選切換'}).click();
+  await page.getByRole('button',{name:'三大核心機轉專區',exact:true}).click();
+  await audit('large');
+  assert.deepEqual(errors,[]);await page.close();console.log(`${width}px: triangle, 17 cards, 12 products, citations, local fallback, medical gating, slide links and voice passed.`);
+ }
+ await writeFile('test-results/triangle-accessibility.json',JSON.stringify(reports,null,2));
+ assert.equal(reports.some(r=>(r as {violations:unknown[]}).violations.length>0),false,'Accessibility violations; see triangle-accessibility.json');
+}finally{await browser.close();}

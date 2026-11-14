@@ -14,7 +14,8 @@
     "materials:ingest": "tsx scripts/ingest-drive-materials.ts",
     "build:with-ai": "npm run assets:generate -- --require-ai && npm run build",
     "prebuild": "npm run materials:ingest && npm run clinical:synthesize && npm run assets:generate",
-    "clinical:synthesize": "tsx scripts/synthesize-md-with-gemini.ts"
+    "clinical:synthesize": "tsx scripts/synthesize-md-with-gemini.ts",
+    "test:triangle": "tsx tests/triangle-browser.ts"
   },
   "engines": {
     "node": ">=22"

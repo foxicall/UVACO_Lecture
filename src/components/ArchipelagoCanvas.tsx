@@ -110,7 +110,7 @@ export default function ArchipelagoCanvas({ active, route, onSelect, onHub }: { 
     {products.map(p => <Island key={p.id} p={p} active={active === p.id} onSelect={onSelect} />)}
     <LectureHub onClick={onHub} /><HubConnections /><SynergyBezierLines ids={route} active={active} />
     <ProjectLabels anchors={anchors} hub={hub} />
-  </Canvas><div className="label-layer">{products.map(p => <button key={p.id} ref={el => { anchors.current[p.id] = el; }} className={`island-label ${active === p.id ? 'active' : ''}`} onClick={() => onSelect(p.id)} aria-label={p.name} aria-pressed={active === p.id}>{p.id === '995' ? '995' : p.name}</button>)}<button className="hub-label" ref={hub} onClick={onHub}><strong>講座主島</strong><span>林煒醫師</span></button></div></div></CanvasBoundary>;
+  </Canvas><div className="label-layer">{products.map(p => <button key={p.id} ref={el => { anchors.current[p.id] = el; }} className={`island-label ${active === p.id ? 'active' : ''}`} onClick={() => onSelect(p.id)} aria-label={p.name} aria-pressed={active === p.id}>{p.id === '995' ? '995' : p.name}</button>)}<button className="hub-label" ref={hub} onClick={onHub}><strong>健康金三角</strong><span>林煒醫師</span></button></div></div></CanvasBoundary>;
 }
 function ProjectLabels({ anchors, hub }: { anchors: React.RefObject<Record<string, HTMLButtonElement | null>>; hub: React.RefObject<HTMLButtonElement | null> }) {
   const point = useMemo(() => new Vector3(), []);

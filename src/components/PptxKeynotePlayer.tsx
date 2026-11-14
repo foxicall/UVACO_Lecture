@@ -4,10 +4,11 @@ import { ChevronLeft, ChevronRight, Maximize2, Minimize2, Pause, Play, Presentat
 import Dialog from './Dialog';
 import { pptxDecks, slideNarration } from '@/data/pptx-decks';
 import visuals from '@/data/generated-visuals.json';
+import type { SlideTarget } from '@/data/health-triangle';
 
-export default function PptxKeynotePlayer({ onClose }: { onClose: () => void }) {
-  const [deckIndex, setDeckIndex] = useState(0);
-  const [index, setIndex] = useState(0);
+export default function PptxKeynotePlayer({ onClose, initialSlide }: { onClose: () => void; initialSlide?: SlideTarget }) {
+  const [deckIndex, setDeckIndex] = useState(() => Math.max(0, pptxDecks.findIndex(deck => deck.id === initialSlide?.deckId)));
+  const [index, setIndex] = useState(() => Math.max(0, pptxDecks.find(deck => deck.id === initialSlide?.deckId)?.slides.findIndex(slide => slide.id === initialSlide?.slideId) ?? 0));
   const [auto, setAuto] = useState(false);
   const [paused, setPaused] = useState(false);
   const [supported, setSupported] = useState(false);

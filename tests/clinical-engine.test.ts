@@ -5,6 +5,7 @@ import { clinicalPlan, clinicalRequestSchema, clinicalResultSchema, localClinica
 import { parseClinicalResponse, CLINICAL_MODELS } from '../src/services/geminiClinicalEngine';
 import { extractGrounding, safeCitationUrl } from '../src/lib/search-grounding';
 import { POST } from '../src/app/api/clinical-analysis/route';
+import { concernChoices } from '../src/data/health-triangle';
 const gut=clinicalRequestSchema.parse({concernIds:['gut']});
 test('symptom selection creates transparent reading counts, not diagnostic scores or duplicate supplements',()=>{
   const plan=clinicalPlan(gut);
@@ -12,6 +13,10 @@ test('symptom selection creates transparent reading counts, not diagnostic score
   assert.ok(!plan.productIds.includes('kanger-n'));
   assert.equal(plan.selectedCount,1);
   assert.ok(clinicalResultSchema.safeParse(localClinicalAnalysis(gut)).success);
+  for(let mask=1;mask<64;mask++) {
+    const input=clinicalRequestSchema.parse({concernIds:concernChoices.filter((_,i)=>mask&(1<<i)).map(c=>c.id)});
+    assert.ok(clinicalResultSchema.safeParse(localClinicalAnalysis(input)).success,`Invalid offline combination: ${mask}`);
+  }
   for(const input of [{concernIds:['circulation']},{concernIds:['recovery']},{concernIds:['gut'],professionalContext:true},{concernIds:['neural'],question:'突然右手無力'}]){
     const result=localClinicalAnalysis(clinicalRequestSchema.parse(input));
     assert.deepEqual(result.productIds,[]);
