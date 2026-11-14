@@ -1,0 +1,1068 @@
+{
+  "version": 1,
+  "sourceDigest": "7e98d39c10cd8f69017d28e79636db693444fe2a839565288e92d8bd1c9be2cf",
+  "inventory": [
+    {
+      "path": "README.md",
+      "bytes": 7661,
+      "sha256": "534a8449814bc67603b5f25b7185d45863256398834cfd1845732de482b5fd82",
+      "kind": "project-document"
+    },
+    {
+      "path": "docs/design-notes.md",
+      "bytes": 3004,
+      "sha256": "df0d3bee3e53f15fb9d50ad9cd181dc447ba49e380466f1a915013edb107634f",
+      "kind": "project-document"
+    },
+    {
+      "path": "葡眾/archive/pro-partner-health-mechanisms-previous.md",
+      "bytes": 9474,
+      "sha256": "d51115f57a7570eaab6b05fed36fd6ee991fcbc256bdc3a6d50c6df331e8727a",
+      "kind": "clinical-source"
+    },
+    {
+      "path": "葡眾/keynote-source.md",
+      "bytes": 8770,
+      "sha256": "4601365a2374f52b1322ebbb8f07c6b68cf2ba5e91c9712fe2699e2cd3ef79e8",
+      "kind": "clinical-source"
+    },
+    {
+      "path": "葡眾/lecture-poster-source.md",
+      "bytes": 4987,
+      "sha256": "bb405b69286d3c34b65cfe8ff7611c610533e8c43341fbdbb51465f8a30dc8a1",
+      "kind": "clinical-source"
+    },
+    {
+      "path": "葡眾/lectures/1.歐瀚文醫師_探索老化生物學從功能醫學走向健康長壽.md",
+      "bytes": 14151,
+      "sha256": "f7789732f27d376b0463f4316d6b2488426076c8bab8fb2cbf8a645f34ec762c",
+      "kind": "clinical-source"
+    },
+    {
+      "path": "葡眾/lectures/2.王偉全醫師_排除環境促老因子×降低長壽路上的毒素負荷.md",
+      "bytes": 14356,
+      "sha256": "8efeff959701f6195fad4405f324c350655976385f5c050353e92bb5ebf7ba6a",
+      "kind": "clinical-source"
+    },
+    {
+      "path": "葡眾/lectures/3.歐忠儒博士_探索老化生物學從功能醫學走向健康長壽.md",
+      "bytes": 15722,
+      "sha256": "bd10d02e654a4832e0dbeb3ef32b588b4c440f7c4ef380cd6f18609bcd31c29e",
+      "kind": "clinical-source"
+    },
+    {
+      "path": "葡眾/lectures/4.洪佳琪營養師_認識(腦)發炎老化風險x解析智能長壽秘訣.md",
+      "bytes": 11404,
+      "sha256": "06f7f6858122e16ca4f50b71b1abad2ba669fda3d4410f29af1b07481a007c96",
+      "kind": "clinical-source"
+    },
+    {
+      "path": "葡眾/lectures/5.劉士銘醫師_代謝老化與長壽體質.md",
+      "bytes": 13540,
+      "sha256": "663db27546640c9b919146e06071fc4ff550f1283f8c7c7198e3a3da3dcbede6",
+      "kind": "clinical-source"
+    },
+    {
+      "path": "葡眾/lectures/6.王凱瑜醫師_腦腸軸與免疫老化x長壽健康的臨床洞見.md",
+      "bytes": 13950,
+      "sha256": "556014ec20fd736ca5da3e257d52a7d97d92ae8784e5fa8a5c06e8f845e867de",
+      "kind": "clinical-source"
+    },
+    {
+      "path": "葡眾/pdf-extracted-sources.md",
+      "bytes": 932,
+      "sha256": "f408435a0578f369ebda626f932b762cf891b0b8df654591a37776a59617ba7b",
+      "kind": "clinical-source"
+    },
+    {
+      "path": "葡眾/pro-partner-health-mechanisms.md",
+      "bytes": 19328,
+      "sha256": "59e0bc0c2701983f91eff1cc6170d7553e978deeb57532ece0502fccdc688f69",
+      "kind": "clinical-source"
+    },
+    {
+      "path": "葡眾/supplementary-source-details.md",
+      "bytes": 14667,
+      "sha256": "965e4aead2978446330403f4223ca5bd9838d4ee153651de639d1b107ca8a654",
+      "kind": "clinical-source"
+    }
+  ],
+  "sources": [
+    {
+      "id": "P0",
+      "title": "先前產品資料",
+      "path": "葡眾/archive/pro-partner-health-mechanisms-previous.md",
+      "sha256": "d51115f57a7570eaab6b05fed36fd6ee991fcbc256bdc3a6d50c6df331e8727a",
+      "bytes": 9474,
+      "sectionCount": 1
+    },
+    {
+      "id": "D2",
+      "title": "三套簡報逐頁文稿",
+      "path": "葡眾/keynote-source.md",
+      "sha256": "4601365a2374f52b1322ebbb8f07c6b68cf2ba5e91c9712fe2699e2cd3ef79e8",
+      "bytes": 8770,
+      "sectionCount": 4
+    },
+    {
+      "id": "D1",
+      "title": "林煒醫師講座海報",
+      "path": "葡眾/lecture-poster-source.md",
+      "sha256": "bb405b69286d3c34b65cfe8ff7611c610533e8c43341fbdbb51465f8a30dc8a1",
+      "bytes": 4987,
+      "sectionCount": 4
+    },
+    {
+      "id": "L1",
+      "title": "健康長壽與粒線體代謝",
+      "path": "葡眾/lectures/1.歐瀚文醫師_探索老化生物學從功能醫學走向健康長壽.md",
+      "sha256": "f7789732f27d376b0463f4316d6b2488426076c8bab8fb2cbf8a645f34ec762c",
+      "bytes": 14151,
+      "sectionCount": 14
+    },
+    {
+      "id": "L2",
+      "title": "環境暴露與黴菌毒素",
+      "path": "葡眾/lectures/2.王偉全醫師_排除環境促老因子×降低長壽路上的毒素負荷.md",
+      "sha256": "8efeff959701f6195fad4405f324c350655976385f5c050353e92bb5ebf7ba6a",
+      "bytes": 14356,
+      "sectionCount": 16
+    },
+    {
+      "id": "L3",
+      "title": "荷爾蒙、壓力與神經調節",
+      "path": "葡眾/lectures/3.歐忠儒博士_探索老化生物學從功能醫學走向健康長壽.md",
+      "sha256": "bd10d02e654a4832e0dbeb3ef32b588b4c440f7c4ef380cd6f18609bcd31c29e",
+      "bytes": 15722,
+      "sectionCount": 12
+    },
+    {
+      "id": "L4",
+      "title": "發炎消退與腦部脂質研究",
+      "path": "葡眾/lectures/4.洪佳琪營養師_認識(腦)發炎老化風險x解析智能長壽秘訣.md",
+      "sha256": "06f7f6858122e16ca4f50b71b1abad2ba669fda3d4410f29af1b07481a007c96",
+      "bytes": 11404,
+      "sectionCount": 12
+    },
+    {
+      "id": "L5",
+      "title": "代謝老化與血管健康",
+      "path": "葡眾/lectures/5.劉士銘醫師_代謝老化與長壽體質.md",
+      "sha256": "663db27546640c9b919146e06071fc4ff550f1283f8c7c7198e3a3da3dcbede6",
+      "bytes": 13540,
+      "sectionCount": 12
+    },
+    {
+      "id": "L6",
+      "title": "腦腸軸與免疫老化",
+      "path": "葡眾/lectures/6.王凱瑜醫師_腦腸軸與免疫老化x長壽健康的臨床洞見.md",
+      "sha256": "556014ec20fd736ca5da3e257d52a7d97d92ae8784e5fa8a5c06e8f845e867de",
+      "bytes": 13950,
+      "sectionCount": 15
+    },
+    {
+      "id": "D3",
+      "title": "大腦與企業簡報擷取",
+      "path": "葡眾/pdf-extracted-sources.md",
+      "sha256": "f408435a0578f369ebda626f932b762cf891b0b8df654591a37776a59617ba7b",
+      "bytes": 932,
+      "sectionCount": 1
+    },
+    {
+      "id": "P1",
+      "title": "葡眾十二產品與三軸機轉文件",
+      "path": "葡眾/pro-partner-health-mechanisms.md",
+      "sha256": "59e0bc0c2701983f91eff1cc6170d7553e978deeb57532ece0502fccdc688f69",
+      "bytes": 19328,
+      "sectionCount": 17
+    },
+    {
+      "id": "D4",
+      "title": "既有產品補充資料",
+      "path": "葡眾/supplementary-source-details.md",
+      "sha256": "965e4aead2978446330403f4223ca5bd9838d4ee153651de639d1b107ca8a654",
+      "bytes": 14667,
+      "sectionCount": 3
+    }
+  ],
+  "pathways": [
+    {
+      "id": "gut-barrier",
+      "sourceMatches": [
+        {
+          "sourceId": "L6",
+          "section": "一、 核心要點精華（Executive Clinical Summary）",
+          "line": 7,
+          "endLine": 17
+        },
+        {
+          "sourceId": "L6",
+          "section": "二、 核心評估指標與功能醫學檢驗（Assessment & Lab Testing）",
+          "line": 18,
+          "endLine": 32
+        },
+        {
+          "sourceId": "L6",
+          "section": "1. 軸線一：屏障瓦解與免疫發炎連鎖反應（LPS–TLR4–NLRP3）",
+          "line": 35,
+          "endLine": 43
+        },
+        {
+          "sourceId": "P1",
+          "section": "一、 現代亞健康核心機轉：病理「惡性三角」之串聯",
+          "line": 7,
+          "endLine": 29
+        },
+        {
+          "sourceId": "P1",
+          "section": "3. 樟芝菌絲體滴粒",
+          "line": 52,
+          "endLine": 60
+        },
+        {
+          "sourceId": "P1",
+          "section": "4. 康爾喜乳酸菌顆粒",
+          "line": 61,
+          "endLine": 69
+        }
+      ]
+    },
+    {
+      "id": "inflammasome",
+      "sourceMatches": [
+        {
+          "sourceId": "L4",
+          "section": "一、 核心要點精華（Executive Clinical Summary）",
+          "line": 7,
+          "endLine": 16
+        },
+        {
+          "sourceId": "L6",
+          "section": "一、 核心要點精華（Executive Clinical Summary）",
+          "line": 7,
+          "endLine": 17
+        },
+        {
+          "sourceId": "L6",
+          "section": "1. 軸線一：屏障瓦解與免疫發炎連鎖反應（LPS–TLR4–NLRP3）",
+          "line": 35,
+          "endLine": 43
+        }
+      ]
+    },
+    {
+      "id": "resolution",
+      "sourceMatches": [
+        {
+          "sourceId": "L4",
+          "section": "認識(腦)發炎老化風險 x 解析智能長壽秘訣",
+          "line": 1,
+          "endLine": 6
+        },
+        {
+          "sourceId": "L4",
+          "section": "一、 核心要點精華（Executive Clinical Summary）",
+          "line": 7,
+          "endLine": 16
+        },
+        {
+          "sourceId": "L4",
+          "section": "二、 核心評估指標與功能醫學檢驗（Assessment & Lab Testing）",
+          "line": 17,
+          "endLine": 29
+        }
+      ]
+    },
+    {
+      "id": "redox",
+      "sourceMatches": [
+        {
+          "sourceId": "L1",
+          "section": "核心病理生理機制",
+          "line": 10,
+          "endLine": 14
+        },
+        {
+          "sourceId": "L1",
+          "section": "二、 核心評估指標與功能醫學檢驗（Assessment & Lab Testing）",
+          "line": 31,
+          "endLine": 50
+        },
+        {
+          "sourceId": "L1",
+          "section": "2. 氧化還原平衡與雙重角色：生理性 vs. 病理性 ROS",
+          "line": 70,
+          "endLine": 78
+        },
+        {
+          "sourceId": "L4",
+          "section": "一、 核心要點精華（Executive Clinical Summary）",
+          "line": 7,
+          "endLine": 16
+        },
+        {
+          "sourceId": "L4",
+          "section": "1. 功能性營養素與臨床研究配方",
+          "line": 64,
+          "endLine": 76
+        },
+        {
+          "sourceId": "P1",
+          "section": "一、 現代亞健康核心機轉：病理「惡性三角」之串聯",
+          "line": 7,
+          "endLine": 29
+        },
+        {
+          "sourceId": "P1",
+          "section": "1. 995 生技營養品 / 永生福朗 (液態發酵 / 凍乾膠囊)",
+          "line": 34,
+          "endLine": 42
+        },
+        {
+          "sourceId": "P1",
+          "section": "8. 寧康福膠囊 (抗輻射守護神)",
+          "line": 97,
+          "endLine": 105
+        }
+      ]
+    },
+    {
+      "id": "exposure",
+      "sourceMatches": [
+        {
+          "sourceId": "L2",
+          "section": "萬萬黴想到：治療黴菌毒素那麼簡單！—— 4D排黴療法與臨床全方位攻略",
+          "line": 1,
+          "endLine": 6
+        },
+        {
+          "sourceId": "L2",
+          "section": "一、 核心要點精華（Executive Clinical Summary）",
+          "line": 7,
+          "endLine": 20
+        },
+        {
+          "sourceId": "L2",
+          "section": "二、 核心評估指標與功能醫學檢驗（Assessment & Lab Testing）",
+          "line": 21,
+          "endLine": 36
+        },
+        {
+          "sourceId": "L3",
+          "section": "一、 核心要點精華（Executive Clinical Summary）",
+          "line": 8,
+          "endLine": 21
+        },
+        {
+          "sourceId": "L3",
+          "section": "二、 核心評估指標與功能醫學檢驗（Assessment & Lab Testing）",
+          "line": 22,
+          "endLine": 37
+        },
+        {
+          "sourceId": "L3",
+          "section": "2. 雌激素佔優勢（Estrogen Dominance）的生化病理與肝臟解毒路徑",
+          "line": 50,
+          "endLine": 61
+        }
+      ]
+    },
+    {
+      "id": "vascular",
+      "sourceMatches": [
+        {
+          "sourceId": "L5",
+          "section": "代謝老化與長壽體質（Confronting Metabolic Aging Risks and Rebuilding a Balanced Longevity）",
+          "line": 1,
+          "endLine": 6
+        },
+        {
+          "sourceId": "L5",
+          "section": "一、 核心要點精華（Executive Clinical Summary）",
+          "line": 7,
+          "endLine": 25
+        },
+        {
+          "sourceId": "L5",
+          "section": "二、 核心評估指標與功能醫學檢驗（Assessment & Lab Testing）",
+          "line": 26,
+          "endLine": 57
+        },
+        {
+          "sourceId": "P1",
+          "section": "葡眾核心生化調理系列：慢性發炎、細胞自癒力與自律神經失調之整合架構",
+          "line": 1,
+          "endLine": 6
+        },
+        {
+          "sourceId": "P1",
+          "section": "一、 現代亞健康核心機轉：病理「惡性三角」之串聯",
+          "line": 7,
+          "endLine": 29
+        },
+        {
+          "sourceId": "P1",
+          "section": "3. 樟芝菌絲體滴粒",
+          "line": 52,
+          "endLine": 60
+        }
+      ]
+    },
+    {
+      "id": "mitochondria",
+      "sourceMatches": [
+        {
+          "sourceId": "L1",
+          "section": "核心病理生理機制",
+          "line": 10,
+          "endLine": 14
+        },
+        {
+          "sourceId": "L1",
+          "section": "二、 核心評估指標與功能醫學檢驗（Assessment & Lab Testing）",
+          "line": 31,
+          "endLine": 50
+        },
+        {
+          "sourceId": "L1",
+          "section": "3. 粒線體代謝網絡與有機酸解讀（Bio-META）",
+          "line": 79,
+          "endLine": 91
+        },
+        {
+          "sourceId": "L6",
+          "section": "2. 軸線二：粒線體能量危機與自我放大發炎迴路",
+          "line": 44,
+          "endLine": 47
+        }
+      ]
+    },
+    {
+      "id": "methylation",
+      "sourceMatches": [
+        {
+          "sourceId": "D2",
+          "section": "📽️ Deck 2: `20230409_WL_疼痛.pptx` — 《林煒醫師專題：疼痛與結構、DNA 甲基化與神經修復藍圖》",
+          "line": 26,
+          "endLine": 47
+        },
+        {
+          "sourceId": "L1",
+          "section": "二、 核心評估指標與功能醫學檢驗（Assessment & Lab Testing）",
+          "line": 31,
+          "endLine": 50
+        },
+        {
+          "sourceId": "L1",
+          "section": "1. 表觀遺傳時鐘（Epigenetic Aging Clocks）演進與臨床判讀陷阱",
+          "line": 53,
+          "endLine": 69
+        },
+        {
+          "sourceId": "L1",
+          "section": "功能性營養素 / 標靶配方支持（依生化機制精準處方）",
+          "line": 94,
+          "endLine": 104
+        },
+        {
+          "sourceId": "L3",
+          "section": "一、 核心要點精華（Executive Clinical Summary）",
+          "line": 8,
+          "endLine": 21
+        },
+        {
+          "sourceId": "L3",
+          "section": "二、 核心評估指標與功能醫學檢驗（Assessment & Lab Testing）",
+          "line": 22,
+          "endLine": 37
+        },
+        {
+          "sourceId": "L3",
+          "section": "2. 雌激素佔優勢（Estrogen Dominance）的生化病理與肝臟解毒路徑",
+          "line": 50,
+          "endLine": 61
+        },
+        {
+          "sourceId": "L5",
+          "section": "二、 核心評估指標與功能醫學檢驗（Assessment & Lab Testing）",
+          "line": 26,
+          "endLine": 57
+        },
+        {
+          "sourceId": "L5",
+          "section": "3. 血管內皮代謝三大網絡：甲基化、NO 生成與腸腦軸",
+          "line": 79,
+          "endLine": 92
+        },
+        {
+          "sourceId": "L5",
+          "section": "1. 功能性營養素與輔因子補充（Targeted Nutrients）",
+          "line": 97,
+          "endLine": 109
+        },
+        {
+          "sourceId": "P1",
+          "section": "1. 995 生技營養品 / 永生福朗 (液態發酵 / 凍乾膠囊)",
+          "line": 34,
+          "endLine": 42
+        },
+        {
+          "sourceId": "P1",
+          "section": "4. 康爾喜乳酸菌顆粒",
+          "line": 61,
+          "endLine": 69
+        },
+        {
+          "sourceId": "P1",
+          "section": "三、 系統性協同應用速查矩陣表 (Clinical Application Matrix)",
+          "line": 142,
+          "endLine": 160
+        }
+      ]
+    },
+    {
+      "id": "cellular-clearance",
+      "sourceMatches": [
+        {
+          "sourceId": "L1",
+          "section": "核心病理生理機制",
+          "line": 10,
+          "endLine": 14
+        },
+        {
+          "sourceId": "L1",
+          "section": "二、 核心評估指標與功能醫學檢驗（Assessment & Lab Testing）",
+          "line": 31,
+          "endLine": 50
+        },
+        {
+          "sourceId": "L1",
+          "section": "2. 氧化還原平衡與雙重角色：生理性 vs. 病理性 ROS",
+          "line": 70,
+          "endLine": 78
+        },
+        {
+          "sourceId": "L6",
+          "section": "一、 核心要點精華（Executive Clinical Summary）",
+          "line": 7,
+          "endLine": 17
+        },
+        {
+          "sourceId": "L6",
+          "section": "二、 核心評估指標與功能醫學檢驗（Assessment & Lab Testing）",
+          "line": 18,
+          "endLine": 32
+        },
+        {
+          "sourceId": "L6",
+          "section": "2. 軸線二：粒線體能量危機與自我放大發炎迴路",
+          "line": 44,
+          "endLine": 47
+        }
+      ]
+    },
+    {
+      "id": "neural",
+      "sourceMatches": [
+        {
+          "sourceId": "D2",
+          "section": "📽️ Deck 1: `alzheimers_uvaco_presentation.pptx` — 《腦力常青・美滿生活：守護記憶的黃金健康指南（2026 智慧營養專題）》",
+          "line": 5,
+          "endLine": 25
+        },
+        {
+          "sourceId": "D2",
+          "section": "📽️ Deck 3: `張詩帷-產品優越性 春訓 (定版).pptx` & `Uvaco_失智症.pptx` — 《第六代生物科技保健食品：葡眾 12 大產品優越性全覽》",
+          "line": 48,
+          "endLine": 73
+        },
+        {
+          "sourceId": "L4",
+          "section": "二、 核心評估指標與功能醫學檢驗（Assessment & Lab Testing）",
+          "line": 17,
+          "endLine": 29
+        },
+        {
+          "sourceId": "P1",
+          "section": "7. 葡眾活逸康 猴頭菇菌絲體膠囊",
+          "line": 88,
+          "endLine": 96
+        },
+        {
+          "sourceId": "P1",
+          "section": "三、 系統性協同應用速查矩陣表 (Clinical Application Matrix)",
+          "line": 142,
+          "endLine": 160
+        }
+      ]
+    },
+    {
+      "id": "collagen-muscle",
+      "sourceMatches": [
+        {
+          "sourceId": "D2",
+          "section": "📽️ Deck 2: `20230409_WL_疼痛.pptx` — 《林煒醫師專題：疼痛與結構、DNA 甲基化與神經修復藍圖》",
+          "line": 26,
+          "endLine": 47
+        },
+        {
+          "sourceId": "L6",
+          "section": "一、 核心要點精華（Executive Clinical Summary）",
+          "line": 7,
+          "endLine": 17
+        },
+        {
+          "sourceId": "L6",
+          "section": "4. 軸線四：遠端器官退化（腦腸軸與腸肌軸）",
+          "line": 53,
+          "endLine": 62
+        },
+        {
+          "sourceId": "P1",
+          "section": "一、 現代亞健康核心機轉：病理「惡性三角」之串聯",
+          "line": 7,
+          "endLine": 29
+        },
+        {
+          "sourceId": "P1",
+          "section": "1. 995 生技營養品 / 永生福朗 (液態發酵 / 凍乾膠囊)",
+          "line": 34,
+          "endLine": 42
+        },
+        {
+          "sourceId": "P1",
+          "section": "四、 網站前端建構之 Markdown 部署代碼（Hugo / Astro / Docusaurus 格式）",
+          "line": 161,
+          "endLine": 198
+        }
+      ]
+    },
+    {
+      "id": "aging-clocks",
+      "sourceMatches": [
+        {
+          "sourceId": "L1",
+          "section": "探索老化生物學：從功能醫學走向健康長壽",
+          "line": 1,
+          "endLine": 7
+        },
+        {
+          "sourceId": "L1",
+          "section": "演講亮點與臨床洞察",
+          "line": 15,
+          "endLine": 30
+        },
+        {
+          "sourceId": "L1",
+          "section": "二、 核心評估指標與功能醫學檢驗（Assessment & Lab Testing）",
+          "line": 31,
+          "endLine": 50
+        },
+        {
+          "sourceId": "L6",
+          "section": "二、 核心評估指標與功能醫學檢驗（Assessment & Lab Testing）",
+          "line": 18,
+          "endLine": 32
+        },
+        {
+          "sourceId": "L6",
+          "section": "五、 臨床實踐行動清單（Key Takeaways）",
+          "line": 108,
+          "endLine": 112
+        }
+      ]
+    },
+    {
+      "id": "hpa",
+      "sourceMatches": [
+        {
+          "sourceId": "D2",
+          "section": "📽️ Deck 2: `20230409_WL_疼痛.pptx` — 《林煒醫師專題：疼痛與結構、DNA 甲基化與神經修復藍圖》",
+          "line": 26,
+          "endLine": 47
+        },
+        {
+          "sourceId": "L3",
+          "section": "一、 核心要點精華（Executive Clinical Summary）",
+          "line": 8,
+          "endLine": 21
+        },
+        {
+          "sourceId": "L3",
+          "section": "二、 核心評估指標與功能醫學檢驗（Assessment & Lab Testing）",
+          "line": 22,
+          "endLine": 37
+        },
+        {
+          "sourceId": "L3",
+          "section": "1. 女性 OAT 軸與男性 TAT 軸之動態網絡調控",
+          "line": 40,
+          "endLine": 49
+        },
+        {
+          "sourceId": "P1",
+          "section": "一、 現代亞健康核心機轉：病理「惡性三角」之串聯",
+          "line": 7,
+          "endLine": 29
+        },
+        {
+          "sourceId": "P1",
+          "section": "6. 康悅兒乳酸菌顆粒 (好心情守護者)",
+          "line": 79,
+          "endLine": 87
+        },
+        {
+          "sourceId": "P1",
+          "section": "9. 葡眾 360 計劃 (全身調理完美搭配單日盒)",
+          "line": 106,
+          "endLine": 114
+        }
+      ]
+    },
+    {
+      "id": "gut-brain",
+      "sourceMatches": [
+        {
+          "sourceId": "L3",
+          "section": "二、 核心評估指標與功能醫學檢驗（Assessment & Lab Testing）",
+          "line": 22,
+          "endLine": 37
+        },
+        {
+          "sourceId": "L3",
+          "section": "2. 雌激素佔優勢（Estrogen Dominance）的生化病理與肝臟解毒路徑",
+          "line": 50,
+          "endLine": 61
+        },
+        {
+          "sourceId": "L6",
+          "section": "腦腸軸與免疫老化：長壽健康管理的臨床洞見",
+          "line": 1,
+          "endLine": 6
+        },
+        {
+          "sourceId": "L6",
+          "section": "一、 核心要點精華（Executive Clinical Summary）",
+          "line": 7,
+          "endLine": 17
+        },
+        {
+          "sourceId": "L6",
+          "section": "二、 核心評估指標與功能醫學檢驗（Assessment & Lab Testing）",
+          "line": 18,
+          "endLine": 32
+        },
+        {
+          "sourceId": "P1",
+          "section": "3. 樟芝菌絲體滴粒",
+          "line": 52,
+          "endLine": 60
+        },
+        {
+          "sourceId": "P1",
+          "section": "4. 康爾喜乳酸菌顆粒",
+          "line": 61,
+          "endLine": 69
+        },
+        {
+          "sourceId": "P1",
+          "section": "6. 康悅兒乳酸菌顆粒 (好心情守護者)",
+          "line": 79,
+          "endLine": 87
+        }
+      ]
+    },
+    {
+      "id": "sleep",
+      "sourceMatches": [
+        {
+          "sourceId": "D2",
+          "section": "📽️ Deck 1: `alzheimers_uvaco_presentation.pptx` — 《腦力常青・美滿生活：守護記憶的黃金健康指南（2026 智慧營養專題）》",
+          "line": 5,
+          "endLine": 25
+        },
+        {
+          "sourceId": "D2",
+          "section": "📽️ Deck 2: `20230409_WL_疼痛.pptx` — 《林煒醫師專題：疼痛與結構、DNA 甲基化與神經修復藍圖》",
+          "line": 26,
+          "endLine": 47
+        },
+        {
+          "sourceId": "D2",
+          "section": "📽️ Deck 3: `張詩帷-產品優越性 春訓 (定版).pptx` & `Uvaco_失智症.pptx` — 《第六代生物科技保健食品：葡眾 12 大產品優越性全覽》",
+          "line": 48,
+          "endLine": 73
+        },
+        {
+          "sourceId": "L1",
+          "section": "環境毒素阻斷 / 代謝排毒 / 生活型態",
+          "line": 109,
+          "endLine": 117
+        },
+        {
+          "sourceId": "L3",
+          "section": "一、 核心要點精華（Executive Clinical Summary）",
+          "line": 8,
+          "endLine": 21
+        },
+        {
+          "sourceId": "L3",
+          "section": "3. 神經類固醇（Neurosteroids）與大腦 E/I 平衡網絡",
+          "line": 62,
+          "endLine": 76
+        },
+        {
+          "sourceId": "L3",
+          "section": "1. 功能性營養素與植化素精準處方",
+          "line": 79,
+          "endLine": 95
+        },
+        {
+          "sourceId": "P1",
+          "section": "6. 康悅兒乳酸菌顆粒 (好心情守護者)",
+          "line": 79,
+          "endLine": 87
+        },
+        {
+          "sourceId": "P1",
+          "section": "12. 康貝寧膠囊 (安定神經好入眠)",
+          "line": 133,
+          "endLine": 141
+        },
+        {
+          "sourceId": "P1",
+          "section": "三、 系統性協同應用速查矩陣表 (Clinical Application Matrix)",
+          "line": 142,
+          "endLine": 160
+        }
+      ]
+    },
+    {
+      "id": "hormones",
+      "sourceMatches": [
+        {
+          "sourceId": "L3",
+          "section": "一、 核心要點精華（Executive Clinical Summary）",
+          "line": 8,
+          "endLine": 21
+        },
+        {
+          "sourceId": "L3",
+          "section": "二、 核心評估指標與功能醫學檢驗（Assessment & Lab Testing）",
+          "line": 22,
+          "endLine": 37
+        },
+        {
+          "sourceId": "L3",
+          "section": "1. 女性 OAT 軸與男性 TAT 軸之動態網絡調控",
+          "line": 40,
+          "endLine": 49
+        }
+      ]
+    },
+    {
+      "id": "brain-lipids",
+      "sourceMatches": [
+        {
+          "sourceId": "L3",
+          "section": "一、 核心要點精華（Executive Clinical Summary）",
+          "line": 8,
+          "endLine": 21
+        },
+        {
+          "sourceId": "L3",
+          "section": "1. 功能性營養素與植化素精準處方",
+          "line": 79,
+          "endLine": 95
+        },
+        {
+          "sourceId": "L3",
+          "section": "五、 臨床實踐行動清單（Key Takeaways）",
+          "line": 114,
+          "endLine": 127
+        },
+        {
+          "sourceId": "L4",
+          "section": "認識(腦)發炎老化風險 x 解析智能長壽秘訣",
+          "line": 1,
+          "endLine": 6
+        },
+        {
+          "sourceId": "L4",
+          "section": "一、 核心要點精華（Executive Clinical Summary）",
+          "line": 7,
+          "endLine": 16
+        },
+        {
+          "sourceId": "L4",
+          "section": "二、 核心評估指標與功能醫學檢驗（Assessment & Lab Testing）",
+          "line": 17,
+          "endLine": 29
+        }
+      ]
+    }
+  ],
+  "products": [
+    {
+      "id": "995",
+      "title": "995 生技營養品 / 永生福朗 (液態發酵 / 凍乾膠囊)"
+    },
+    {
+      "id": "antrodia",
+      "title": "樟芝益 (液態發酵菌絲體生技營養品)"
+    },
+    {
+      "id": "antrodia-drops",
+      "title": "樟芝菌絲體滴粒"
+    },
+    {
+      "id": "kanger",
+      "title": "康爾喜乳酸菌顆粒"
+    },
+    {
+      "id": "kanger-n",
+      "title": "康爾喜 (N) 乳酸菌顆粒"
+    },
+    {
+      "id": "kangyue",
+      "title": "康悅兒乳酸菌顆粒 (好心情守護者)"
+    },
+    {
+      "id": "huoyi",
+      "title": "葡眾活逸康 猴頭菇菌絲體膠囊"
+    },
+    {
+      "id": "ningkang",
+      "title": "寧康福膠囊 (抗輻射守護神)"
+    },
+    {
+      "id": "360",
+      "title": "葡眾 360 計劃 (全身調理完美搭配單日盒)"
+    },
+    {
+      "id": "dikang",
+      "title": "迪康沖泡飲 (心血管清道夫)"
+    },
+    {
+      "id": "lisheng",
+      "title": "力盛沖泡飲 (泌尿與體液清道夫)"
+    },
+    {
+      "id": "kangbei",
+      "title": "康貝寧膠囊 (安定神經好入眠)"
+    }
+  ],
+  "lecture": {
+    "title": "找回身體的自癒力",
+    "speaker": "林煒醫師"
+  },
+  "decks": [
+    {
+      "id": "memory",
+      "slides": [
+        {
+          "id": "memory-1",
+          "title": "腦力常青，美滿生活"
+        },
+        {
+          "id": "memory-2",
+          "title": "家有一老，如有一寶"
+        },
+        {
+          "id": "memory-3",
+          "title": "認識醫學的五十年"
+        },
+        {
+          "id": "memory-4",
+          "title": "健忘，還是需要評估？"
+        },
+        {
+          "id": "memory-5",
+          "title": "看見冰山下的變化"
+        },
+        {
+          "id": "memory-6",
+          "title": "火柴與木柴的比喻"
+        },
+        {
+          "id": "memory-7",
+          "title": "記憶變化，有不同路徑"
+        },
+        {
+          "id": "memory-8",
+          "title": "照顧大腦的日常夥伴"
+        }
+      ]
+    },
+    {
+      "id": "pain",
+      "slides": [
+        {
+          "id": "pain-1",
+          "title": "疼痛與結構"
+        },
+        {
+          "id": "pain-2",
+          "title": "為什麼，總是痛不好？"
+        },
+        {
+          "id": "pain-3",
+          "title": "健康金三角"
+        },
+        {
+          "id": "pain-4",
+          "title": "鬆開修復的煞車"
+        },
+        {
+          "id": "pain-5",
+          "title": "DNA 甲基化的研究線索"
+        },
+        {
+          "id": "pain-6",
+          "title": "醫療與營養，互相支持"
+        },
+        {
+          "id": "pain-7",
+          "title": "四個營養閱讀模組"
+        }
+      ]
+    },
+    {
+      "id": "products",
+      "slides": [
+        {
+          "id": "products-1",
+          "title": "美滿生活，就此展開"
+        },
+        {
+          "id": "products-2",
+          "title": "認識研發與品質後盾"
+        },
+        {
+          "id": "products-3",
+          "title": "從生物科技，認識原料"
+        },
+        {
+          "id": "products-4",
+          "title": "995 與 360 計劃"
+        },
+        {
+          "id": "products-5",
+          "title": "認識順暢保衛系列"
+        },
+        {
+          "id": "products-6",
+          "title": "認識三種發酵配方"
+        },
+        {
+          "id": "products-7",
+          "title": "認識大腦與作息原料"
+        },
+        {
+          "id": "products-8",
+          "title": "迪康與力盛的草本原料"
+        }
+      ]
+    }
+  ]
+}

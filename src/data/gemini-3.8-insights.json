@@ -1,0 +1,63 @@
+{
+  "version": 1,
+  "sourceDigest": "7e98d39c10cd8f69017d28e79636db693444fe2a839565288e92d8bd1c9be2cf",
+  "engine": {
+    "model": "gemini-3.8-pro",
+    "status": "unavailable",
+    "detail": "指定的 Gemini 3.8 Pro 目前不可用，使用完整文件整理，未切換模型。"
+  },
+  "insights": {
+    "overview": "從慢性發炎、細胞修復與自律神經三個角度理解身體，先照顧飲食、活動與睡眠，再與醫療人員討論個人需要。這份內容是文件整理，並非 AI 即時回答或林煒醫師的個別診療。",
+    "axisInsights": [
+      {
+        "axis": "inflammation",
+        "explanation": "發炎是身體的防禦反應；持續低度發炎與清除失衡，才是需要理解的研究主題。關節痛或疲倦有很多原因，不能只憑感覺判定發炎。",
+        "sourceIds": [
+          "L6",
+          "P1",
+          "L4",
+          "L1",
+          "L2",
+          "L3",
+          "L5"
+        ]
+      },
+      {
+        "axis": "repair",
+        "explanation": "修復需要營養、循環、睡眠與適當活動共同支持。甲基化和粒線體像不同的工作站，並沒有一顆保健品能打開所有修復開關。",
+        "sourceIds": [
+          "L1",
+          "L6",
+          "L3",
+          "L5",
+          "P1",
+          "D2",
+          "L4"
+        ]
+      },
+      {
+        "axis": "autonomic",
+        "explanation": "交感與副交感神經共同調整身體；壓力、疼痛、腸道與睡眠會互相影響。心悸或失眠也可能有其他病因。",
+        "sourceIds": [
+          "L3",
+          "P1",
+          "D2",
+          "L6",
+          "L1"
+        ]
+      }
+    ],
+    "scientificCautions": [
+      "MitoCORE、SPM、LPC-DHA、荷爾蒙與研究菌株不能直接等同十二款葡眾產品。",
+      "勾選症狀只決定閱讀主題，不量測發炎、修復或自律神經的失衡比例。",
+      "急症、用藥、懷孕、肝腎病與病後照護應先評估，不產生營養品處方或劑量。"
+    ]
+  },
+  "grounding": {
+    "citations": [],
+    "queries": [],
+    "supportCount": 0,
+    "searchEntryHtml": "",
+    "searched": false
+  }
+}
