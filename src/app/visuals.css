@@ -1,0 +1,143 @@
+/* Original PDF galleries: paper-first, restrained chrome, large reading controls. */
+.pdf-visual { width:100%; min-width:0; overflow:hidden; display:grid; place-items:center; background:#F0F0EB; }
+.pdf-visual>img { display:block; width:100%; height:100%; object-fit:contain; }
+.pdf-live-canvas { position:relative; width:100%; min-height:160px; height:100%; display:grid; place-items:center; }
+.pdf-live-canvas canvas { display:block; width:100%; height:auto; max-height:100%; object-fit:contain; }
+.pdf-live-canvas>p { position:absolute; inset:20px; display:grid; place-content:center; font-size:18px; }
+.visual-carousel { min-width:0; }
+.visual-carousel-image,.pdf-keynote-image { position:relative; overflow:hidden; border:1px solid #CCD5CB; border-radius:18px; background:#F0F0EB; }
+.visual-carousel-image .pdf-visual { aspect-ratio:16/9!important; max-height:58vh; }
+.visual-expand { position:absolute; right:12px; bottom:12px; min-height:44px; padding:8px 14px; gap:8px; border:1px solid #ffffffcf; border-radius:30px; background:#ffffffed; color:#163E32; backdrop-filter:blur(16px); font-size:14px; box-shadow:0 2px 16px #18222014; }
+.visual-carousel-navigation { display:grid; grid-template-columns:60px minmax(0,1fr) 60px; align-items:center; gap:12px; padding:16px 0 8px; }
+.visual-carousel-navigation>button { width:60px; min-height:60px; border-radius:50%; background:#E5EBDD; color:#1B4D3E; }
+.visual-carousel-navigation>div { min-width:0; text-align:center; }
+.visual-carousel-navigation strong { display:block; font-size:20px; line-height:1.5; }
+.visual-carousel-navigation span { display:block; font-size:13px; color:#4F6158; margin-top:6px; line-height:1.6; }
+.visual-caption { font-size:1.375rem; line-height:1.75; margin:16px 0 20px; overflow-wrap:anywhere; }
+.visual-provenance { display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; color:#4F6158; font-size:14px; line-height:1.7; margin:12px 0; }
+.visual-provenance a,.visual-source-note a { color:#1B4D3E; text-decoration:underline; text-underline-offset:3px; }
+.dialog.visual-lightbox { width:calc(100vw - 24px); max-width:1800px; padding:20px 24px; max-height:calc(100dvh - 24px); background:#FAF7F2; }
+.visual-lightbox .dialog-heading h2 { font-size:24px; }
+.visual-lightbox .visual-zoom-window { width:100%; height:calc(100dvh - 230px); min-height:200px; background:#E6E9E2; border-radius:16px; }
+.visual-lightbox .visual-zoom-content { width:100%; height:100%; }
+.visual-zoom-content .pdf-visual { width:100%; height:100%; aspect-ratio:auto!important; }
+.visual-zoom-tools { display:flex; flex-wrap:wrap; gap:8px; margin:8px 0 16px; }
+.visual-zoom-tools button { min-height:52px; min-width:52px; padding:10px 16px; font-size:16px; background:#E5EBDD; }
+.visual-zoom-tools button[aria-pressed=true] { color:white; background:#1B4D3E; }
+.dialog.visual-story-dialog { max-width:1440px; }
+.visual-story-dialog .story-header { padding:20px 32px 16px; }
+.visual-story-dialog .story-steps { padding:16px 32px; }
+.visual-story-dialog .story-stage { padding:8px 32px 24px; }
+.visual-story-dialog .story-stage h3 { margin-bottom:20px; font-size:clamp(26px,2.5vw,36px); }
+.visual-story-dialog .story-eyebrow { margin-bottom:6px; }
+.visual-story-grid { display:grid; grid-template-columns:minmax(0,7fr) minmax(250px,3fr); gap:32px; align-items:start; }
+.visual-story-companion { border-left:1px solid #CCD5CB; padding-left:26px; font-size:1.375rem; line-height:1.75; }
+.visual-story-companion h4 { font-size:24px; }
+.visual-story-dialog .story-symptoms { margin:0; }
+.visual-story-dialog .story-symptoms legend { font-size:22px; margin-bottom:12px; }
+.visual-story-dialog .story-symptoms label { font-size:20px; padding:12px; min-height:60px; gap:12px; border-radius:12px; }
+.visual-source-note { border-top:1px solid #CDD5CB; padding-top:16px; margin-top:24px; font-size:17px; line-height:1.8; }
+.visual-source-note summary { min-height:48px; font-size:17px; cursor:pointer; }
+.visual-product-bridges { display:grid; gap:12px; margin-top:22px; }
+.visual-product-bridges>button { min-width:0; display:flex; align-items:center; gap:12px; text-align:left; padding:12px; border:1px solid #CCD5CB; background:#fff; border-radius:14px; }
+.visual-product-bridges>button>img { width:80px; height:70px; object-fit:contain; border-radius:6px; background:#F0F0EB; }
+.visual-product-bridges>button>span { flex:1; min-width:0; }
+.visual-product-bridges strong { display:block; color:#1B4D3E; font-size:22px; }
+.visual-product-bridges small { display:block; font-size:14px; line-height:1.6; margin:4px 0; }
+.visual-product-bridges span>span { display:flex; align-items:center; gap:4px; font-size:13px; }
+.visual-product-bridges>button>svg { flex-shrink:0; }
+.product-deck .visual-product-intro { margin:8px 0 20px; }
+.product-deck .visual-product-intro h2 { font-size:34px; }
+.product-deck .visual-product-intro p { font-size:18px; margin:8px 0 0; }
+.product-deck .visual-carousel { margin-bottom:24px; }
+.product-deck .visual-carousel-navigation { grid-template-columns:52px minmax(0,1fr) 52px; gap:8px; }
+.product-deck .visual-carousel-navigation button { width:52px; min-height:60px; }
+.product-deck .visual-carousel-navigation strong { font-size:18px; }
+.product-deck .visual-carousel-image .pdf-visual { height:clamp(220px,34vh,340px); aspect-ratio:auto!important; }
+.product-deck .product-brief,.product-deck .tab-panel>ul { font-size:1.375rem; line-height:1.75; }
+.product-brief li+li { margin-top:16px; }
+.dialog.pdf-keynote-dialog { width:calc(100vw - 24px); max-width:1680px; padding:0; max-height:calc(100dvh - 24px); background:#FAF7F2; }
+.pdf-keynote-dialog .keynote-player { display:flex; flex-direction:column; max-height:calc(100dvh - 24px); min-height:0; }
+.pdf-keynote-dialog .keynote-toolbar { flex-shrink:0; padding:14px 24px 6px; }
+.pdf-keynote-dialog .keynote-heading h2 { font-size:24px; }
+.pdf-keynote-dialog .keynote-toolbar-actions button,.pdf-keynote-dialog .keynote-info>summary { min-width:48px; min-height:48px; }
+.pdf-keynote-dialog .keynote-byline { margin:0; padding:0 24px 12px; font-size:14px; }
+.pdf-keynote-dialog .keynote-deck-tabs { flex-shrink:0; display:flex; overflow-x:auto; padding:0 24px 12px; margin:0; gap:8px; border-radius:0; background:transparent; }
+.pdf-keynote-dialog .keynote-deck-tabs button { flex:0 0 auto; min-height:60px; padding:8px 18px; border-radius:12px; background:#E8ECE3; font-size:16px; }
+.pdf-keynote-dialog .keynote-deck-tabs button[aria-selected=true] { background:#1B4D3E; color:white; }
+.pdf-keynote-dialog .keynote-deck-tabs button small { font-size:12px; opacity:1; }
+.pdf-keynote-workspace { display:grid; grid-template-columns:minmax(0,68fr) minmax(280px,32fr); gap:28px; min-height:0; overflow-y:auto; overscroll-behavior:contain; padding:16px 24px 12px; flex:1 1 auto; }
+.pdf-keynote-stage { min-width:0; align-self:start; position:sticky; top:0; }
+.pdf-keynote-image .pdf-visual { height:clamp(230px,49vh,680px); aspect-ratio:auto!important; }
+.pdf-keynote-companion { min-width:0; padding:4px 8px 20px 0; }
+.pdf-keynote-companion h3 { font-size:clamp(26px,2.1vw,34px); line-height:1.5; letter-spacing:-.025em; margin:0 0 16px; }
+.pdf-keynote-companion .voice-button,.slide-ai>button { width:100%; min-height:60px; }
+.slide-ai { margin:18px 0 0; }
+.slide-ai>button { white-space:normal; text-align:left; line-height:1.6; padding:12px 16px; font-size:18px; background:#E6EBDD; color:#1B4D3E; }
+.slide-ai>button:disabled { opacity:.8; }
+.slide-ai-answer { padding-top:24px; font-size:1.375rem; line-height:1.75; }
+.pdf-product-links { display:flex; gap:8px; flex-wrap:wrap; }
+.pdf-product-links button { min-height:48px; padding:8px 12px; font-size:18px; }
+.pdf-keynote-dialog .pdf-filmstrip { position:relative; flex-shrink:0; display:flex; overflow-x:auto; overflow-y:hidden; gap:10px; padding:12px 24px; margin:0; border-block:1px solid #D6DDD2; background:#F0F1EA; scroll-padding:24px; }
+.pdf-filmstrip>button { flex:0 0 116px; width:116px; min-width:0; min-height:92px; padding:4px; display:block; border:2px solid transparent; border-radius:9px; background:transparent; }
+.pdf-filmstrip>button[aria-current=page] { background:#fff; border-color:#1B4D3E; box-shadow:0 0 0 2px #D6AD60; }
+.pdf-filmstrip .thumbnail-preview { height:60px; aspect-ratio:auto; width:100%; display:block; background:#E6E9E2; border-radius:4px; overflow:hidden; }
+.pdf-filmstrip .thumbnail-preview img { width:100%; height:100%; object-fit:contain; }
+.pdf-filmstrip .thumbnail-caption { display:flex; gap:5px; font-size:12px; margin-top:4px; white-space:nowrap; }
+.pdf-filmstrip .thumbnail-caption>span { overflow:hidden; text-overflow:ellipsis; }
+.pdf-keynote-dialog .keynote-controls { flex-shrink:0; padding:12px 24px; margin:0; background:#FAF7F2; }
+.pdf-keynote-dialog .slide-paging button { min-width:60px; min-height:60px; }
+.pdf-auto-narration { min-height:60px; padding:10px 16px; font-size:18px; }
+@media(max-width:1000px){
+ .visual-story-grid { grid-template-columns:minmax(0,1fr); gap:24px; }
+ .visual-story-companion { padding:0; border:0; }
+ .visual-story-dialog .story-symptoms { display:flex; flex-wrap:wrap; gap:10px; }
+ .visual-story-dialog .story-symptoms label { margin:0; }
+ .visual-product-bridges { grid-template-columns:repeat(3,minmax(0,1fr)); }
+ .visual-product-bridges>button { flex-direction:column; align-items:flex-start; }
+ .visual-product-bridges>button>img { width:100%; height:100px; }
+ .visual-product-bridges>button>svg { display:none; }
+ .pdf-keynote-workspace { grid-template-columns:minmax(0,1fr); gap:20px; }
+ .pdf-keynote-stage { position:static; }
+ .pdf-keynote-companion { padding:0 8px 16px; }
+ .pdf-keynote-image .pdf-visual { height:auto; max-height:52vh; aspect-ratio:16/9!important; }
+ .pdf-keynote-dialog .keynote-notice { display:none; }
+}
+@media(max-width:600px){
+ .dialog.visual-story-dialog { width:calc(100vw - 16px); }
+ .visual-story-dialog .story-header { padding:16px; }
+ .visual-story-dialog .story-stage { padding:4px 16px 24px; }
+ .visual-story-dialog .story-steps { padding:12px; }
+ .visual-story-dialog .story-stage h3 { font-size:27px; }
+ .visual-carousel-navigation { gap:8px; grid-template-columns:52px minmax(0,1fr) 52px; }
+ .visual-carousel-navigation>button { width:52px; }
+ .visual-carousel-navigation strong { font-size:19px; }
+ .visual-caption { font-size:1.375rem; }
+ .visual-expand { bottom:6px; right:6px; padding:6px 10px; font-size:12px; }
+ .visual-product-bridges { grid-template-columns:1fr; }
+ .visual-product-bridges>button { flex-direction:row; align-items:center; }
+ .visual-product-bridges>button>img { width:110px; height:86px; }
+ .dialog.pdf-keynote-dialog { width:calc(100vw - 12px); max-height:calc(100dvh - 12px); }
+ .pdf-keynote-dialog .keynote-player { max-height:calc(100dvh - 12px); }
+ .pdf-keynote-dialog .keynote-toolbar { padding:10px 12px 4px; gap:8px; }
+ .pdf-keynote-dialog .keynote-heading h2 { font-size:19px; }
+ .pdf-keynote-dialog .keynote-heading>svg { display:none; }
+ .pdf-keynote-dialog .keynote-toolbar-actions { gap:2px; }
+ .pdf-keynote-dialog .keynote-byline { font-size:12px; padding:0 12px 10px; }
+ .pdf-keynote-dialog .keynote-deck-tabs { padding:0 12px 10px; }
+ .pdf-keynote-workspace { padding:10px 12px; }
+ .pdf-keynote-dialog .pdf-filmstrip { padding:8px 12px; }
+ .pdf-filmstrip>button { flex-basis:94px; width:94px; min-height:78px; }
+ .pdf-filmstrip .thumbnail-preview { height:46px; }
+ .pdf-keynote-dialog .keynote-controls { padding:8px 12px; gap:8px; }
+ .pdf-keynote-dialog .slide-paging button { min-width:48px; width:48px; }
+ .pdf-auto-narration { padding:8px 12px; font-size:14px; }
+ .dialog.visual-lightbox { padding:12px; }
+ .visual-zoom-tools button { font-size:13px; padding:8px 12px; }
+ .visual-lightbox .visual-zoom-window { height:calc(100dvh - 280px); }
+ .visual-provenance { font-size:12px; }
+}
+.embedded-figures>div { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+.embedded-figures button { display:flex; flex-direction:column; min-width:0; padding:8px; border:1px solid #CCD5CB; background:#fff; border-radius:10px; }
+.embedded-figures img { width:100%; height:90px; object-fit:contain; }
+.embedded-figures button span { font-size:13px; padding:8px 0 0; }

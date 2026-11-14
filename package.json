@@ -13,7 +13,7 @@
     "assets:generate": "tsx scripts/generate-ui-assets.ts",
     "materials:ingest": "tsx scripts/ingest-drive-materials.ts",
     "build:with-ai": "npm run assets:generate -- --require-ai && npm run build",
-    "prebuild": "npm run longevity:prepare && npm run materials:ingest && npm run clinical:synthesize && npm run assets:generate",
+    "prebuild": "npm run visuals:prepare && npm run longevity:prepare && npm run materials:ingest && npm run clinical:synthesize && npm run assets:generate",
     "clinical:synthesize": "tsx scripts/synthesize-md-with-gemini.ts",
     "test:triangle": "tsx tests/triangle-browser.ts",
     "longevity:prepare": "node scripts/extract-6-longevity-pdfs.mjs",
@@ -21,7 +21,10 @@
     "test:longevity": "tsx tests/longevity-browser.ts",
     "test:everyday": "tsx tests/everyday-browser.ts",
     "test:archipelago": "tsx tests/archipelago-browser.ts",
-    "test:stories": "tsx tests/pillar-story-browser.ts"
+    "test:stories": "tsx tests/pillar-story-browser.ts",
+    "visuals:extract": "python scripts/extract-all-pdf-visuals.py && node scripts/prepare-pdf-visuals.mjs",
+    "visuals:prepare": "node scripts/prepare-pdf-visuals.mjs",
+    "test:visuals": "tsx tests/visual-browser.ts"
   },
   "engines": {
     "node": ">=22"
@@ -35,8 +38,10 @@
     "gsap": "3.15.1",
     "lucide-react": "1.73.0",
     "next": "15.5.29",
+    "pdfjs-dist": "6.5.438",
     "react": "19.3.1",
     "react-dom": "19.3.1",
+    "react-zoom-pan-pinch": "4.2.0",
     "three": "0.187.0",
     "undici": "8.12.4",
     "zod": "4.6.7"

@@ -63,24 +63,27 @@ npm run assets:generate -- --require-ai
 
 來源機轉原文可在產品科學頁展開閱讀。介面區分研究機制與成品療效，專利、企業獎項與醫師資歷不作為保健品治病的證明。ECFMG 證書不等同美國各州行醫執照。
 
-## 六套長壽醫學圖解
+## 完整原始 PDF 圖像導覽
 
-六套共 24 頁：體力與營養、居家與環境、壓力與睡眠、身體清潔隊、血管與道路、腸道與生活，每套各 4 頁。桌面為 55% 圖解／45% 大字閱讀，平板與手機垂直排列。每頁提供來源頁碼、研究限制、國語朗讀與葡眾產品原料比較。放大圖解支援 100–300% 與捲動；左右鍵、Home／End、觸控、全螢幕及自動朗讀皆保留。
+目前有 **9 份原始 PDF、297 頁、429 張獨立內嵌圖片**。新增《人體營養藍圖》《細胞修復齒輪》《疼痛與身體照顧》《大腦森林》，並完整保留五份長壽簡報。主介面仍顯示林煒醫師；依最新指示公開原始 PDF 與頁面，保留原頁作者署名，不將參考資料改署為活動講師。
 
-本次實際收到 **5 份 PDF，共 233 頁**（第 1／3／4／5／6 套）及六份 Markdown；第 2 套 PDF 未提供，介面明確標示依文稿重製。原檔保存在 `葡眾/lectures-pdf/`，原始文稿保存在 `葡眾/lectures/`，SHA-256 與頁數記錄於 `src/data/longevity-private-index.json`。第 3 套為 10 頁掃描資料，另以繁體中文 OCR 輔助檢索；擷取文字不是逐字校勘。
+四主題故事採 70／30 圖像與短導讀，12 款產品各有三張相關原頁。播放器桌面為 68／32 分欄，平板與手機垂直排列；9 份簡報每一頁都能從縮圖選取，支援左右鍵、Home／End、觸控、語音與自動朗讀。原圖可雙指縮放，另有 PDF.js 2 倍畫布繪製；圖片載入失敗會自動使用原 PDF，PDF 也無法載入時顯示直接開啟原檔的連結。
 
-依使用者的署名選擇，**網站只公開無原始講者署名的重製 SVG，不公開原 PDF 或原始頁面截圖**。主介面顯示林煒醫師，來源保留原作者，不把其他講者原話改署林醫師。`public/longevity-pdf-assets/` 只含 24 張 1600×1000 向量圖，缺圖時仍顯示文字圖解。這些圖解是程式繪製，並非 Pro 生成或原始 PDF 版面。
-
-`src/data/longevity-content.json` 管理校對後內容，`longevity-decks-manifest.ts` 提供播放器資料；`葡眾/longevity-6-lectures-source.md` 保存整合版本。舊三套簡報僅保存在 `archived-pptx-decks.ts` 與來源文件中，不再由播放器載入。
+`src/data/visual-assets-manifest.ts` 是共用索引，記錄 PDF 雜湊、頁碼、200 dpi 影像、縮圖、內嵌圖片與主題映射。`pdf-source-index.json` 保留文字擷取與 OCR 資料，不直接供瀏覽器使用；`visual-page-curation.json` 的逐頁編輯優先於 Gemini 3.8 Flash 生成導讀。歷史的 24 張重製圖保留供舊資料交叉核對，播放器已改用完整原頁。
 
 ```bash
-npm run longevity:prepare # 不需 PDF/OCR 套件；驗證原檔並重建 SVG、manifest、整合文稿
-# 更新原 PDF 後，先重新擷取、人工檢查頁碼及內容，再執行建置：
-UVACO_TESSDATA=/path/to/tessdata npm run longevity:extract
-npm run test:longevity # TEST_BASE_URL 預設 http://localhost:3002
+# 重新擷取需 Python PyMuPDF / Pillow；掃描頁 OCR 另需 Tesseract chi_tra+eng
+UVACO_TESSDATA=/path/to/tessdata npm run visuals:extract
+# 一般建置只驗證已提交資產並準備 PDF.js，不依賴 Python 或外部 API
+npm run visuals:prepare
+# 可選：用實際原頁圖片生成白話草稿，固定 Gemini 3.8 Flash，需人工檢視
+npx tsx scripts/generate-pdf-captions.ts --review-images
+TEST_BASE_URL=http://localhost:3002 npm run test:visuals
 ```
 
-完整擷取使用 Python PyMuPDF、Tesseract 的 chi_tra 與 eng 語料；180 dpi 原始 PNG 僅保存在忽略提交的 `.longevity-extracted/`。CI 使用已提交的文字與原檔雜湊，不需重新 OCR。來源變更會阻擋過期 PDF 索引；重新擷取時依雜湊清除舊影像快取。發布前 `scripts/verify-longevity-export.mjs` 逐張核對 SVG，拒絕原 PDF 或原始講者姓名進入靜態網站。
+雲端 Node 版的 `/api/slide-explanation` 只接受索引中的頁面 ID，將該頁圖片交給官方 `@google/genai` 的 `gemini-3.8-flash`，搭配 Google Search 回傳三句導讀與實際引用。GitHub Pages 保留逐頁離線導讀，明確標示即時 AI 僅在雲端版提供，不從瀏覽器暴露 API 金鑰。
+
+尚未收到第 2 份長壽 PDF、產品優越性春訓 PDF、企業榮譽 PDF 或活動海報原始圖；不虛構它們的原頁、獎牌、實拍或認證。來源示意圖也不標成顯微照片。詳細來源清單與驗證紀錄見 [原圖導覽交付紀錄](docs/visual-first-delivery.md)。
 
 ## 驗證
 
@@ -93,7 +96,7 @@ npm run start -- --port 3001
 npm run test:browser
 ```
 
-瀏覽器測試使用 `/usr/bin/chromium` 與 3001 埠，可透過 `CHROMIUM_PATH`、`TEST_BASE_URL` 調整。涵蓋 1440、768、390 像素、48px 頂欄、屋頂標籤與旋轉暫停、24 頁簡報、朗讀自動切頁、全螢幕與焦點返回，產生 `test-results/` 截圖及 axe 報告。AI 前端測試使用合成 SSE；真實 Flash 連線另行驗證。TTS 測試驗證語言、速率與控制契約，不代表每台裝置均已實際播音。
+瀏覽器測試使用 `/usr/bin/chromium` 與 3001 埠，可透過 `CHROMIUM_PATH`、`TEST_BASE_URL` 調整。涵蓋 1440、768、390 像素、48px 頂欄、屋頂標籤與旋轉暫停、297 頁簡報、朗讀自動切頁、全螢幕與焦點返回，產生 `test-results/` 截圖及 axe 報告。AI 前端測試使用合成 SSE；真實 Flash 連線另行驗證。TTS 測試驗證語言、速率與控制契約，不代表每台裝置均已實際播音。
 
 60fps 取決於實體裝置 GPU 與瀏覽器；headless Chromium 不是 iPad／手機效能認證。首句延遲受網路與模型影響，不能保證低於一秒。
 
@@ -130,7 +133,7 @@ npm run test:triangle # TEST_BASE_URL 預設 http://localhost:3002
 
 ## 白話閱讀與集中說明
 
-所有主要閱讀內容採生活故事：十二款產品、17 張健康金三角閱讀卡、六套共 24 頁簡報、知識館與語音導讀。`everyday-copy.json` 提供產品與閱讀卡的白話版本；原始產品標示與科學說明保留在「🔬 看科學實證（醫師專業版）」展開區。講師學經歷依原稿保留，公開圖解仍不含其他講者署名。
+所有主要閱讀內容採生活故事：十二款產品、17 張健康金三角閱讀卡、完整原始 PDF 簡報、知識館與語音導讀。`everyday-copy.json` 提供產品與閱讀卡的白話版本；原始產品標示與科學說明保留在「🔬 看科學實證（醫師專業版）」展開區。講師學經歷依原稿保留，原始投影片依最新指示保留各自來源署名。
 
 首頁最底部只有一則使用者指定的集中說明。產品卡、簡報與一般 AI 回答移除重複通用免責語；研究條件保存在科學資料內，與個人情況直接相關的急症、過敏與用藥資訊繼續提供。頁尾用小字、置中、低視覺權重呈現，保留可讀的文字對比；手機依寬度自然換行。
 

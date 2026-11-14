@@ -10,7 +10,7 @@ try {
     const errors: string[] = [], failedAssets: string[] = [], apiRequests: string[] = [];
     page.on('pageerror', error => errors.push(error.message));
     page.on('response', response => { if (response.url().startsWith(base) && response.status() >= 400) failedAssets.push(response.url()); });
-    page.on('request', request => { if (/\/api\/(concierge|clinical-analysis)/.test(request.url())) apiRequests.push(request.url()); });
+    page.on('request', request => { if (/\/api\/(concierge|clinical-analysis|slide-explanation)/.test(request.url())) apiRequests.push(request.url()); });
     const response = await page.goto(`${base}/`, { waitUntil: 'networkidle' });
     assert.equal(response?.status(), 200);
     await page.locator('.island-label').last().waitFor({state:'attached'});
@@ -25,10 +25,10 @@ try {
     await page.keyboard.press('Escape');
     assert.equal(await page.locator('.product-intro h2').innerText(), '康爾喜');
     await page.getByRole('button', { name: '播放PPT', exact: true }).click();
-    await page.getByRole('tab', { name: '居家與環境 4 頁', exact: true }).click();
-    assert.equal(await page.locator('.keynote-thumbnails button').count(), 4);
+    await page.getByRole('tab', { name: '腸腦與免疫 55 頁', exact: true }).click();
+    assert.equal(await page.locator('.keynote-thumbnails button').count(), 55);
     await page.getByRole('button', { name: '下一頁', exact: true }).click();
-    assert.equal(await page.locator('.slide-counter').innerText(), '2 / 4');
+    assert.equal(await page.locator('.slide-counter').innerText(), '2 / 55');
     await page.keyboard.press('Escape');
     await page.getByRole('button', { name: '三個健康故事專區', exact: true }).click();
     await page.getByRole('tab', { name: '我的關注', exact: true }).click();
@@ -38,7 +38,7 @@ try {
     assert.equal(await page.locator('.result-products>div').count(), 2);
     await page.locator('.related-slides button').first().click();
     await page.locator('.slide-counter').waitFor();
-    assert.equal(await page.locator('.slide-counter').innerText(), '2 / 4');
+    assert.match(await page.locator('.slide-counter').innerText(), /^\d+ \/ (55|37|88|43|10)$/);
     await page.keyboard.press('Escape');
     const catalog = await page.goto(`${base}/products/`, { waitUntil: 'networkidle' });
     assert.equal(catalog?.status(), 200);

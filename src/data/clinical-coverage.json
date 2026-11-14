@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "sourceDigest": "00ba6230cdf4dde36c9a98a339291a85d760cbe1eaf61967da65b13e139e0f3d",
+  "sourceDigest": "16ee8c70d71ed619a3749c0c0f7f7ce10d893733e36b87762a86ff1cd95432da",
   "inventory": [
     {
       "path": "README.md",
-      "bytes": 16970,
-      "sha256": "5637116d57ec6f72e5aa5b242d9b870206f6d90e8a06452e7f275acbfc195d2d",
+      "bytes": 17016,
+      "sha256": "28ea0756675700ae147467efaf0508d67114bba67ea87fa428d74cc494f0add7",
       "kind": "project-document"
     },
     {
@@ -18,6 +18,12 @@
       "path": "docs/story-content-review.md",
       "bytes": 2945,
       "sha256": "2908711dd016e4ed4fffc0fada109340a9ef7fe6aeb596594a722aa7040fbaa5",
+      "kind": "project-document"
+    },
+    {
+      "path": "docs/visual-first-delivery.md",
+      "bytes": 3021,
+      "sha256": "a09ca58a3bf64c39d94cbc7a0895234c183dd58b0fa57cd3058ca81fe56250db",
       "kind": "project-document"
     },
     {
@@ -76,8 +82,8 @@
     },
     {
       "path": "葡眾/longevity-6-lectures-source.md",
-      "bytes": 35922,
-      "sha256": "8af44b7e1c30ca979b7e3e27e43293dc82e0240ac1821522dbd59baa6a1fc165",
+      "bytes": 36011,
+      "sha256": "23d79127a5bc7b9690d16670ef70903b6ee7fcae0a699509f35f0847110e8873",
       "kind": "clinical-source"
     },
     {
@@ -206,8 +212,8 @@
       "id": "S1",
       "title": "六套長壽講座圖解校對",
       "path": "葡眾/longevity-6-lectures-source.md",
-      "sha256": "8af44b7e1c30ca979b7e3e27e43293dc82e0240ac1821522dbd59baa6a1fc165",
-      "bytes": 35922,
+      "sha256": "23d79127a5bc7b9690d16670ef70903b6ee7fcae0a699509f35f0847110e8873",
+      "bytes": 36011,
       "sectionCount": 31
     },
     {
