@@ -1,5 +1,12 @@
 /** Public source labels describe subjects. Original attribution remains in the archived files. */
 export const clinicalSources = [
+  { id: 'Q1', title: 'PDF：健康長壽與粒線體代謝', summary: '本次提供的原始 PDF；公開圖解依來源頁與既有文稿校對重製。', limit: '原始研究、個案與成品療效須區分；文字層及 OCR 可能漏字，原始圖像為校對依據。', productIds: [], topics: ['原頁校對', '證據層級'] },
+  { id: 'Q3', title: 'PDF：荷爾蒙與神經調節', summary: '本次提供的原始 PDF；公開圖解依來源頁與既有文稿校對重製。', limit: '原始研究、個案與成品療效須區分；文字層及 OCR 可能漏字，原始圖像為校對依據。', productIds: [], topics: ['原頁校對', '證據層級'] },
+  { id: 'Q4', title: 'PDF：發炎消退與腦部脂質', summary: '本次提供的原始 PDF；公開圖解依來源頁與既有文稿校對重製。', limit: '原始研究、個案與成品療效須區分；文字層及 OCR 可能漏字，原始圖像為校對依據。', productIds: [], topics: ['原頁校對', '證據層級'] },
+  { id: 'Q5', title: 'PDF：代謝老化與血管健康', summary: '本次提供的原始 PDF；公開圖解依來源頁與既有文稿校對重製。', limit: '原始研究、個案與成品療效須區分；文字層及 OCR 可能漏字，原始圖像為校對依據。', productIds: [], topics: ['原頁校對', '證據層級'] },
+  { id: 'Q6', title: 'PDF：腦腸軸與免疫老化', summary: '本次提供的原始 PDF；公開圖解依來源頁與既有文稿校對重製。', limit: '原始研究、個案與成品療效須區分；文字層及 OCR 可能漏字，原始圖像為校對依據。', productIds: [], topics: ['原頁校對', '證據層級'] },
+  { id: 'S1', title: '六套長壽講座圖解校對', summary: '五份 PDF 共 233 頁、六份文稿，整理為六套 22 頁圖解；第 2 套 PDF 尚未提供。', limit: '重製圖解並非原始投影片；不將其他作者原話署名為活動講師，也不將機轉轉為產品處方。', productIds: [], topics: ['來源頁碼', '產品原料對照', '研究限制'] },
+
   { id: 'L1', title: '健康長壽與粒線體代謝', summary: '從健康壽命、粒線體能量與氧化還原韌性，理解生物年齡與老化速率的差別。', limit: '原文 MitoCORE 配方與小型研究的結果，不能轉移成 995 或 360 的療效；時鐘變化也不是疾病改善的直接證明。', productIds: ['995', '360'], topics: ['ETC／TCA 能量代謝', 'SOD／GSH 氧化還原', 'DunedinPACE 與追蹤'] },
   { id: 'L2', title: '環境暴露與黴菌毒素', summary: '先辨識漏水、潮濕與暴露，區分黴菌感染和毒素研究；環境改善是照護的重要一環。', limit: '尿液毒素數值不能單獨確診。精油鼻噴、神經阻斷、結合劑及低硫飲食並非居家自療指引，也沒有葡眾產品可直接替代這些處置。', productIds: [], topics: ['環境控制', 'DON／Gliotoxin／OTA', '4D 框架與臨床評估'] },
   { id: 'L3', title: '荷爾蒙、壓力與神經調節', summary: '疲倦、睡眠和情緒可能涉及不同的內分泌路徑；相同症狀不代表相同原因。', limit: '荷爾蒙補充、甲狀腺用藥與檢驗判讀須個別評估；補充品不能替代。原稿中的「皮質醇竊質」是簡化假說。', productIds: ['kangyue', 'kangbei'], topics: ['HPA／HPO／HPT', 'COMT 與雌激素代謝', 'ALLO／GABA／NMDA'] },

@@ -13,9 +13,11 @@
     "assets:generate": "tsx scripts/generate-ui-assets.ts",
     "materials:ingest": "tsx scripts/ingest-drive-materials.ts",
     "build:with-ai": "npm run assets:generate -- --require-ai && npm run build",
-    "prebuild": "npm run materials:ingest && npm run clinical:synthesize && npm run assets:generate",
+    "prebuild": "npm run longevity:prepare && npm run materials:ingest && npm run clinical:synthesize && npm run assets:generate",
     "clinical:synthesize": "tsx scripts/synthesize-md-with-gemini.ts",
-    "test:triangle": "tsx tests/triangle-browser.ts"
+    "test:triangle": "tsx tests/triangle-browser.ts",
+    "longevity:prepare": "node scripts/extract-6-longevity-pdfs.mjs",
+    "longevity:extract": "node scripts/extract-6-longevity-pdfs.mjs --extract"
   },
   "engines": {
     "node": ">=22"

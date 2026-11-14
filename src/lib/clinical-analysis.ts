@@ -11,7 +11,7 @@ export const clinicalRequestSchema=z.object({
   professionalContext:z.boolean().default(false),
 }).strict();
 export type ClinicalRequest=z.infer<typeof clinicalRequestSchema>;
-const sourceIds=z.array(z.enum(clinicalSources.map(s=>s.id) as [string,...string[]])).min(1).max(12);
+const sourceIds=z.array(z.enum(clinicalSources.map(s=>s.id) as [string,...string[]])).min(1).max(clinicalSources.length);
 export const modelClinicalSchema=z.object({
   summary:z.string().min(12).max(900),
   axisInsights:z.array(z.object({axis:z.enum(axisIds),explanation:z.string().min(8).max(700),sourceIds}).strict()).length(3),

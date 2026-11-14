@@ -5,7 +5,7 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import { clinicalRequestSchema, localClinicalAnalysis } from '../src/lib/clinical-analysis';
 import { mechanismCards, triangleAxes } from '../src/data/health-triangle';
 import { pptxDecks } from '../src/data/pptx-decks';
-import { sourceAuthorNames } from '../src/data/clinical-sources';
+import { sourceAuthorNames, clinicalSources } from '../src/data/clinical-sources';
 
 const base=process.env.TEST_BASE_URL||'http://localhost:3002';
 const browser=await chromium.launch({executablePath:process.env.CHROMIUM_PATH||'/usr/bin/chromium',headless:true,args:['--no-sandbox','--enable-unsafe-swiftshader']});
@@ -52,7 +52,7 @@ try {
   await page.locator('#matrix-product').selectOption('huoyi');
   await audit('matrix');
   await page.getByRole('tab',{name:'來源筆記',exact:true}).click();
-  assert.equal(await page.locator('.source-notebooks details').count(),12);
+  assert.equal(await page.locator('.source-notebooks details').count(),clinicalSources.length);
   await page.locator('.source-notebooks summary').first().click();
   const sourceCopy=await page.locator('.triangle-dialog').innerText();
   for(const name of sourceAuthorNames)assert.ok(!sourceCopy.includes(name));

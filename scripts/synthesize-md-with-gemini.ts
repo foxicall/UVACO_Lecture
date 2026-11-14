@@ -23,6 +23,8 @@ async function scan(dir: string): Promise<string[]> {
   return result.sort();
 }
 const ids: Record<string,string> = {
+  '葡眾/longevity-6-lectures-source.md':'S1',
+  '葡眾/pdf-extracted/deck-1.md':'Q1','葡眾/pdf-extracted/deck-3.md':'Q3','葡眾/pdf-extracted/deck-4.md':'Q4','葡眾/pdf-extracted/deck-5.md':'Q5','葡眾/pdf-extracted/deck-6.md':'Q6',
   '葡眾/pro-partner-health-mechanisms.md':'P1', '葡眾/archive/pro-partner-health-mechanisms-previous.md':'P0',
   '葡眾/lecture-poster-source.md':'D1','葡眾/keynote-source.md':'D2','葡眾/pdf-extracted-sources.md':'D3','葡眾/supplementary-source-details.md':'D4',
 };

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "sourceDigest": "7e98d39c10cd8f69017d28e79636db693444fe2a839565288e92d8bd1c9be2cf",
+  "sourceDigest": "3086d65aceb4b55999d7741446281a58fa3c373cf86ca18870e6291fcf44c6b3",
   "inventory": [
     {
       "path": "README.md",
@@ -69,9 +69,45 @@
       "kind": "clinical-source"
     },
     {
+      "path": "葡眾/longevity-6-lectures-source.md",
+      "bytes": 24050,
+      "sha256": "f99c3b738307d9f91ef93bda3ccc18a37f7fd01b21b3a3626b3609ae3a56a6c9",
+      "kind": "clinical-source"
+    },
+    {
       "path": "葡眾/pdf-extracted-sources.md",
       "bytes": 932,
       "sha256": "f408435a0578f369ebda626f932b762cf891b0b8df654591a37776a59617ba7b",
+      "kind": "clinical-source"
+    },
+    {
+      "path": "葡眾/pdf-extracted/deck-1.md",
+      "bytes": 39185,
+      "sha256": "7a48bf88d2c60c43837a028176f528c07bab56dc4dc56445a05945cce00eb720",
+      "kind": "clinical-source"
+    },
+    {
+      "path": "葡眾/pdf-extracted/deck-3.md",
+      "bytes": 39457,
+      "sha256": "9a5cde5c64c9ac41b4cdccf7267a17f109dc86d988f9db4dd3d8271ceff3ed05",
+      "kind": "clinical-source"
+    },
+    {
+      "path": "葡眾/pdf-extracted/deck-4.md",
+      "bytes": 21402,
+      "sha256": "614c0a6b9425acceff93f32a91541f60f38f048e9d05a7a53c5087c04a2ccaec",
+      "kind": "clinical-source"
+    },
+    {
+      "path": "葡眾/pdf-extracted/deck-5.md",
+      "bytes": 13552,
+      "sha256": "7e320c1c0cfcca98e1b838466177178f4e908ebeb96c43f7e0ec64039b04531c",
+      "kind": "clinical-source"
+    },
+    {
+      "path": "葡眾/pdf-extracted/deck-6.md",
+      "bytes": 24801,
+      "sha256": "71ccefa9bb8b5162b849623ee3b13f15e72fe7a41e30e05e018a26993e6c1834",
       "kind": "clinical-source"
     },
     {
@@ -161,12 +197,60 @@
       "sectionCount": 15
     },
     {
+      "id": "S1",
+      "title": "六套長壽講座圖解校對",
+      "path": "葡眾/longevity-6-lectures-source.md",
+      "sha256": "f99c3b738307d9f91ef93bda3ccc18a37f7fd01b21b3a3626b3609ae3a56a6c9",
+      "bytes": 24050,
+      "sectionCount": 29
+    },
+    {
       "id": "D3",
       "title": "大腦與企業簡報擷取",
       "path": "葡眾/pdf-extracted-sources.md",
       "sha256": "f408435a0578f369ebda626f932b762cf891b0b8df654591a37776a59617ba7b",
       "bytes": 932,
       "sectionCount": 1
+    },
+    {
+      "id": "Q1",
+      "title": "PDF：健康長壽與粒線體代謝",
+      "path": "葡眾/pdf-extracted/deck-1.md",
+      "sha256": "7a48bf88d2c60c43837a028176f528c07bab56dc4dc56445a05945cce00eb720",
+      "bytes": 39185,
+      "sectionCount": 89
+    },
+    {
+      "id": "Q3",
+      "title": "PDF：荷爾蒙與神經調節",
+      "path": "葡眾/pdf-extracted/deck-3.md",
+      "sha256": "9a5cde5c64c9ac41b4cdccf7267a17f109dc86d988f9db4dd3d8271ceff3ed05",
+      "bytes": 39457,
+      "sectionCount": 11
+    },
+    {
+      "id": "Q4",
+      "title": "PDF：發炎消退與腦部脂質",
+      "path": "葡眾/pdf-extracted/deck-4.md",
+      "sha256": "614c0a6b9425acceff93f32a91541f60f38f048e9d05a7a53c5087c04a2ccaec",
+      "bytes": 21402,
+      "sectionCount": 38
+    },
+    {
+      "id": "Q5",
+      "title": "PDF：代謝老化與血管健康",
+      "path": "葡眾/pdf-extracted/deck-5.md",
+      "sha256": "7e320c1c0cfcca98e1b838466177178f4e908ebeb96c43f7e0ec64039b04531c",
+      "bytes": 13552,
+      "sectionCount": 44
+    },
+    {
+      "id": "Q6",
+      "title": "PDF：腦腸軸與免疫老化",
+      "path": "葡眾/pdf-extracted/deck-6.md",
+      "sha256": "71ccefa9bb8b5162b849623ee3b13f15e72fe7a41e30e05e018a26993e6c1834",
+      "bytes": 24801,
+      "sectionCount": 56
     },
     {
       "id": "P1",

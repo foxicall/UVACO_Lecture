@@ -11,7 +11,7 @@ import { pptxDecks } from '../src/data/pptx-decks';
 import { markdownSections, parseProductSource } from '../src/lib/markdown-source';
 
 test('all uploaded and existing clinical documents preserve exact bytes and complete section coverage', async () => {
-  assert.equal(corpus.documents.length,12);
+  assert.equal(corpus.documents.length,clinicalSources.length);
   assert.equal(corpus.documents.filter(d=>/^L/.test(d.id)).length,6);
   for (const doc of corpus.documents) {
     const bytes=await readFile(doc.path);
