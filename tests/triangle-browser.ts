@@ -22,11 +22,11 @@ try {
    window.voiceTest=state;
   `});
   await page.goto(base,{waitUntil:'networkidle'});
-  await page.locator('.island-label').last().waitFor();
+  await page.locator('.island-label').last().waitFor({state:'attached'});
   assert.equal(await page.locator('.ios-header').evaluate(el=>el.getBoundingClientRect().height),48);
   assert.equal(await page.locator('.pillar-segments').evaluate(el=>el.scrollWidth>el.clientWidth),false,`Header topics clipped at ${width}`);
   await page.screenshot({path:`test-results/triangle-${width}-map.png`,fullPage:true});
-  await page.getByRole('button',{name:'三大核心機轉專區',exact:true}).click();
+  await page.getByRole('button',{name:'三個健康故事專區',exact:true}).click();
   await page.getByRole('dialog',{name:'健康金三角',exact:true}).waitFor();
   const audit=async(state:string)=>{
    assert.equal(await page.locator('.triangle-dialog').evaluate(el=>el.scrollWidth>el.clientWidth+1),false,`${state} horizontal overflow at ${width}`);
@@ -40,8 +40,9 @@ try {
   for(const axis of triangleAxes) {
    await page.locator('.triangle-node').filter({hasText:axis.title}).click();
    const cards=page.locator('.mechanism-card');count+=await cards.count();
-   await cards.first().locator('summary').click();
-   assert.ok((await cards.first().locator('.mechanism-boundary').innerText()).length>20);
+   await cards.first().locator(':scope > summary').click();
+   assert.ok((await cards.first().locator('.mechanism-body>p').first().innerText()).length>20);
+   assert.equal(await cards.first().locator('.science-details').getAttribute('open'),null);
    await cards.first().getByRole('button',{name:'聽語音導覽',exact:true}).click();
   }
   assert.equal(count,17);
@@ -69,7 +70,7 @@ try {
   await page.getByRole('button',{name:'請 Gemini 3.8 搜尋分析',exact:true}).click();
   await page.getByText('Gemini 3.8 搜尋整理・附外部參考',{exact:true}).waitFor();
   assert.equal(requests,1);assert.equal(await page.locator('.topic-distribution dt').count(),3);
-  assert.ok((await page.locator('.topic-distribution').innerText()).includes('不是身體失衡比例'));
+  assert.ok((await page.locator('.topic-distribution').innerText()).includes('每一格表示這次選到的主題'));
   assert.equal(await page.locator('.result-products>div').count(),2);
   assert.equal(await page.locator('.search-references a').first().getAttribute('href'),'https://www.nccih.nih.gov/health/probiotics-usefulness-and-safety');
   assert.equal((await page.locator('.google-search-suggestions').getAttribute('sandbox'))?.includes('allow-scripts'),false);
@@ -93,9 +94,9 @@ try {
   await page.locator('#clinical-question').fill('');
   await page.getByRole('button',{name:'請 Gemini 3.8 搜尋分析',exact:true}).click();
   await page.getByText('文件整理・這不是AI回答',{exact:true}).waitFor();
-  await page.getByRole('tab',{name:'三大機轉',exact:true}).click();
+  await page.getByRole('tab',{name:'身體的故事',exact:true}).click();
   const target=mechanismCards.find(c=>c.axis==='inflammation')!.slide;
-  await page.locator('.mechanism-card summary').first().click();
+  await page.locator('.mechanism-card > summary').first().click();
   await page.locator('.mechanism-card').first().getByRole('button',{name:'開啟對應簡報',exact:true}).click();
   await page.locator('.slide-counter').waitFor();
   const deck=pptxDecks.find(d=>d.id===target.deckId)!;
@@ -103,7 +104,7 @@ try {
   await page.keyboard.press('Escape');
   await page.getByRole('button',{name:'字體大小：100%，點選切換'}).click();
   await page.getByRole('button',{name:'字體大小：125%，點選切換'}).click();
-  await page.getByRole('button',{name:'三大核心機轉專區',exact:true}).click();
+  await page.getByRole('button',{name:'三個健康故事專區',exact:true}).click();
   await audit('large');
   assert.deepEqual(errors,[]);await page.close();console.log(`${width}px: triangle, 17 cards, 12 products, citations, local fallback, medical gating, slide links and voice passed.`);
  }

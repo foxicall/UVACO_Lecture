@@ -7,6 +7,8 @@ import { clinicalSourceById } from '@/data/clinical-sources';
 import { productById } from '@/data/uvaco-products';
 import { staticSite, sitePath } from '@/lib/site';
 import VoiceGuide from './VoiceGuide';
+import ScienceDetails from './ScienceDetails';
+import { everydayProducts } from '@/data/everyday-language';
 import SearchReferences from './SearchReferences';
 
 export default function ClinicalAnalyzer({onProducts,onSlide}:{onProducts:(ids:string[])=>void;onSlide:(target:SlideTarget)=>void}) {
@@ -41,7 +43,7 @@ export default function ClinicalAnalyzer({onProducts,onSlide}:{onProducts:(ids:s
     }finally{clearTimeout(timer);busy.current=false;setLoading(false);}
   }
   return <div className="clinical-analyzer">
-    <h3>先從您關心的事開始</h3><p>選一項或多項，我們一起找出值得了解的機轉與原料。</p>
+    <h3>先從您關心的事開始</h3><p>選一項或多項，從生活故事開始，慢慢看懂配方。</p>
     <form onSubmit={event=>{event.preventDefault();analyze();}}>
       <fieldset disabled={loading}><legend className="sr-only">選擇目前關注的困擾，可複選</legend>
         <div className="concern-options">{concernChoices.map(choice=><label key={choice.id} className={selected.includes(choice.id)?'selected':''}><input type="checkbox" name="concern" value={choice.id} checked={selected.includes(choice.id)} onChange={()=>{setSelected(ids=>ids.includes(choice.id)?ids.filter(id=>id!==choice.id):[...ids,choice.id]);resetResult();}}/><span>{choice.label}</span></label>)}</div>
@@ -57,14 +59,14 @@ export default function ClinicalAnalyzer({onProducts,onSlide}:{onProducts:(ids:s
       <h3>{result.review==='urgent'?'請先尋求即時醫療協助':result.review==='professional'?'先確認醫療需求':'這次值得一起了解的事'}</h3>
       <p className="result-summary">{result.summary}</p>
       {result.review!=='urgent'&&<>
-        <div className="topic-distribution"><h4>這次關注的主題</h4><p className="small-copy">依您勾選的 {plan.selectedCount} 項困擾整理，可同時涉及多個主題；不是身體失衡比例或檢測結果。</p><dl>{triangleAxes.map(axis=><div key={axis.id}><dt>{axis.title}</dt><dd><span className="topic-meter" aria-hidden="true"><span style={{width:`${plan.counts[axis.id]/plan.selectedCount*100}%`}}/></span><span>{plan.counts[axis.id]} 項關聯</span></dd></div>)}</dl></div>
-        <div className="clinical-findings">{result.axisInsights.map(insight=><article key={insight.axis}><h4>{triangleAxes.find(axis=>axis.id===insight.axis)?.title}</h4><p>{insight.explanation}</p><p className="source-labels">文件參考：{insight.sourceIds.map(id=>clinicalSourceById.get(id)?.title).join('、')}</p></article>)}</div>
-        <section className="product-reading-result"><h4>{result.productIds.length?'可比較的產品原料':'先把問題帶給醫療人員'}</h4><p>{result.productReason}</p>{result.productIds.length>0&&<><div className="result-products">{result.productIds.map(id=><div key={id}><strong>{productById.get(id)?.name}</strong><p>{productById.get(id)?.caution}</p></div>)}</div><button className="primary" onClick={()=>onProducts(result.productIds)}>在群島查看這組產品 <ArrowUpRight size={20}/></button></>}<p className="small-copy">{result.evidenceLimit}</p></section>
-        <section className="daily-care"><h4>把照護放回一天的生活</h4><p className="small-copy">以下是生活安排，不是產品服用時刻或營養處方。</p>{dailyCare.map(care=><div key={care.period}><strong>{care.period}</strong><p>{care.text}</p></div>)}</section>
+        <div className="topic-distribution"><h4>這次關注的主題</h4><p className="small-copy">依您勾選的 {plan.selectedCount} 項困擾整理，可同時涉及多個主題；每一格表示這次選到的主題。</p><dl>{triangleAxes.map(axis=><div key={axis.id}><dt>{axis.title}</dt><dd><span className="topic-meter" aria-hidden="true"><span style={{width:`${plan.counts[axis.id]/plan.selectedCount*100}%`}}/></span><span>{plan.counts[axis.id]} 項關聯</span></dd></div>)}</dl></div>
+        <div className="clinical-findings">{result.axisInsights.map(insight=><article key={insight.axis}><h4>{triangleAxes.find(axis=>axis.id===insight.axis)?.title}</h4><p>{insight.explanation}</p></article>)}</div>
+        <section className="product-reading-result"><h4>{result.productIds.length?'可比較的產品原料':'先把問題帶給醫療人員'}</h4><p>{result.productReason}</p>{result.productIds.length>0&&<><div className="result-products">{result.productIds.map(id=><div key={id}><strong>{productById.get(id)?.name}</strong><p>{everydayProducts[id].comparison}</p></div>)}</div><button className="primary" onClick={()=>onProducts(result.productIds)}>在群島查看這組產品 <ArrowUpRight size={20}/></button></>}<ScienceDetails><h4>這次查到的研究條件</h4><p>{result.evidenceLimit}</p><p>資料主題：{result.sourceIds.map(id=>clinicalSourceById.get(id)?.title).join('、')}</p>{result.productIds.map(id=><section key={id}><h4>{productById.get(id)?.name}・食用前看清楚</h4><p>{productById.get(id)?.caution}</p></section>)}</ScienceDetails></section>
+        <section className="daily-care"><h4>把照護放回一天的生活</h4>{dailyCare.map(care=><div key={care.period}><strong>{care.period}</strong><p>{care.text}</p></div>)}</section>
         <div className="related-slides"><h4>接著聽一頁簡報</h4>{plan.cards.slice(0,2).map(card=><button key={card.id} onClick={()=>onSlide(card.slide)}>{card.title}<ArrowUpRight size={19}/></button>)}</div>
         <SearchReferences grounding={result.grounding}/>
       </>}
-      <VoiceGuide text={result.review==='urgent'?result.summary:[result.summary,...result.axisInsights.map(axis=>axis.explanation),result.productReason,result.evidenceLimit].join('。')} label="朗讀這次整理"/>
+      <VoiceGuide text={result.review==='urgent'?result.summary:[result.summary,...result.axisInsights.map(axis=>axis.explanation),result.productReason].join('。')} label="朗讀這次整理"/>
     </section>}
   </div>;
 }

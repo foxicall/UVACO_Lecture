@@ -12,7 +12,7 @@ try {
     page.on('request', request => { if (/\/api\/(concierge|clinical-analysis)/.test(request.url())) apiRequests.push(request.url()); });
     const response = await page.goto(`${base}/`, { waitUntil: 'networkidle' });
     assert.equal(response?.status(), 200);
-    await page.locator('.island-label').last().waitFor();
+    await page.locator('.island-label').last().waitFor({state:'attached'});
     assert.equal(await page.locator('.island-label').count(), 12);
     await page.getByRole('button', { name: '下一站，講座重點巡禮', exact: true }).click();
     assert.equal(await page.locator('.product-intro h2').innerText(), '995 生技營養品');
@@ -23,12 +23,12 @@ try {
     await page.keyboard.press('Escape');
     assert.equal(await page.locator('.product-intro h2').innerText(), '康爾喜');
     await page.getByRole('button', { name: '播放PPT', exact: true }).click();
-    await page.getByRole('tab', { name: '環境暴露 3 頁', exact: true }).click();
-    assert.equal(await page.locator('.keynote-thumbnails button').count(), 3);
+    await page.getByRole('tab', { name: '居家與環境 4 頁', exact: true }).click();
+    assert.equal(await page.locator('.keynote-thumbnails button').count(), 4);
     await page.getByRole('button', { name: '下一頁', exact: true }).click();
-    assert.equal(await page.locator('.slide-counter').innerText(), '2 / 3');
+    assert.equal(await page.locator('.slide-counter').innerText(), '2 / 4');
     await page.keyboard.press('Escape');
-    await page.getByRole('button', { name: '三大核心機轉專區', exact: true }).click();
+    await page.getByRole('button', { name: '三個健康故事專區', exact: true }).click();
     await page.getByRole('tab', { name: '我的關注', exact: true }).click();
     await page.locator('input[value=gut]').check();
     await page.getByRole('button', { name: '依文件整理我的關注', exact: true }).click();

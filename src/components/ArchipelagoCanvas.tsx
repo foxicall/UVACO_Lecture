@@ -1,14 +1,17 @@
 'use client';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { useLayoutEffect, useMemo, useRef, useState, Component, type ReactNode } from 'react';
-import { Vector3, OrthographicCamera, QuadraticBezierCurve3, Color } from 'three';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState, Component, type ReactNode, type RefObject } from 'react';
+import { Vector3, OrthographicCamera, QuadraticBezierCurve3, Color, Group } from 'three';
+import { Html } from '@react-three/drei';
+import { useReducedMotion } from 'framer-motion';
+import { ARCHIPELAGO_SCALE, LANDMARK_SCALE, ROTATION_SPEED, ISLAND_SPACING, roofHeights, overviewFrustum } from '@/lib/archipelago-layout';
 import { products, productById } from '@/data/uvaco-products';
 import type { Product } from '@/types/product';
 import { pillars, pillarById } from '@/data/lecture-poster';
 
 export function islandPosition(p: Product): [number, number, number] {
   const [q, r] = p.hexCoordinates;
-  return [Math.sqrt(3) * 2 * (q + r / 2), 0, 2 * 1.5 * r];
+  return [Math.sqrt(3) * 2 * (q + r / 2) * ISLAND_SPACING, 0, 2 * 1.5 * r * ISLAND_SPACING];
 }
 function Tree({ position = [0, 0, 0], size = 1, color = '#436C45' }: { position?: [number, number, number]; size?: number; color?: string }) {
   return <group position={position} scale={size}>
@@ -34,19 +37,23 @@ function Landmark({ p }: { p: Product }) {
   if (p.id === '360') return <><Pavilion />{[0, 1, 2].map(i => <Tree key={i} position={[Math.cos(i * 2.1) * .9, 0, Math.sin(i * 2.1) * .9]} size={.4} />)}</>;
   return <><mesh position={[0, .13, 0]}><torusGeometry args={[.64, .15, 4, 6]} /><meshStandardMaterial color={p.id === 'dikang' ? '#CCAA80' : '#8DAE92'} /></mesh><mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, .13, 0]}><circleGeometry args={[.55, 12]} /><meshStandardMaterial color="#5E969F" /></mesh><Tree position={[.5, 0, -.4]} size={.55} color={p.id === 'dikang' ? '#9C9D60' : '#719871'} /><Mushroom x={-.4} z={.3} scale={.6} /></>;
 }
-function Island({ p, active, onSelect }: { p: Product; active: boolean; onSelect: (id: string) => void }) {
+type InteractionProps = {portal:RefObject<HTMLDivElement|null>;onHover:(id:string|null)=>void;onFocus:(id:string|null)=>void};
+function RoofBadge({id,name,color,active=false,onClick,onHover,onFocus,portal,hub=false}:{id:string;name:string;color:string;active?:boolean;onClick:()=>void;hub?:boolean}&InteractionProps) {
+  return <Html portal={portal.current ? {current:portal.current} : undefined} center distanceFactor={1} zIndexRange={[20,1]} className="roof-anchor"><button type="button" data-product-id={id} className={`${hub?'hub-label':'island-label'} landmark-label ${active?'active':''}`} aria-label={hub?'林煒醫師講座，開啟健康金三角':productById.get(id)?.name} aria-pressed={hub?undefined:active} onClick={event=>{event.stopPropagation();onClick();}} onPointerEnter={()=>onHover(id)} onPointerLeave={()=>onHover(null)} onFocus={()=>onFocus(id)} onBlur={()=>onFocus(null)}><span className="landmark-badge"><i aria-hidden="true" style={{backgroundColor:color}}/>{name}</span></button></Html>;
+}
+function Island({ p, active, onSelect, onHover,onFocus,portal }: { p: Product; active: boolean; onSelect: (id: string) => void }&InteractionProps) {
   const [hover, setHover] = useState(false);
-  return <group position={islandPosition(p)} scale={1.1} onClick={e => { e.stopPropagation(); onSelect(p.id); }} onPointerOver={e => { e.stopPropagation(); setHover(true); }} onPointerOut={() => setHover(false)}>
+  return <group name={`island-${p.id}`} position={islandPosition(p)} scale={1.1} onClick={e => { e.stopPropagation(); onSelect(p.id); }} onPointerOver={e => { e.stopPropagation(); setHover(true);onHover(p.id); }} onPointerOut={() => {setHover(false);onHover(null);}}>
     <mesh position={[0, -.25, 0]}><cylinderGeometry args={[1.38, 1.12, .75, 6]} /><meshStandardMaterial color="#8C8065" flatShading /></mesh>
     <mesh position={[0, .16, 0]}><cylinderGeometry args={[1.4, 1.4, .16, 6]} /><meshStandardMaterial color={pillarById.get(p.lecturePillar!)!.color} roughness={.95} /></mesh>
     {(active || hover) && <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, .27, 0]}><ringGeometry args={[1.27, 1.44, 6]} /><meshStandardMaterial color="#F0CA75" emissive="#D8A43F" emissiveIntensity={1.2} toneMapped={false} /></mesh>}
-    <group position={[0, .24, 0]}><Landmark p={p} /></group>
+    <group name={`landmark-${p.id}`} position={[0, .24, 0]} scale={LANDMARK_SCALE}><Landmark p={p}/><group position={[0,roofHeights[p.id]+.35,0]}><RoofBadge id={p.id} name={p.id==='995'?'995':p.name.replaceAll(' ','')} color={pillarById.get(p.lecturePillar!)!.color} active={active} onClick={()=>onSelect(p.id)} onHover={onHover} onFocus={onFocus} portal={portal}/></group></group>
     {[0, 1, 2].map(i => <mesh key={i} position={[Math.cos(i * 2 + 1) * .98, .3, Math.sin(i * 2 + 1) * .98]} scale={[.16, .12, .21]}><dodecahedronGeometry /><meshStandardMaterial color="#DFD8BD" /></mesh>)}
   </group>;
 }
 function Water() {
   const uniforms = useMemo(() => ({ base: { value: new Color('#1E4E5F') } }), []);
-  return <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -.68, 0]}><planeGeometry args={[200, 200]} /><shaderMaterial toneMapped={false} uniforms={uniforms} vertexShader={`varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}`} fragmentShader={`uniform vec3 base;varying vec2 vUv;void main(){float ripple=sin(vUv.x*550.+sin(vUv.y*350.)*2.);float foam=smoothstep(.985,1.,ripple)*.003;gl_FragColor=vec4(base+foam,1.);
+  return <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -.68*ARCHIPELAGO_SCALE, 0]}><planeGeometry args={[200, 200]} /><shaderMaterial toneMapped={false} uniforms={uniforms} vertexShader={`varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}`} fragmentShader={`uniform vec3 base;varying vec2 vUv;void main(){float ripple=sin(vUv.x*550.+sin(vUv.y*350.)*2.);float foam=smoothstep(.985,1.,ripple)*.003;gl_FragColor=vec4(base+foam,1.);
 #include <colorspace_fragment>
 }`} /></mesh>;
 }
@@ -69,11 +76,8 @@ function FixedOverviewCamera() {
   const { camera, size, invalidate } = useThree();
   useLayoutEffect(() => {
     if (!(camera instanceof OrthographicCamera)) return;
-    // Only the viewport changes the framing. Product selection never moves the camera.
-    const aspect = size.width / size.height;
-    const halfHeight = Math.max(13.5, 16 / aspect);
-    camera.left = -halfHeight * aspect; camera.right = halfHeight * aspect;
-    camera.top = halfHeight; camera.bottom = -halfHeight;
+    // Fit the complete rotation envelope, without changing framing during product reading.
+    Object.assign(camera,overviewFrustum(size.width,size.height));
     camera.zoom = 1;
     camera.position.set(18, 26, 28); camera.lookAt(0, 0, 0);
     camera.updateProjectionMatrix(); camera.updateMatrixWorld(); invalidate();
@@ -88,57 +92,66 @@ class CanvasBoundary extends Component<{ children: ReactNode }, { failed: boolea
   static getDerivedStateFromError() { return { failed: true }; }
   render() { return this.state.failed ? <div className="map-fallback">這台裝置無法開啟 3D 地圖，請使用產品選單或下方導覽按鈕。</div> : this.props.children; }
 }
-function LectureHub({ onClick }: { onClick: () => void }) {
-  return <group onClick={e => { e.stopPropagation(); onClick(); }}>
+function LectureHub({ onClick,onHover,onFocus,portal }: { onClick: () => void }&InteractionProps) {
+  return <group onClick={e => { e.stopPropagation(); onClick(); }} onPointerOver={event=>{event.stopPropagation();onHover('hub');}} onPointerOut={()=>onHover(null)}>
     <mesh position={[0, -.28, 0]}><cylinderGeometry args={[1.9, 1.65, .9, 6]} /><meshStandardMaterial color="#AA9A78" /></mesh>
     <mesh position={[0, .21, 0]}><cylinderGeometry args={[1.92, 1.92, .16, 6]} /><meshStandardMaterial color="#DFD8B5" /></mesh>
     <mesh position={[0, .33, 0]}><cylinderGeometry args={[1.4, 1.5, .14, 12]} /><meshStandardMaterial color="#B6C7B1" /></mesh>
-    <group position={[0, .4, 0]} scale={1.35}><Pavilion /></group>
+    <group name="landmark-hub" position={[0, .4, 0]} scale={1.35*LANDMARK_SCALE}><Pavilion /><group position={[0,1.75,0]}><RoofBadge id="hub" name="林煒醫師講座" color="#D97706" hub onClick={onClick} onHover={onHover} onFocus={onFocus} portal={portal}/></group></group>
     <Tree position={[-1.05, .25, .5]} size={.75} color="#5D8966" /><Tree position={[1.05, .25, -.4]} size={.65} color="#86A479" />
-    <mesh position={[0, 2.35, 0]}><octahedronGeometry args={[.22, 0]} /><meshStandardMaterial color="#E2B464" /></mesh>
   </group>;
 }
 function HubConnections() {
   const lines = useMemo(() => pillars.map(p => { const pos = islandPosition(productById.get(p.products[0])!); return { id: p.id, a: [0, .5, 0] as [number, number, number], b: [pos[0], .4, pos[2]] as [number, number, number] }; }), []);
   return <>{lines.map(l => <SynergyArc key={l.id} {...l} hub />)}</>;
 }
-export default function ArchipelagoCanvas({ active, route, onSelect, onHub }: { active: string | null; route: string[]; onSelect: (id: string) => void; onHub: () => void }) {
-  const anchors = useRef<Record<string, HTMLButtonElement | null>>({});
-  const hub = useRef<HTMLButtonElement | null>(null);
-  return <CanvasBoundary><div className="canvas-shell"><Canvas role="img" frameloop="demand" orthographic camera={{ position: [18, 26, 28], zoom: 1, near: .1, far: 160 }} dpr={[1, 1.5]} gl={{ antialias: true, powerPreference: 'high-performance' }} aria-label="固定視角的十二座葡眾產品島嶼地圖">
-    <Lighting /><Water /><FixedOverviewCamera />
-    {products.map(p => <Island key={p.id} p={p} active={active === p.id} onSelect={onSelect} />)}
-    <LectureHub onClick={onHub} /><HubConnections /><SynergyBezierLines ids={route} active={active} />
-    <ProjectLabels anchors={anchors} hub={hub} />
-  </Canvas><div className="label-layer">{products.map(p => <button key={p.id} ref={el => { anchors.current[p.id] = el; }} className={`island-label ${active === p.id ? 'active' : ''}`} onClick={() => onSelect(p.id)} aria-label={p.name} aria-pressed={active === p.id}>{p.id === '995' ? '995' : p.name}</button>)}<button className="hub-label" ref={hub} onClick={onHub}><strong>健康金三角</strong><span>林煒醫師</span></button></div></div></CanvasBoundary>;
-}
-function ProjectLabels({ anchors, hub }: { anchors: React.RefObject<Record<string, HTMLButtonElement | null>>; hub: React.RefObject<HTMLButtonElement | null> }) {
-  const point = useMemo(() => new Vector3(), []);
-  const lastFrame = useRef('');
-  useFrame(({ camera, size }) => {
-    const key = `${size.width}:${size.height}`;
-    if (lastFrame.current === key) return;
-    lastFrame.current = key;
-    const placed: { x: number; y: number; width: number; height: number }[] = [];
-    if (hub.current) {
-      point.set(0, .1, 1.6).project(camera);
-      const x = (point.x * .5 + .5) * size.width, y = (-point.y * .5 + .5) * size.height;
-      hub.current.style.transform = `translate(${x}px, ${y}px) translate(-50%,-50%)`;
-      placed.push({ x, y, width: hub.current.offsetWidth || 92, height: hub.current.offsetHeight || 52 });
-    }
-    const items = products.map(product => {
-      const p = islandPosition(product); point.set(p[0], .1, p[2] + 1.15).project(camera);
-      return { product, x: (point.x * .5 + .5) * size.width, y: (-point.y * .5 + .5) * size.height };
-    }).sort((a, b) => a.y - b.y);
-    for (const item of items) {
-      const el = anchors.current[item.product.id]; if (!el) continue;
-      const width = el.offsetWidth || 90, height = el.offsetHeight || 44;
-      const candidates = [{ x: item.x, y: item.y }];
-      for (let radius = 1; radius <= 7; radius++) for (let i = 0; i < 16; i++) candidates.push({ x: item.x + Math.cos(i * Math.PI / 8) * radius * 20, y: item.y + Math.sin(i * Math.PI / 8) * radius * 20 });
-      const chosen = candidates.find(c => c.x >= width / 2 + 6 && c.x <= size.width - width / 2 - 6 && c.y >= height / 2 + 6 && c.y <= size.height - height / 2 - 6 && !placed.some(p => Math.abs(c.x - p.x) < (width + p.width) / 2 + 5 && Math.abs(c.y - p.y) < (height + p.height) / 2 + 5)) || candidates[0];
-      placed.push({ ...chosen, width, height });
-      el.style.transform = `translate(${chosen.x.toFixed(1)}px, ${chosen.y.toFixed(1)}px) translate(-50%, -50%)`;
+function RoofVisibility({portal,active,hover,focus}:{portal:RefObject<HTMLDivElement|null>;active:string|null;hover:string|null;focus:string|null}) {
+  const invalidate=useThree(state=>state.invalidate);
+  useEffect(()=>{const frame=requestAnimationFrame(()=>invalidate());return()=>cancelAnimationFrame(frame);},[invalidate,active,hover,focus]);
+  useFrame(()=>{
+    const parent=portal.current;
+    if(!parent)return;
+    const bounds=parent.getBoundingClientRect();
+    const badges=Array.from(parent.querySelectorAll<HTMLButtonElement>('.landmark-label')).map(button=>({button,box:button.querySelector('.landmark-badge')!.getBoundingClientRect()}));
+    const priority=(button:HTMLButtonElement)=>[active,hover,focus].includes(button.dataset.productId!)?2:button.dataset.productId==='hub'?1:0;
+    badges.sort((a,b)=>priority(b.button)-priority(a.button)||b.box.bottom-a.box.bottom);
+    const placed:DOMRect[]=[];
+    for(const {button,box} of badges){
+      const fits=box.left>=bounds.left+4&&box.right<=bounds.right-4&&box.top>=bounds.top+4&&box.bottom<=bounds.bottom-4;
+      const overlaps=placed.some(other=>box.left<other.right+1&&box.right>other.left-1&&box.top<other.bottom+1&&box.bottom>other.top-1);
+      const visible=fits&&!overlaps;
+      if(button.dataset.labelVisible!==String(visible))button.dataset.labelVisible=String(visible);
+      if(visible)placed.push(box);
     }
   });
   return null;
+}
+function Turntable({rotating,children,onAngle}:{rotating:boolean;children:ReactNode;onAngle:(angle:number)=>void}){
+  const group=useRef<Group>(null);
+  useFrame((_,delta)=>{if(rotating&&group.current){group.current.rotation.y+=Math.min(delta,.05)*ROTATION_SPEED;onAngle(group.current.rotation.y);}});
+  return <group name="archipelago-turntable" ref={group} scale={ARCHIPELAGO_SCALE}>{children}</group>;
+}
+export default function ArchipelagoCanvas({ active, route, onSelect, onHub,reading=false }: { active: string | null; route: string[]; onSelect: (id: string) => void; onHub: () => void;reading?:boolean }) {
+  const reduced=useReducedMotion();
+  const [choice,setChoice]=useState<boolean|null>(null);
+  const [hover,setHover]=useState<string|null>(null),[focus,setFocus]=useState<string|null>(null);
+  const [visible,setVisible]=useState(true);
+  const shell=useRef<HTMLDivElement>(null);
+  const portal=useRef<HTMLDivElement>(null);
+  useEffect(()=>{const change=()=>setVisible(!document.hidden);change();document.addEventListener('visibilitychange',change);return()=>document.removeEventListener('visibilitychange',change);},[]);
+  const enabled=choice??!reduced;
+  const rotating=enabled&&!active&&!reading&&!hover&&!focus&&visible;
+  const status=active||reading?'閱讀時暫停':hover||focus?'停留時暫停':!visible?'視窗休息中':rotating?'自動旋轉中':'暫停旋轉';
+  return <CanvasBoundary><div className="canvas-shell" ref={shell} data-rotating={rotating} data-rotation="0" data-scene-scale={ARCHIPELAGO_SCALE} data-landmark-scale={LANDMARK_SCALE}>
+    <div className="roof-badges" ref={portal}/>
+    <Canvas role="img" frameloop={rotating?'always':'demand'} orthographic camera={{ position: [18, 26, 28], zoom: 1, near: .1, far: 160 }} dpr={[1, 1.5]} gl={{ antialias: true, powerPreference: 'high-performance' }} aria-label="可暫停旋轉的十二座葡眾產品島嶼地圖">
+      <Lighting /><Water /><FixedOverviewCamera />
+      <Turntable rotating={rotating} onAngle={angle=>{if(shell.current)shell.current.dataset.rotation=angle.toFixed(5);}}>
+        {products.map(p=><Island key={p.id} p={p} active={active===p.id} onSelect={onSelect} onHover={setHover} onFocus={setFocus} portal={portal}/>)}
+        <LectureHub onClick={onHub} onHover={setHover} onFocus={setFocus} portal={portal}/><HubConnections/><SynergyBezierLines ids={route} active={active}/>
+      </Turntable>
+      <RoofVisibility portal={portal} active={active} hover={hover} focus={focus}/>
+    </Canvas>
+    <button className="rotation-toggle" aria-label={enabled?'暫停自動旋轉':'開啟自動旋轉'} aria-pressed={enabled} onClick={()=>setChoice(!enabled)}><span aria-hidden="true">{rotating?'🔄':'⏸'}</span>{status}</button>
+  </div></CanvasBoundary>;
 }

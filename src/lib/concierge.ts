@@ -1,11 +1,12 @@
 import { z } from 'zod';
+import { everydayAiInstruction, hasGenericDisclaimer } from '@/data/everyday-language';
 import { products } from '@/data/uvaco-products';
 import { lecture, pillars } from '@/data/lecture-poster';
 
 export const MODELS = Object.freeze({ visuals: 'gemini-3.8-pro', concierge: 'gemini-3.8-flash' });
 export const requestSchema = z.object({ question: z.string().trim().min(2).max(300) }).strict();
 export const answerSchema = z.object({
-  sentences: z.array(z.string().min(4).max(240)).length(3),
+  sentences: z.array(z.string().min(4).max(240).refine(text=>!hasGenericDisclaimer(text))).length(3),
   targetProductIds: z.array(z.enum(products.map(p => p.id) as [string, ...string[]])).max(3),
 }).strict();
 export type ConciergeAnswer = z.infer<typeof answerSchema>;
@@ -18,7 +19,7 @@ export const presets = [
 export function localReadingRoute(question: string): ConciergeAnswer {
   if (isUrgent(question)) return urgentAnswer;
   const ids = /用藥|吃.*藥|慢性病|病後|大病|懷孕/.test(question) ? [] : /忘|記憶/.test(question) ? ['huoyi', 'kangbei'] : /睡|放鬆/.test(question) ? ['kangbei', 'kangyue'] : /排便|肚子|腸/.test(question) ? ['kanger', 'kanger-n'] : ['995'];
-  return { sentences: ['目前改用本機文件導覽，這不是 AI 回答。', '您可以閱讀相關產品的原料與注意事項，了解問題與日常照顧的關係。', '如需判斷適合的產品、服用方式或藥物交互作用，請讓醫師或藥師協助。'], targetProductIds: ids };
+  return { sentences: ids.length ? ['目前使用本機文件導覽，這不是 AI 回答。', '我們從生活故事開始，看看飲食、休息和身體感受有哪些聯繫。', '點選下方產品，就能把不同配方一站一站看清楚。'] : ['先把目前用藥和身體變化記下來，這份清單能幫忙釐清需要。', '請帶著產品包裝與藥單，讓醫師或藥師檢查成分是否重複或互相影響。', '目前使用本機文件整理，我們先從安全的飲食與生活安排開始。'], targetProductIds: ids };
 }
 export function isUrgent(question: string) {
   return /胸痛|胸悶|呼吸困難|喘不過氣|突然.{0,8}(無力|麻木|口齒|嘴歪)|中風|昏倒|意識不清|自殺|不想活/.test(question);
@@ -44,12 +45,12 @@ export function completedSentences(buffer: string): string[] {
       if (tail[i++] === '"') { closed = true; break; }
     }
     if (!closed) break;
-    try { result.push(z.string().min(4).max(240).parse(JSON.parse(tail.slice(begin, i)))); } catch { break; }
+    try { result.push(z.string().min(4).max(240).refine(text=>!hasGenericDisclaimer(text)).parse(JSON.parse(tail.slice(begin, i)))); } catch { break; }
   }
   return result;
 }
 
-export const systemInstruction = `你是「${lecture.title}」林煒醫師健康講座的資訊導覽助手，不是醫師本人，不代表醫師作個別診斷。使用溫暖、易懂的繁體中文（台灣）。只輸出符合 schema 的 JSON，先 sentences 再 targetProductIds。
+export const systemInstruction = `${everydayAiInstruction}\n你是「${lecture.title}」林煒醫師健康講座的資訊導覽助手，不是醫師本人，不代表醫師作個別診斷。使用溫暖、易懂的繁體中文（台灣）。只輸出符合 schema 的 JSON，先 sentences 再 targetProductIds。
 以講座主題「${lecture.subtitle}」與「營養是修復的原料」解說日常健康；強調醫療、飲食與生活照護相輔相成，醫療也可以治療病因與預防疾病，不得暗示只能壓抑症狀。神經阻斷與微電流為需專業評估的醫療方式，不推介個人療程。
 四大講座主題與可閱讀島嶼：${JSON.stringify(pillars.map(p => ({ name: p.name, introduction: p.introduction, ids: p.products })))}。
 活動資料：${lecture.date} ${lecture.time}，${lecture.address}，免費健康講座，主講${lecture.speaker}。不捏造報名連結、名額數或未提供的年份。

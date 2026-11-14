@@ -31,7 +31,7 @@ try {
       assert.equal(liveApi.status, 200, 'Real browser same-origin request must reach the Node API');
       assert.ok(liveApi.body.includes('119'));
     }
-    await page.locator('.island-label').last().waitFor();
+    await page.locator('.island-label').last().waitFor({state:'attached'});
     await page.waitForTimeout(500);
     assert.equal(await page.locator('.island-label').count(), 12);
     assert.equal(await page.locator('canvas').count(), 1);
@@ -42,14 +42,14 @@ try {
     assert.equal(clippedTabs, false, `All four header topics visible at ${width}`);
     const clippedLabels = await page.locator('.canvas-shell').evaluate(shell => {
       const bounds = shell.getBoundingClientRect();
-      return [...shell.querySelectorAll('.island-label')].filter(label => {
+      return [...shell.querySelectorAll('[data-label-visible=true] .landmark-badge')].filter(label => {
         const box = label.getBoundingClientRect();
         return box.left < bounds.left || box.right > bounds.right || box.top < bounds.top || box.bottom > bounds.bottom;
       }).map(label => label.textContent);
     });
     assert.deepEqual(clippedLabels, [], `Clipped overview labels at ${width}`);
-    const overlappingLabels = await page.locator('.label-layer').evaluate(layer => {
-      const labels = [...layer.querySelectorAll('button')];
+    const overlappingLabels = await page.locator('.roof-badges').evaluate(layer => {
+      const labels = [...layer.querySelectorAll('[data-label-visible=true] .landmark-badge')];
       return labels.flatMap((label, i) => labels.slice(i + 1).filter(other => {
         const a = label.getBoundingClientRect(), b = other.getBoundingClientRect();
         return a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top;
@@ -70,8 +70,8 @@ try {
     const voiceCalls = await page.evaluate(() => (window as unknown as { __voiceTest: { calls: { lang: string; rate: number }[] } }).__voiceTest.calls);
     assert.equal(voiceCalls[0].lang, 'zh-TW');
     assert.ok(Math.abs(voiceCalls[0].rate - .92) < .00001);
-    await page.getByRole('tab', { name: '科學與成分' }).click();
-    await page.getByRole('tab', { name: '科學與成分' }).press('ArrowRight');
+    await page.getByRole('tab', { name: '原料小故事' }).click();
+    await page.getByRole('tab', { name: '原料小故事' }).press('ArrowRight');
     assert.equal(await page.getByRole('tab', { name: '一起認識' }).getAttribute('aria-selected'), 'true');
     await page.getByRole('tab', { name: '給長輩的話' }).click();
     await page.screenshot({ path: `test-results/final-${width}-product.png`, fullPage: true });
@@ -88,6 +88,7 @@ try {
     await page.screenshot({ path: `test-results/final-${width}-large.png`, fullPage: true });
     await page.getByRole('button', { name: '字體大小：140%，點選切換' }).click();
     await page.getByRole('button', { name: '講師林煒醫師與11/15講座資訊' }).click();
+    await page.getByText('完整學經歷與專業認證', {exact:true}).click();
     await page.locator('.speaker-credentials li').last().waitFor();
     assert.equal(await page.locator('.speaker-specialties li').count(), 8);
     assert.equal(await page.locator('.speaker-credentials li').count(), 10);
@@ -123,7 +124,7 @@ try {
     assert.equal(await page.locator('.circadian-header').count(), 0);
     await page.getByRole('button', { name: '六大長壽簡報播放', exact: true }).click();
     await page.locator('.keynote-player').waitFor();
-    for (const [name, count] of [['健康長壽', 4], ['環境暴露', 3], ['荷爾蒙', 4], ['發炎消退', 4], ['代謝血管', 3], ['腦腸免疫', 4]] as const) {
+    for (const [name, count] of [['體力與營養', 4], ['居家與環境', 4], ['壓力與睡眠', 4], ['身體清潔隊', 4], ['血管與道路', 4], ['腸道與生活', 4]] as const) {
       await page.getByRole('tab', { name: `${name} ${count} 頁`, exact: true }).click();
       assert.equal(await page.locator('.keynote-thumbnails button').count(), count);
       assert.equal(await page.getByRole('button', { name: '上一頁', exact: true }).isDisabled(), true);
@@ -160,7 +161,7 @@ try {
     await page.evaluate(() => (window as any).__voiceTest.current.onend());
     await page.getByRole('button', { name: '自動朗讀', exact: true }).waitFor();
     assert.equal(await page.locator('.slide-counter').innerText(), '4 / 4');
-    await page.getByRole('tab', { name: '健康長壽 4 頁', exact: true }).click();
+    await page.getByRole('tab', { name: '體力與營養 4 頁', exact: true }).click();
     await page.screenshot({ path: `test-results/final-${width}-keynote.png`, fullPage: false });
     const keynoteAxe = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag2aaa']).analyze();
     report.push({ width, state: 'keynote', accessibility: keynoteAxe.violations.map(v => ({ id: v.id, nodes: v.nodes.map(n => ({ target: n.target, summary: n.failureSummary })) })) });
@@ -179,7 +180,7 @@ try {
   const animationErrors: string[] = [];
   animatedPage.on('pageerror', error => animationErrors.push(error.message));
   await animatedPage.goto(base, { waitUntil: 'networkidle' });
-  await animatedPage.locator('.island-label').last().waitFor();
+  await animatedPage.locator('.island-label').last().waitFor({state:'attached'});
   await animatedPage.waitForTimeout(1800);
   await animatedPage.getByRole('button', { name: '下一站，講座重點巡禮', exact: true }).click();
   await animatedPage.waitForTimeout(1800);
@@ -190,7 +191,7 @@ try {
   await animatedPage.locator('dialog[open]').waitFor();
   assert.deepEqual(animationErrors, [], 'Errors in standard motion preference');
   await animatedContext.close();
-  console.log('Fixed daytime overview, selection and central lecture hub passed.');
+  console.log('Turntable overview, selection and central lecture hub passed.');
   await writeFile('test-results/browser-report.json', JSON.stringify(report, null, 2));
   const failures = report.flatMap(r => (r as { accessibility: unknown[] }).accessibility);
   assert.deepEqual(failures, [], 'Accessibility violations: see test-results/browser-report.json');

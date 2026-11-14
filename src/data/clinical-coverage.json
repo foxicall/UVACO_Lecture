@@ -1,17 +1,17 @@
 {
   "version": 1,
-  "sourceDigest": "3086d65aceb4b55999d7741446281a58fa3c373cf86ca18870e6291fcf44c6b3",
+  "sourceDigest": "00ba6230cdf4dde36c9a98a339291a85d760cbe1eaf61967da65b13e139e0f3d",
   "inventory": [
     {
       "path": "README.md",
-      "bytes": 13049,
-      "sha256": "1221bc67f68f632166850647ef3e806ed30112760ee7e74f9cd26745287dda73",
+      "bytes": 15112,
+      "sha256": "53a3deca9b3ff5098000b27e0a6bc7775dc6226b1ce4d774f84812d5c968221e",
       "kind": "project-document"
     },
     {
       "path": "docs/design-notes.md",
-      "bytes": 4484,
-      "sha256": "da9e8377252ea672d2a4fe016100fa3147e2d56edb05660809d05504970db8d1",
+      "bytes": 5797,
+      "sha256": "fcf19031cb4d726106f26f5a5945c11b907466d706c718d778d5fdf22e37d260",
       "kind": "project-document"
     },
     {
@@ -70,8 +70,8 @@
     },
     {
       "path": "葡眾/longevity-6-lectures-source.md",
-      "bytes": 24050,
-      "sha256": "f99c3b738307d9f91ef93bda3ccc18a37f7fd01b21b3a3626b3609ae3a56a6c9",
+      "bytes": 35922,
+      "sha256": "8af44b7e1c30ca979b7e3e27e43293dc82e0240ac1821522dbd59baa6a1fc165",
       "kind": "clinical-source"
     },
     {
@@ -200,9 +200,9 @@
       "id": "S1",
       "title": "六套長壽講座圖解校對",
       "path": "葡眾/longevity-6-lectures-source.md",
-      "sha256": "f99c3b738307d9f91ef93bda3ccc18a37f7fd01b21b3a3626b3609ae3a56a6c9",
-      "bytes": 24050,
-      "sectionCount": 29
+      "sha256": "8af44b7e1c30ca979b7e3e27e43293dc82e0240ac1821522dbd59baa6a1fc165",
+      "bytes": 35922,
+      "sectionCount": 31
     },
     {
       "id": "D3",
@@ -1394,19 +1394,19 @@
       "slides": [
         {
           "id": "longevity-1-1",
-          "title": "長壽，也要活得自在"
+          "title": "到老了，還能做喜歡的事"
         },
         {
           "id": "longevity-1-2",
-          "title": "里程數，不等於現在車速"
+          "title": "身體的時速表，不只是歲數"
         },
         {
           "id": "longevity-1-3",
-          "title": "發電廠，也需要穩定運轉"
+          "title": "細胞發電廠，也需要保養"
         },
         {
           "id": "longevity-1-4",
-          "title": "代謝數字，要連起來看"
+          "title": "營養怎麼選？先攤開清單"
         }
       ]
     },
@@ -1415,15 +1415,19 @@
       "slides": [
         {
           "id": "longevity-2-1",
-          "title": "先看看，住的地方怎麼了"
+          "title": "累又鼻子不舒服，先看看住處"
         },
         {
           "id": "longevity-2-2",
-          "title": "毒素研究，不能套用每個人"
+          "title": "身體的清理，有好幾個出口"
         },
         {
           "id": "longevity-2-3",
-          "title": "四個方向，先討論再行動"
+          "title": "大掃除之前，先整理順序"
+        },
+        {
+          "id": "longevity-2-4",
+          "title": "飲品與好菌，怎麼看配方？"
         }
       ]
     },
@@ -1432,19 +1436,19 @@
       "slides": [
         {
           "id": "longevity-3-1",
-          "title": "身體的調節，是一張網"
+          "title": "壓力、代謝與荷爾蒙是老鄰居"
         },
         {
           "id": "longevity-3-2",
-          "title": "壓力不是唯一的解釋"
+          "title": "煩惱很多時，先讓自己慢一點"
         },
         {
           "id": "longevity-3-3",
-          "title": "甲基化，是代謝的一部分"
+          "title": "大腦也有油門和煞車"
         },
         {
           "id": "longevity-3-4",
-          "title": "神經也有油門與煞車"
+          "title": "把飲食與作息，排進同一張清單"
         }
       ]
     },
@@ -1453,19 +1457,19 @@
       "slides": [
         {
           "id": "longevity-4-1",
-          "title": "發炎之後，還要好好收尾"
+          "title": "火苗停下來，還要打掃現場"
         },
         {
           "id": "longevity-4-2",
-          "title": "四個家族，來源要分清"
+          "title": "進入大腦，原料也有通行方式"
         },
         {
           "id": "longevity-4-3",
-          "title": "進入大腦，型態也重要"
+          "title": "神經電線，外層也要照顧"
         },
         {
           "id": "longevity-4-4",
-          "title": "植化素，先看配方與研究"
+          "title": "植物與酵素，各有什麼工作？"
         }
       ]
     },
@@ -1474,15 +1478,19 @@
       "slides": [
         {
           "id": "longevity-5-1",
-          "title": "正常數字，不是完整答案"
+          "title": "健檢正常，還有哪些事要看？"
         },
         {
           "id": "longevity-5-2",
-          "title": "脂蛋白與血管，是連鎖關係"
+          "title": "好警察，也要看他有沒有在工作"
         },
         {
           "id": "longevity-5-3",
-          "title": "血管內皮的三條線索"
+          "title": "血管旁的回收站，怎麼運作？"
+        },
+        {
+          "id": "longevity-5-4",
+          "title": "一杯飲品之外，也照顧整天生活"
         }
       ]
     },
@@ -1491,19 +1499,19 @@
       "slides": [
         {
           "id": "longevity-6-1",
-          "title": "照顧腸道，也照顧生活能力"
+          "title": "照顧腸道，也照顧自在生活"
         },
         {
           "id": "longevity-6-2",
-          "title": "腸道的門，如何調節？"
+          "title": "腸道拉鍊，會開也要會把關"
         },
         {
           "id": "longevity-6-3",
-          "title": "四條路徑，彼此牽動"
+          "title": "肚子、大腦和肌肉，彼此有來往"
         },
         {
           "id": "longevity-6-4",
-          "title": "五個照護方向，因人而異"
+          "title": "五個小步驟，把腸道照護排好"
         }
       ]
     }

@@ -28,8 +28,8 @@ export const lecture = {
 
 export const pillars: { id: PillarId; name: string; color: string; theme: string; introduction: string; products: string[]; motif: string }[] = [
   { id: 'repair', name: '人體修復能力', color: '#D7B66F', theme: '營養是修復的原料', introduction: '從吃得均衡、補足需要開始，認識身體維持正常功能所需的營養。', products: ['995', '360', 'lisheng'], motif: 'a seed opening into a branching botanical cellular fountain' },
-  { id: 'neural', name: '神經修復', color: '#A6C7C2', theme: '關心神經，照顧生活品質', introduction: '認識神經與營養研究；記憶、疼痛與感覺變化，應配合醫療評估。', products: ['huoyi', 'antrodia-drops', 'dikang'], motif: 'an intricate neural forest with protective branching canopy' },
-  { id: 'inflammation', name: '慢性發炎', color: '#99B784', theme: '從日常照顧身體的平衡', introduction: '一起了解腸道、免疫與氧化壓力，區分日常營養與疾病治療。', products: ['kanger', 'kanger-n', 'antrodia'], motif: 'a flourishing probiotic garden encircled by botanical leaves' },
+  { id: 'neural', name: '神經修復', color: '#A6C7C2', theme: '關心神經，照顧生活品質', introduction: '像照顧森林裡的小路，從活動、睡眠與每天的飲食開始。', products: ['huoyi', 'antrodia-drops', 'dikang'], motif: 'an intricate neural forest with protective branching canopy' },
+  { id: 'inflammation', name: '慢性發炎', color: '#99B784', theme: '從日常照顧身體的平衡', introduction: '像廚房收工後還要打掃，一起認識身體的防禦與清潔隊。', products: ['kanger', 'kanger-n', 'antrodia'], motif: 'a flourishing probiotic garden encircled by botanical leaves' },
   { id: 'autonomic', name: '自律神經', color: '#C7B599', theme: '為身心留一點休息的空間', introduction: '從規律作息、睡眠與壓力管理，認識身體白天與夜晚的節奏。', products: ['kangbei', 'kangyue', 'ningkang'], motif: 'a moonlit pavilion with balanced botanical branches' },
 ];
 export const pillarById = new Map(pillars.map(p => [p.id, p]));

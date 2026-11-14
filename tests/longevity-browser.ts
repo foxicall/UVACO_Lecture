@@ -17,13 +17,15 @@ try {
     page.on('pageerror', error => errors.push(error.message));
     page.on('response', response => { if (response.url().includes('/longevity-pdf-assets/') && response.status() >= 400) failures.push(response.url()); });
     await page.goto(base, { waitUntil: 'networkidle' });
-    await page.locator('.island-label').last().waitFor();
+    await page.locator('.island-label').last().waitFor({state:'attached'});
     await page.getByRole('button', { name: '六大長壽簡報播放', exact: true }).click();
     for (const deck of longevityDecks) {
       await page.getByRole('tab', { name: `${deck.shortTitle} ${deck.slides.length} 頁`, exact: true }).click();
       for (const [index, slide] of deck.slides.entries()) {
         await page.locator('.keynote-thumbnails button').nth(index).click();
         assert.equal(await page.locator('.longevity-summary h3').innerText(), slide.title);
+        assert.equal(await page.locator('.longevity-summary .science-details').getAttribute('open'),null);
+        assert.doesNotMatch(await page.locator('.longevity-summary').innerText(), /ETC|Zonulin|TLR4|MFSD2A|ADMA|eNOS|MPO|NLRP3|DunedinPACE|GABA|SOD/);
         await page.waitForFunction(() => document.querySelector('.longevity-visual')?.scrollTop === 0);
         await page.locator('.slide-visual-button img').evaluate(async (img: HTMLImageElement) => { if (!img.complete) await new Promise<void>((resolve, reject) => { img.onload = () => resolve(); img.onerror = reject; }); });
         assert.equal(await page.locator('.slide-visual-button img').evaluate((img: HTMLImageElement) => img.naturalWidth), 1600);
@@ -33,7 +35,7 @@ try {
         if (deck.number === 2) assert.match(content, /PDF 尚未提供/);
       }
     }
-    await page.getByRole('tab', { name: '發炎消退 4 頁', exact: true }).click();
+    await page.getByRole('tab', { name: '身體清潔隊 4 頁', exact: true }).click();
     await page.screenshot({ path: `test-results/longevity-${width}.png` });
     if (width === 1440) {
       const ratio = await page.locator('.longevity-workspace').evaluate(el => el.children[0].getBoundingClientRect().width / el.children[1].getBoundingClientRect().width);
@@ -66,7 +68,7 @@ try {
     assert.equal(await page.locator('.product-intro h2').innerText(), '995 生技營養品');
     assert.deepEqual(failures, []);
     assert.deepEqual(errors, []);
-    console.log(`${width}px: six decks, all 22 diagrams, lightbox, attribution, 140% font and product navigation passed.`);
+    console.log(`${width}px: six decks, all 24 diagrams, lightbox, attribution, 140% font and product navigation passed.`);
     await context.close();
   }
   const context = await browser.newContext({ viewport: { width: 390, height: 900 } });

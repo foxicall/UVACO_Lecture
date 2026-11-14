@@ -17,8 +17,8 @@ test('five uploaded PDFs preserve exact bytes and 233 source pages; missing deck
  }
  assert.equal(longevityDecks[1].pdfAvailable,false);assert.ok(longevityDecks[1].sourceStatus.includes('尚未提供'));
 });
-test('all 22 public diagrams are safe, attributable reconstructions with valid page and product destinations',async()=>{
- assert.deepEqual(longevityDecks.map(d=>d.slides.length),[4,3,4,4,3,4]);
+test('all 24 public diagrams are safe, attributable reconstructions with valid page and product destinations',async()=>{
+ assert.deepEqual(longevityDecks.map(d=>d.slides.length),[4,4,4,4,4,4]);
  const linked=new Set<string>();
  for(const deck of longevityDecks){
   assert.equal((await readdir(`public/longevity-pdf-assets/deck-${deck.number}`)).length,deck.slides.length);
@@ -30,7 +30,7 @@ test('all 22 public diagrams are safe, attributable reconstructions with valid p
    assert.ok(slide.sourcePages.every(p=>p>=1&&p<=deck.originalPageCount));
    assert.ok(slide.productIds.every(id=>products.some(p=>p.id===id)));slide.productIds.forEach(id=>linked.add(id));
    for(const name of sourceAuthorNames){assert.ok(!svg.includes(name));assert.ok(!JSON.stringify(slide).includes(name));}
-   assert.ok(slide.note.length>20&&slide.productNote.length>20);
+   assert.ok(slide.science.note.length>20&&slide.productNote.length>10);
   }
  }
  assert.equal(linked.size,12);

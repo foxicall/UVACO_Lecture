@@ -18,7 +18,9 @@
     "test:triangle": "tsx tests/triangle-browser.ts",
     "longevity:prepare": "node scripts/extract-6-longevity-pdfs.mjs",
     "longevity:extract": "node scripts/extract-6-longevity-pdfs.mjs --extract",
-    "test:longevity": "tsx tests/longevity-browser.ts"
+    "test:longevity": "tsx tests/longevity-browser.ts",
+    "test:everyday": "tsx tests/everyday-browser.ts",
+    "test:archipelago": "tsx tests/archipelago-browser.ts"
   },
   "engines": {
     "node": ">=22"

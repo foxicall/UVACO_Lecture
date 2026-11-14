@@ -39,11 +39,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 .map-region { position:relative; min-width:0; height:100%; overflow:hidden; border-radius:28px; }
 .canvas-shell { position:absolute; inset:0; }
 .map-loading,.map-fallback { display:flex; align-items:center; justify-content:center; height:100%; padding:40px; color:var(--paper); }
-.label-layer { position:absolute; inset:0; pointer-events:none; overflow:hidden; }
-.island-label,.hub-label { position:absolute; top:0; left:0; pointer-events:auto; background:#FAF7F2ed; color:var(--ink); border:1px solid #ffffffa8; box-shadow:0 4px 16px #102D3812; min-height:44px; padding:8px 12px; border-radius:14px; font-size:17px; font-weight:600; white-space:nowrap; }
-.island-label.active { background:#F1D294; box-shadow:0 0 0 2px #F0CA75,0 6px 20px #102D3826; }
-.hub-label { flex-direction:column; gap:0; padding:8px 12px; background:#F3DCAF; font-size:15px; border-radius:16px; }
-.hub-label span { font-size:12px; }
 .map-caption { position:absolute; top:16px; left:24px; color:#FAF7F2; pointer-events:none; }
 .map-caption>span { font-size:20px; font-weight:600; }
 .map-caption p { font-size:15px; margin:4px 0 0; }
@@ -247,9 +242,6 @@ textarea::placeholder { color:#526357; }
   .map-caption>span { font-size:18px; }
   .map-caption p { font-size:13px; }
   .tour-status { bottom:8px; left:12px; font-size:13px; }
-  .island-label { min-height:40px; padding:8px 10px; font-size:14px; border-radius:12px; }
-  .hub-label { min-height:48px; font-size:13px; padding:6px 10px; }
-  .hub-label span { font-size:11px; }
   .reading-panel { margin-top:8px; border-radius:28px; }
   .welcome-panel { padding:28px 24px 20px; }
   .welcome-panel h2 { font-size:32px; }
@@ -507,3 +499,29 @@ textarea::placeholder { color:#526357; }
  .diagram-zoom-controls button { padding:10px 16px; }
  html[data-font-scale="140"] .longevity-dialog .keynote-deck-tabs { grid-template-columns:repeat(2,minmax(0,1fr)); }
 }
+
+.science-details { margin:24px 0 12px; }
+.science-details>summary { width:fit-content; max-width:100%; min-height:44px; display:list-item; list-style-position:inside; background:#E5EBE1; color:#1B4D3E; padding:10px 16px; border-radius:24px; font-size:16px; line-height:1.6; }
+.science-content { padding:20px 0; font-size:1.25rem; line-height:1.75; overflow-wrap:anywhere; }
+.science-content h4 { font-size:1.25rem; margin-top:20px; }
+.homepage-note { margin:0 0 110px; padding:8px 16px; background:#FAF7F2; color:#34443B; text-align:center; font-size:.75rem; line-height:1.8; }
+.product-deck .tab-panel>section { margin:24px 0; }
+.product-deck .science-details { padding:0; background:transparent; }
+.product-deck .science-details>summary,.mechanism-card .science-details>summary { font-size:16px; }
+
+/* Roof badges are descendants of each landmark in 3D; no detached label layer. */
+.canvas-shell { isolation:isolate; }
+.landmark-label.island-label,.landmark-label.hub-label { position:relative; top:auto; left:auto; display:flex; min-height:44px; padding:10px 0; border:0; border-radius:0; background:transparent; box-shadow:none; font-size:12px; line-height:1.4; pointer-events:auto; }
+.landmark-badge { position:relative; display:inline-flex; align-items:center; gap:5px; padding:2px 10px; line-height:16px; border-radius:999px; background:#fffffff0; backdrop-filter:blur(10px); color:#182220; border:1px solid #ffffffcc; box-shadow:0 2px 6px #102d3826; white-space:nowrap; font-size:12px; font-weight:600; letter-spacing:-.02em; }
+.landmark-badge::after { content:''; position:absolute; bottom:-4px; left:calc(50% - 3px); width:6px; height:6px; transform:rotate(45deg); background:#fffffff0; }
+.landmark-badge i { width:5px; height:5px; flex-shrink:0; border-radius:50%; }
+.landmark-label.active .landmark-badge { background:#1B4D3E; color:#fff; box-shadow:0 0 0 2px #D97706; transform:scale(1.1); }
+.landmark-label.active .landmark-badge::after { background:#1B4D3E; }
+.landmark-label:focus-visible { outline:none; }
+.landmark-label:focus-visible .landmark-badge { outline:3px solid #D97706; outline-offset:3px; }
+.hub-label.landmark-label .landmark-badge { font-size:12px; }
+.rotation-toggle { position:absolute; right:16px; bottom:12px; z-index:25; min-height:44px; padding:8px 13px; border:1px solid #ffffffcc; border-radius:999px; background:#ffffffe6; backdrop-filter:blur(12px); color:#182220; font-size:13px; box-shadow:0 2px 10px #102d3812; }
+.map-caption>span { font-size:15px; }
+
+.roof-badges { position:absolute; inset:0; pointer-events:none; }
+ .landmark-label[data-label-visible="false"] { visibility:hidden; pointer-events:none; }

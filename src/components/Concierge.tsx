@@ -74,7 +74,7 @@ export default function Concierge({ onClose, onNavigate }: { onClose: () => void
   }
   return <Dialog title="健康小幫手" className="concierge-dialog" onClose={onClose}>
     <p className="concierge-intro">一起認識，身體需要的照顧。</p>
-    <p className="small-copy">我是講座資訊小幫手，陪您從四大主題認識日常營養，不代表林醫師提供個別診療。</p>
+    <p className="small-copy">從吃飯、休息到身體的感受，我陪您一站一站看懂。</p>
     {staticSite && <p className="small-copy">此公開版本提供本機文件導覽，這不是 AI 回答。點選問題，就能閱讀相關資料。</p>}
     <div className="preset-list">{presets.map(p => <button disabled={loading} onClick={() => ask(p)} key={p}>{p}<span aria-hidden>↗</span></button>)}</div>
     <form onSubmit={e => { e.preventDefault(); ask(question); }}>
@@ -87,7 +87,7 @@ export default function Concierge({ onClose, onNavigate }: { onClose: () => void
       {loading && <p className="loading-text">正在為您整理資訊…</p>}
       {error && <><p role="alert">{error}</p><button onClick={() => { const local = localReadingRoute(question); setSentences(local.sentences); setAnswer(local); setError(''); onNavigate(local); }}>改看本機文件導覽</button></>}
       {sentences.map((s, i) => <p key={i}>{s}</p>)}
-      {answer && answer.targetProductIds.length > 0 && <div className="answer-islands"><p className="small-copy">已帶您前往相關產品，這是閱讀導覽，不是服用建議。</p>{answer.targetProductIds.map(id => <button key={id} onClick={() => { onNavigate({ ...answer, targetProductIds: [id, ...answer.targetProductIds.filter(i => i !== id)] }); onClose(); }}>{productById.get(id)?.name} →</button>)}</div>}
+      {answer && answer.targetProductIds.length > 0 && <div className="answer-islands"><p className="small-copy">已找到相關產品，點一站看看配方。</p>{answer.targetProductIds.map(id => <button key={id} onClick={() => { onNavigate({ ...answer, targetProductIds: [id, ...answer.targetProductIds.filter(i => i !== id)] }); onClose(); }}>{productById.get(id)?.name} →</button>)}</div>}
     </div>
   </Dialog>;
 }

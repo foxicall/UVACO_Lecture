@@ -1,3 +1,4 @@
+import { everydayProducts } from './everyday-language';
 import type { Cluster, Product } from '@/types/product';
 import sourceMaterials from './source-materials.json';
 import { productPillar, lectureCoordinates } from './lecture-poster';
@@ -93,7 +94,7 @@ const baseProducts: Product[] = [
 export const products: Product[] = baseProducts.map(p => {
   const source = sourceMaterials.products.find(s => s.id === p.id)!;
   const entries = Object.entries(source.fields);
-  return { ...p, hexCoordinates: lectureCoordinates[p.id], lecturePillar: productPillar.get(p.id), source: 'drive-extracted-text',
+  return { ...p, elderlyHook: everydayProducts[p.id].hook, introduction: everydayProducts[p.id].introduction, hexCoordinates: lectureCoordinates[p.id], lecturePillar: productPillar.get(p.id), source: 'drive-extracted-text',
     ingredients: entries.filter(([key]) => /成分|組成|規格/.test(key)).map(([, value]) => value),
     sourceMechanisms: Object.fromEntries(entries.filter(([key]) => /發炎|自癒|神經/.test(key))),
     patentsAndHonors: entries.filter(([key]) => /專利|認證/.test(key)).map(([, value]) => value),
@@ -101,4 +102,4 @@ export const products: Product[] = baseProducts.map(p => {
 });
 export const productById = new Map(products.map(p => [p.id, p]));
 export const symptomChoices = ['常常忘東忘西', '翻來覆去睡不著', '排便不順肚子脹', '體力差想補元氣', '應酬外食怕油膩', '心情緊繃難放鬆'];
-export const sourceNote = '資料來源：葡眾產品機轉文件與簡報文字擷取。研究機制不等同成品療效；實際成分與用法依產品標示。';
+export const sourceNote = '資料來源：葡眾產品文件與健康講座資料。';
