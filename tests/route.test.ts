@@ -15,3 +15,21 @@ test('urgent requests stream medical escalation without product actions', async 
   assert.ok(body.includes('"targetProductIds":[]'));
   assert.equal((body.match(/event: sentence/g) ?? []).length, 3);
 });
+
+test('same-origin validation supports a wildcard bind address and HTTPS reverse proxy', async () => {
+  for (const [host, protocol] of [['localhost:3000', 'http'], ['lecture.example', 'https']]) {
+    const request = new Request('http://0.0.0.0:3000/api/concierge', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', host, 'x-forwarded-proto': protocol, origin: `${protocol}://${host}` },
+      body: JSON.stringify({ question: '現在胸痛又呼吸困難' }),
+    });
+    const result = await POST(request);
+    assert.equal(result.status, 200);
+    assert.ok((await result.text()).includes('119'));
+  }
+  const foreign = new Request('http://0.0.0.0:3000/api/concierge', {
+    method: 'POST', headers: { host: 'lecture.example', 'x-forwarded-proto': 'https', origin: 'https://other.example', 'Content-Type': 'application/json' },
+    body: JSON.stringify({ question: '現在胸痛又呼吸困難' }),
+  });
+  assert.equal((await POST(foreign)).status, 403);
+});

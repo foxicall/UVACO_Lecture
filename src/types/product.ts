@@ -1,5 +1,4 @@
 export type Cluster = 'cellular_energy' | 'liver_defense' | 'gut_microbiome' | 'brain_forest' | 'circulation_detox';
-export type Phase = 'morning' | 'day' | 'evening' | 'night';
 export interface Product {
   id: string;
   name: string;
@@ -13,7 +12,6 @@ export interface Product {
   patentsAndHonors: string[];
   mechanisms: { antiInflammation: string; selfHealing: string; autonomicNerve: string };
   synergyLinks: { targetProductId: string; reason: string }[];
-  recommendedTimeOfDay: Phase;
   caution: string;
   motif: string;
   source: 'user-brief' | 'drive-extracted-text';

@@ -8,8 +8,9 @@ test('strict model routing never selects a legacy model', () => {
 });
 test('rejects unknown product actions and malformed requests', () => {
   assert.equal(requestSchema.safeParse({ question: 'x'.repeat(301) }).success, false);
-  assert.equal(answerSchema.safeParse({ sentences: ['第一個句子。', '第二個句子。', '第三個句子。'], targetProductIds: ['invented'], circadianPhase: 'day' }).success, false);
-  assert.equal(answerSchema.safeParse({ sentences: ['第一個句子。'], targetProductIds: [], circadianPhase: 'day' }).success, false);
+  assert.equal(answerSchema.safeParse({ sentences: ['第一個句子。', '第二個句子。', '第三個句子。'], targetProductIds: ['invented'] }).success, false);
+  assert.equal(answerSchema.safeParse({ sentences: ['第一個句子。'], targetProductIds: [] }).success, false);
+  assert.equal(answerSchema.safeParse({ sentences: ['第一個句子。', '第二個句子。', '第三個句子。'], targetProductIds: ['huoyi'] }).success, true);
 });
 test('only complete JSON sentences stream to the client', () => {
   assert.deepEqual(completedSentences('{"sentences":["請放心慢慢說。","這句還沒'), ['請放心慢慢說。']);

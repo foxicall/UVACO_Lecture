@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { Volume2, Pause, Play } from 'lucide-react';
-export default function VoiceGuide({ text }: { text: string }) {
+export default function VoiceGuide({ text, label = '聽語音導覽' }: { text: string; label?: string }) {
   const [supported, setSupported] = useState(false);
   const [status, setStatus] = useState<'idle' | 'speaking' | 'paused'>('idle');
   const [error, setError] = useState('');
@@ -20,5 +20,5 @@ export default function VoiceGuide({ text }: { text: string }) {
     speech.onend = () => setStatus('idle'); speech.onerror = event => { setStatus('idle'); if (event.error !== 'canceled' && event.error !== 'interrupted') setError('這台裝置暫時無法播放語音。'); };
     setError(''); synth.speak(speech); setStatus('speaking');
   }
-  return <div><button className="voice-button" disabled={!supported} onClick={toggle}>{status === 'speaking' ? <Pause size={20} /> : status === 'paused' ? <Play size={20} /> : <Volume2 size={20} />}{!supported ? '此裝置不支援語音' : status === 'speaking' ? '暫停語音導覽' : status === 'paused' ? '繼續語音導覽' : '聽語音導覽'}</button>{error && <p role="status" className="small-copy">{error}</p>}</div>;
+  return <div><button className="voice-button" disabled={!supported} onClick={toggle}>{status === 'speaking' ? <Pause size={20} /> : status === 'paused' ? <Play size={20} /> : <Volume2 size={20} />}{!supported ? '此裝置不支援語音' : status === 'speaking' ? '暫停語音導覽' : status === 'paused' ? '繼續語音導覽' : label}</button>{error && <p role="status" className="small-copy">{error}</p>}</div>;
 }

@@ -22,8 +22,12 @@ try {
     assert.ok((await page.locator('.ai-answer').innerText()).includes('這不是 AI 回答'));
     await page.keyboard.press('Escape');
     assert.equal(await page.locator('.product-intro h2').innerText(), '康爾喜');
-    await page.locator('.brand').click();
-    await page.waitForURL(`${base}/`);
+    await page.getByRole('button', { name: '播放PPT', exact: true }).click();
+    await page.getByRole('tab', { name: '疼痛與修復 7 頁', exact: true }).click();
+    assert.equal(await page.locator('.keynote-thumbnails button').count(), 7);
+    await page.getByRole('button', { name: '下一頁', exact: true }).click();
+    assert.equal(await page.locator('.slide-counter').innerText(), '2 / 7');
+    await page.keyboard.press('Escape');
     const catalog = await page.goto(`${base}/products/`, { waitUntil: 'networkidle' });
     assert.equal(catalog?.status(), 200);
     assert.equal(await page.locator('.text-catalog article').count(), 12);

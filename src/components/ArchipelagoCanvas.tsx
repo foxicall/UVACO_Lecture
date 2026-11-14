@@ -1,14 +1,10 @@
 'use client';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { OrbitControls } from '@react-three/drei';
-import { useEffect, useMemo, useRef, useState, Component, type ReactNode } from 'react';
-import { Color, Vector3, ShaderMaterial, Group, DirectionalLight, Fog, QuadraticBezierCurve3, MeshStandardMaterial } from 'three';
-import type { OrbitControls as OrbitControlsImpl } from 'three-stdlib';
-import gsap from 'gsap';
-import { products, clusters, phases, productById } from '@/data/uvaco-products';
-import type { Phase, Product } from '@/types/product';
-import artwork from '@/data/generated-visuals.json';
-import { pillars, pillarById, lecture } from '@/data/lecture-poster';
+import { useLayoutEffect, useMemo, useRef, useState, Component, type ReactNode } from 'react';
+import { Vector3, OrthographicCamera, QuadraticBezierCurve3, Color } from 'three';
+import { products, productById } from '@/data/uvaco-products';
+import type { Product } from '@/types/product';
+import { pillars, pillarById } from '@/data/lecture-poster';
 
 export function islandPosition(p: Product): [number, number, number] {
   const [q, r] = p.hexCoordinates;
@@ -38,139 +34,110 @@ function Landmark({ p }: { p: Product }) {
   if (p.id === '360') return <><Pavilion />{[0, 1, 2].map(i => <Tree key={i} position={[Math.cos(i * 2.1) * .9, 0, Math.sin(i * 2.1) * .9]} size={.4} />)}</>;
   return <><mesh position={[0, .13, 0]}><torusGeometry args={[.64, .15, 4, 6]} /><meshStandardMaterial color={p.id === 'dikang' ? '#CCAA80' : '#8DAE92'} /></mesh><mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, .13, 0]}><circleGeometry args={[.55, 12]} /><meshStandardMaterial color="#5E969F" /></mesh><Tree position={[.5, 0, -.4]} size={.55} color={p.id === 'dikang' ? '#9C9D60' : '#719871'} /><Mushroom x={-.4} z={.3} scale={.6} /></>;
 }
-function Island({ p, active, lit, onSelect, reduced }: { p: Product; active: boolean; lit: boolean; onSelect: (id: string) => void; reduced: boolean }) {
-  const group = useRef<Group>(null);
+function Island({ p, active, onSelect }: { p: Product; active: boolean; onSelect: (id: string) => void }) {
   const [hover, setHover] = useState(false);
-  const pos = islandPosition(p);
-  useFrame(({ clock }) => { if (group.current) group.current.position.y = reduced ? 0 : Math.sin(clock.elapsedTime * .6 + pos[0]) * .045; });
-  return <group position={pos} scale={1.1}><group ref={group}>
-    <group onClick={e => { e.stopPropagation(); onSelect(p.id); }} onPointerOver={e => { e.stopPropagation(); setHover(true); }} onPointerOut={() => setHover(false)}>
-      <mesh position={[0, -.25, 0]}><cylinderGeometry args={[1.38, 1.12, .75, 6]} /><meshStandardMaterial color="#8C8065" flatShading /></mesh>
-      <mesh position={[0, .16, 0]}><cylinderGeometry args={[1.4, 1.4, .16, 6]} /><meshStandardMaterial color={pillarById.get(p.lecturePillar!)!.color} roughness={.95} /></mesh>
-      {(active || hover || lit) && <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, .26, 0]}><ringGeometry args={[1.28, 1.4, 6]} /><meshBasicMaterial color={active || hover ? '#F4CE72' : '#D8E8CA'} /></mesh>}
-      <group position={[0, .24, 0]}><Landmark p={p} /></group>
-      {[0, 1, 2].map(i => <mesh key={i} position={[Math.cos(i * 2 + 1) * .98, .3, Math.sin(i * 2 + 1) * .98]} scale={[.16, .12, .21]}><dodecahedronGeometry /><meshStandardMaterial color="#DFD8BD" /></mesh>)}
-    </group>
-  </group></group>;
+  return <group position={islandPosition(p)} scale={1.1} onClick={e => { e.stopPropagation(); onSelect(p.id); }} onPointerOver={e => { e.stopPropagation(); setHover(true); }} onPointerOut={() => setHover(false)}>
+    <mesh position={[0, -.25, 0]}><cylinderGeometry args={[1.38, 1.12, .75, 6]} /><meshStandardMaterial color="#8C8065" flatShading /></mesh>
+    <mesh position={[0, .16, 0]}><cylinderGeometry args={[1.4, 1.4, .16, 6]} /><meshStandardMaterial color={pillarById.get(p.lecturePillar!)!.color} roughness={.95} /></mesh>
+    {(active || hover) && <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, .27, 0]}><ringGeometry args={[1.27, 1.44, 6]} /><meshStandardMaterial color="#F0CA75" emissive="#D8A43F" emissiveIntensity={1.2} toneMapped={false} /></mesh>}
+    <group position={[0, .24, 0]}><Landmark p={p} /></group>
+    {[0, 1, 2].map(i => <mesh key={i} position={[Math.cos(i * 2 + 1) * .98, .3, Math.sin(i * 2 + 1) * .98]} scale={[.16, .12, .21]}><dodecahedronGeometry /><meshStandardMaterial color="#DFD8BD" /></mesh>)}
+  </group>;
 }
-function Water({ reduced, phase }: { reduced: boolean; phase: Phase }) {
-  const shader = useRef<ShaderMaterial>(null);
-  const uniforms = useMemo(() => ({ time: { value: 0 }, base: { value: new Color('#1E4E5F') }, amplitude: { value: artwork.visuals[0].waterAmplitude }, speed: { value: artwork.visuals[0].waterSpeed } }), []);
-  useFrame(({ clock }, delta) => {
-    if (!shader.current) return;
-    shader.current.uniforms.time.value = reduced ? 0 : clock.elapsedTime;
-    shader.current.uniforms.base.value.lerp(new Color(phase === 'night' ? '#153843' : '#1E4E5F'), reduced ? 1 : Math.min(delta * 2, 1));
-  });
-  return <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -.68, 0]}><planeGeometry args={[200, 200, 70, 70]} /><shaderMaterial toneMapped={false} ref={shader} uniforms={uniforms} vertexShader={`uniform float time; uniform float amplitude; uniform float speed; varying vec2 vUv; varying float vHeight; void main(){vUv=uv;vec3 p=position;p.z=sin(p.x*1.2+time*speed)*cos(p.y*.9+time*speed)*amplitude;vHeight=p.z;gl_Position=projectionMatrix*modelViewMatrix*vec4(p,1.);}`} fragmentShader={`uniform vec3 base;uniform float time;varying vec2 vUv;varying float vHeight;void main(){float ripple=sin(vUv.x*550.+sin(vUv.y*350.+time*.2)*2.);float foam=smoothstep(.985,1.,ripple)*.008;gl_FragColor=vec4(base+vHeight*.18+foam,1.);
-#include <tonemapping_fragment>
+function Water() {
+  const uniforms = useMemo(() => ({ base: { value: new Color('#1E4E5F') } }), []);
+  return <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -.68, 0]}><planeGeometry args={[200, 200]} /><shaderMaterial toneMapped={false} uniforms={uniforms} vertexShader={`varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}`} fragmentShader={`uniform vec3 base;varying vec2 vUv;void main(){float ripple=sin(vUv.x*550.+sin(vUv.y*350.)*2.);float foam=smoothstep(.985,1.,ripple)*.003;gl_FragColor=vec4(base+foam,1.);
 #include <colorspace_fragment>
 }`} /></mesh>;
 }
-function SynergyArc({ a, b, mid, reduced }: { a: [number, number, number]; b: [number, number, number]; mid: [number, number, number]; reduced: boolean }) {
-  const curve = useMemo(() => new QuadraticBezierCurve3(new Vector3(...a), new Vector3(...mid), new Vector3(...b)), [a, b, mid]);
-  const material = useRef<MeshStandardMaterial>(null);
-  useFrame(({ clock }) => { if (material.current) material.current.emissiveIntensity = reduced ? .7 : .7 + Math.sin(clock.elapsedTime * 1.5) * .25; });
-  return <mesh><tubeGeometry args={[curve, 32, .027, 5, false]} /><meshStandardMaterial ref={material} color="#F4C079" emissive="#D97706" emissiveIntensity={.7} roughness={.4} /></mesh>;
+function SynergyArc({ a, b, hub = false }: { a: [number, number, number]; b: [number, number, number]; hub?: boolean }) {
+  const curve = useMemo(() => new QuadraticBezierCurve3(new Vector3(...a), new Vector3((a[0] + b[0]) / 2, hub ? 1.4 : 2.4, (a[2] + b[2]) / 2), new Vector3(...b)), [a, b, hub]);
+  return <mesh><tubeGeometry args={[curve, 32, hub ? .018 : .045, 5, false]} /><meshStandardMaterial color={hub ? '#B8B79B' : '#F0CA75'} emissive="#D8A43F" emissiveIntensity={hub ? .15 : .8} roughness={.4} /></mesh>;
 }
-export function SynergyBezierLines({ ids, active, reduced }: { ids: string[]; active: string | null; reduced: boolean }) {
+export function SynergyBezierLines({ ids, active }: { ids: string[]; active: string | null }) {
   const links = useMemo(() => {
     if (!active) return [];
     const p = productById.get(active)!;
-    const others = [...new Set([...p.synergyLinks.map(l => l.targetProductId), ...ids.filter(id => id !== active)])];
-    return others.map(id => { const a = islandPosition(p); const b = islandPosition(productById.get(id)!); return { id, a: [a[0], .55, a[2]] as [number, number, number], b: [b[0], .55, b[2]] as [number, number, number], mid: [(a[0] + b[0]) / 2, 2.4, (a[2] + b[2]) / 2] as [number, number, number] }; });
+    return [...new Set([...p.synergyLinks.map(l => l.targetProductId), ...ids.filter(id => id !== active)])].map(id => {
+      const a = islandPosition(p), b = islandPosition(productById.get(id)!);
+      return { id, a: [a[0], .55, a[2]] as [number, number, number], b: [b[0], .55, b[2]] as [number, number, number] };
+    });
   }, [active, ids]);
-  return <>{links.map(l => <SynergyArc key={l.id} a={l.a} b={l.b} mid={l.mid} reduced={reduced} />)}</>;
+  return <>{links.map(l => <SynergyArc key={l.id} {...l} />)}</>;
 }
-function Camera({ active, reduced }: { active: string | null; reduced: boolean }) {
-  const controls = useRef<OrbitControlsImpl>(null);
+function FixedOverviewCamera() {
   const { camera, size, invalidate } = useThree();
-  useEffect(() => {
-    if (!controls.current) return;
-    const pos = active ? islandPosition(productById.get(active)!) : [0, 0, 0];
-    const distance = active ? 8 : Math.max(22, 22 / (size.width / size.height));
-    const target = controls.current.target;
-    const tween = gsap.timeline({ onUpdate: () => invalidate(), defaults: { duration: reduced ? 0 : 1.6, ease: 'power3.inOut' } });
-    tween.to(target, { x: pos[0], y: 0, z: pos[2] }, 0);
-    tween.to(camera.position, { x: pos[0] + distance * .45, y: distance * .92, z: pos[2] + distance * .92 }, 0);
-    return () => { tween.kill(); };
-  }, [active, camera, reduced, size.width, size.height, invalidate]);
-  return <OrbitControls ref={controls} enablePan={false} enableRotate={false} enableZoom={false} minPolarAngle={Math.PI / 6} maxPolarAngle={Math.PI / 2.8} target={[0, 0, 0]} />;
+  useLayoutEffect(() => {
+    if (!(camera instanceof OrthographicCamera)) return;
+    // Only the viewport changes the framing. Product selection never moves the camera.
+    const aspect = size.width / size.height;
+    const halfHeight = Math.max(13.5, 16 / aspect);
+    camera.left = -halfHeight * aspect; camera.right = halfHeight * aspect;
+    camera.top = halfHeight; camera.bottom = -halfHeight;
+    camera.zoom = 1;
+    camera.position.set(18, 26, 28); camera.lookAt(0, 0, 0);
+    camera.updateProjectionMatrix(); camera.updateMatrixWorld(); invalidate();
+  }, [camera, size.width, size.height, invalidate]);
+  return null;
 }
-function Lighting({ phase, reduced }: { phase: Phase; reduced: boolean }) {
-  const light = useRef<DirectionalLight>(null);
-  const { scene } = useThree();
-  const target = useMemo(() => phases.find(p => p.id === phase)!, [phase]);
-  useFrame((_, delta) => {
-    if (light.current) light.current.color.lerp(new Color(target.light), reduced ? 1 : Math.min(delta * 2, 1));
-    if (scene.fog instanceof Fog) scene.fog.color.lerp(new Color(target.sky), reduced ? 1 : Math.min(delta * 2, 1));
-  });
-  return <><ambientLight intensity={phase === 'night' ? 1.1 : 1.8} /><directionalLight ref={light} position={[-6, 16, 8]} intensity={2.7} /><directionalLight position={[8, 5, -8]} intensity={.8} color="#B1DBD2" /><fog attach="fog" args={['#B7D3D6', 28, 95]} /></>;
+function Lighting() {
+  return <><ambientLight color="#FAF7F2" intensity={1.8} /><directionalLight position={[-6, 16, 8]} intensity={2.3} color="#FFFDF9" /><directionalLight position={[8, 5, -8]} intensity={.6} color="#FAF7F2" /></>;
 }
 class CanvasBoundary extends Component<{ children: ReactNode }, { failed: boolean }> {
   state = { failed: false };
   static getDerivedStateFromError() { return { failed: true }; }
   render() { return this.state.failed ? <div className="map-fallback">這台裝置無法開啟 3D 地圖，請使用產品選單或下方導覽按鈕。</div> : this.props.children; }
 }
-function LectureHub({ onClick }: { onClick?: () => void }) {
-  return <group onClick={e => { e.stopPropagation(); onClick?.(); }}>
+function LectureHub({ onClick }: { onClick: () => void }) {
+  return <group onClick={e => { e.stopPropagation(); onClick(); }}>
     <mesh position={[0, -.28, 0]}><cylinderGeometry args={[1.9, 1.65, .9, 6]} /><meshStandardMaterial color="#AA9A78" /></mesh>
     <mesh position={[0, .21, 0]}><cylinderGeometry args={[1.92, 1.92, .16, 6]} /><meshStandardMaterial color="#DFD8B5" /></mesh>
     <mesh position={[0, .33, 0]}><cylinderGeometry args={[1.4, 1.5, .14, 12]} /><meshStandardMaterial color="#B6C7B1" /></mesh>
     <group position={[0, .4, 0]} scale={1.35}><Pavilion /></group>
     <Tree position={[-1.05, .25, .5]} size={.75} color="#5D8966" /><Tree position={[1.05, .25, -.4]} size={.65} color="#86A479" />
-    <mesh position={[0, 2.35, 0]}><octahedronGeometry args={[.22, 0]} /><meshStandardMaterial color="#E2B464" emissive="#D97706" emissiveIntensity={.5} /></mesh>
+    <mesh position={[0, 2.35, 0]}><octahedronGeometry args={[.22, 0]} /><meshStandardMaterial color="#E2B464" /></mesh>
   </group>;
 }
-function HubConnections({ reduced }: { reduced: boolean }) {
-  const lines = useMemo(() => pillars.map(p => {
-    const pos = islandPosition(productById.get(p.products[0])!);
-    return { id: p.id, a: [0, .5, 0] as [number, number, number], b: [pos[0], .4, pos[2]] as [number, number, number], mid: [pos[0] / 2, 1.5, pos[2] / 2] as [number, number, number] };
-  }), []);
-  return <>{lines.map(l => <SynergyArc key={l.id} {...l} reduced={reduced} />)}</>;
+function HubConnections() {
+  const lines = useMemo(() => pillars.map(p => { const pos = islandPosition(productById.get(p.products[0])!); return { id: p.id, a: [0, .5, 0] as [number, number, number], b: [pos[0], .4, pos[2]] as [number, number, number] }; }), []);
+  return <>{lines.map(l => <SynergyArc key={l.id} {...l} hub />)}</>;
 }
-export default function ArchipelagoCanvas({ active, route, phase, onSelect, reduced, onHub }: { active: string | null; route: string[]; phase: Phase; onSelect: (id: string) => void; reduced: boolean; onHub?: () => void }) {
+export default function ArchipelagoCanvas({ active, route, onSelect, onHub }: { active: string | null; route: string[]; onSelect: (id: string) => void; onHub: () => void }) {
   const anchors = useRef<Record<string, HTMLButtonElement | null>>({});
   const hub = useRef<HTMLButtonElement | null>(null);
-  return <CanvasBoundary><div className="canvas-shell"><Canvas role="img" frameloop={reduced ? 'demand' : 'always'} camera={{ position: [8, 17, 18], fov: 40, near: .1, far: 160 }} dpr={[1, 1.5]} gl={{ antialias: true, powerPreference: 'high-performance' }} aria-label="十二座葡眾產品島嶼地圖">
-    <Lighting phase={phase} reduced={reduced} /><Water reduced={reduced} phase={phase} />
-    {products.map(p => <Island key={p.id} p={p} active={active === p.id} lit={p.recommendedTimeOfDay === phase || route.includes(p.id)} onSelect={onSelect} reduced={reduced} />)}
-    <LectureHub onClick={onHub} />{!active && <HubConnections reduced={reduced} />}
-    <SynergyBezierLines ids={route} active={active} reduced={reduced} /><Camera active={active} reduced={reduced} />
-    <ProjectLabels anchors={anchors} active={active} hub={hub} />
-  </Canvas><div className={`label-layer ${!active ? 'overview-labels' : ''}`}>{products.map(p => <button key={p.id} ref={el => { anchors.current[p.id] = el; }} className={`island-label ${active === p.id ? 'active' : ''}`} onClick={() => onSelect(p.id)} aria-label={p.name} aria-pressed={active === p.id}>{p.id === '995' ? '995' : p.name}</button>)}{!active && <button className="hub-label" ref={hub} onClick={onHub} disabled={!onHub}><strong>講座主島</strong><span>{lecture.speaker}</span></button>}</div></div></CanvasBoundary>;
+  return <CanvasBoundary><div className="canvas-shell"><Canvas role="img" frameloop="demand" orthographic camera={{ position: [18, 26, 28], zoom: 1, near: .1, far: 160 }} dpr={[1, 1.5]} gl={{ antialias: true, powerPreference: 'high-performance' }} aria-label="固定視角的十二座葡眾產品島嶼地圖">
+    <Lighting /><Water /><FixedOverviewCamera />
+    {products.map(p => <Island key={p.id} p={p} active={active === p.id} onSelect={onSelect} />)}
+    <LectureHub onClick={onHub} /><HubConnections /><SynergyBezierLines ids={route} active={active} />
+    <ProjectLabels anchors={anchors} hub={hub} />
+  </Canvas><div className="label-layer">{products.map(p => <button key={p.id} ref={el => { anchors.current[p.id] = el; }} className={`island-label ${active === p.id ? 'active' : ''}`} onClick={() => onSelect(p.id)} aria-label={p.name} aria-pressed={active === p.id}>{p.id === '995' ? '995' : p.name}</button>)}<button className="hub-label" ref={hub} onClick={onHub}><strong>講座主島</strong><span>林煒醫師</span></button></div></div></CanvasBoundary>;
 }
-function ProjectLabels({ anchors, active, hub }: { anchors: React.RefObject<Record<string, HTMLButtonElement | null>>; active: string | null; hub: React.RefObject<HTMLButtonElement | null> }) {
+function ProjectLabels({ anchors, hub }: { anchors: React.RefObject<Record<string, HTMLButtonElement | null>>; hub: React.RefObject<HTMLButtonElement | null> }) {
   const point = useMemo(() => new Vector3(), []);
-  const measurements = useRef({ key: '', widths: {} as Record<string, number>, heights: {} as Record<string, number> });
+  const lastFrame = useRef('');
   useFrame(({ camera, size }) => {
-    const scale = Number.parseFloat(document.documentElement.style.fontSize) || 100;
-    const key = `${size.width}:${size.height}:${scale}`;
-    if (measurements.current.key !== key) {
-      measurements.current.key = key;
-      for (const p of products) { const el = anchors.current[p.id]; if (el) { measurements.current.widths[p.id] = el.offsetWidth; measurements.current.heights[p.id] = el.offsetHeight; } }
-    }
+    const key = `${size.width}:${size.height}`;
+    if (lastFrame.current === key) return;
+    lastFrame.current = key;
     const placed: { x: number; y: number; width: number; height: number }[] = [];
-    const ordered = [...products].sort((a, b) => islandPosition(a)[2] - islandPosition(b)[2]);
-    if (hub.current) { point.set(0, .1, 1.8).project(camera); const x = (point.x * .5 + .5) * size.width, y = (-point.y * .5 + .5) * size.height; hub.current.style.transform = `translate(${x}px, ${y}px) translate(-50%,-50%)`; placed.push({ x, y, width: 112, height: 72 }); }
-    for (const [i, product] of ordered.entries()) {
-      const element = anchors.current[product.id]; if (!element) continue;
-      const p = islandPosition(product); point.set(p[0], .1, p[2] + 1.2).project(camera);
-      const narrow = size.width < 520;
-      let x = narrow && !active ? (i % 2 === 0 ? 70 : size.width - 70) : (point.x * .5 + .5) * size.width;
-      const y = narrow && !active ? (scale > 100 ? 340 : 260) + Math.floor(i / 2) * 64 : (-point.y * .5 + .5) * size.height;
-      const width = measurements.current.widths[product.id] || 110, height = measurements.current.heights[product.id] || 60;
-      if (!active && !narrow) {
-        const blocked = placed.filter(p => Math.abs(y - p.y) < (height + p.height) / 2 + 4)
-          .map(p => ({ left: p.x - (width + p.width) / 2 - 6, right: p.x + (width + p.width) / 2 + 6 }));
-        const candidates = [x, ...blocked.flatMap(p => [p.left, p.right])]
-          .filter(candidate => candidate >= width / 2 + 8 && candidate <= size.width - width / 2 - 8)
-          .filter(candidate => !blocked.some(p => candidate > p.left && candidate < p.right));
-        candidates.sort((a, b) => Math.abs(a - x) - Math.abs(b - x));
-        x = candidates[0] ?? x;
-      }
-      placed.push({ x, y, width, height });
-      element.style.visibility = active && narrow && product.id !== active ? 'hidden' : 'visible';
-      element.style.transform = `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px) translate(-50%, -50%)`;
+    if (hub.current) {
+      point.set(0, .1, 1.6).project(camera);
+      const x = (point.x * .5 + .5) * size.width, y = (-point.y * .5 + .5) * size.height;
+      hub.current.style.transform = `translate(${x}px, ${y}px) translate(-50%,-50%)`;
+      placed.push({ x, y, width: hub.current.offsetWidth || 92, height: hub.current.offsetHeight || 52 });
+    }
+    const items = products.map(product => {
+      const p = islandPosition(product); point.set(p[0], .1, p[2] + 1.15).project(camera);
+      return { product, x: (point.x * .5 + .5) * size.width, y: (-point.y * .5 + .5) * size.height };
+    }).sort((a, b) => a.y - b.y);
+    for (const item of items) {
+      const el = anchors.current[item.product.id]; if (!el) continue;
+      const width = el.offsetWidth || 90, height = el.offsetHeight || 44;
+      const candidates = [{ x: item.x, y: item.y }];
+      for (let radius = 1; radius <= 7; radius++) for (let i = 0; i < 16; i++) candidates.push({ x: item.x + Math.cos(i * Math.PI / 8) * radius * 20, y: item.y + Math.sin(i * Math.PI / 8) * radius * 20 });
+      const chosen = candidates.find(c => c.x >= width / 2 + 6 && c.x <= size.width - width / 2 - 6 && c.y >= height / 2 + 6 && c.y <= size.height - height / 2 - 6 && !placed.some(p => Math.abs(c.x - p.x) < (width + p.width) / 2 + 5 && Math.abs(c.y - p.y) < (height + p.height) / 2 + 5)) || candidates[0];
+      placed.push({ ...chosen, width, height });
+      el.style.transform = `translate(${chosen.x.toFixed(1)}px, ${chosen.y.toFixed(1)}px) translate(-50%, -50%)`;
     }
   });
   return null;

@@ -1,38 +1,36 @@
 'use client';
-import { sitePath } from '@/lib/site';
 import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
-import { Sun, Sunrise, Sunset, Moon, ArrowUpRight, Leaf, Type, ChevronLeft, ChevronRight, Map, ListFilter } from 'lucide-react';
-import { AnimatePresence, motion } from 'framer-motion';
-import { clusters, phases, productById, products, symptomChoices } from '@/data/uvaco-products';
-import type { Phase } from '@/types/product';
+import { ArrowUpRight, Leaf, ChevronLeft, ChevronRight, Map, ListFilter, Presentation, BookOpen, MessageCircle } from 'lucide-react';
+import { motion, useReducedMotion } from 'framer-motion';
+import { productById, products, symptomChoices } from '@/data/uvaco-products';
 import type { ConciergeAnswer } from '@/lib/concierge';
 import Concierge from './Concierge';
 import ProductSlideDeck from './ProductSlideDeck';
 import { pillars, pillarById, lecture, lectureOrder, type PillarId } from '@/data/lecture-poster';
-import visuals from '@/data/generated-visuals.json';
 import LectureModal from './LectureModal';
 import EducationDeck from './EducationDeck';
 import VoiceGuide from './VoiceGuide';
 
 const ArchipelagoCanvas = dynamic(() => import('./ArchipelagoCanvas'), { ssr: false, loading: () => <div className="map-loading" role="status">正在展開健康群島…</div> });
+const PptxKeynotePlayer = dynamic(() => import('./PptxKeynotePlayer'), { ssr: false });
+const pillarLabels = ['人體修復', '神經修復', '慢性發炎', '自律神經'];
 export default function IslandExperience() {
   const [active, setActive] = useState<string | null>(null);
-  const [phase, setPhase] = useState<Phase>('day');
   const [route, setRoute] = useState<string[]>([]);
   const [concierge, setConcierge] = useState(false);
-  const [reduced, setReduced] = useState(false);
+  const reduced = useReducedMotion();
   const [scale, setScale] = useState(100);
   const [symptom, setSymptom] = useState('');
   const [pillar, setPillar] = useState<PillarId | null>(null);
   const [lectureOpen, setLectureOpen] = useState(false);
   const [educationOpen, setEducationOpen] = useState(false);
+  const [keynoteOpen, setKeynoteOpen] = useState(false);
   useEffect(() => { try { const stored = Number(localStorage.getItem('uvaco-font-scale')); if ([100, 125, 140].includes(stored)) setScale(stored); } catch { /* Storage can be disabled. */ } }, []);
-  useEffect(() => { document.documentElement.style.fontSize = `${scale}%`; document.documentElement.dataset.fontScale = String(scale); try { localStorage.setItem('uvaco-font-scale', String(scale)); } catch { /* Font scaling still works without storage. */ } return () => { document.documentElement.style.fontSize = ''; delete document.documentElement.dataset.fontScale; }; }, [scale]);
-  useEffect(() => { const media = matchMedia('(prefers-reduced-motion: reduce)'); const update = () => setReduced(media.matches); update(); media.addEventListener('change', update); return () => media.removeEventListener('change', update); }, []);
+  useEffect(() => { document.documentElement.style.fontSize = `${scale}%`; document.documentElement.dataset.fontScale = String(scale); try { localStorage.setItem('uvaco-font-scale', String(scale)); } catch { /* Reading size still changes. */ } return () => { document.documentElement.style.fontSize = ''; delete document.documentElement.dataset.fontScale; }; }, [scale]);
   const product = active ? productById.get(active) : null;
   const stops = route.length ? route : lectureOrder;
-  function navigate(answer: ConciergeAnswer) { setRoute(answer.targetProductIds); setSymptom(''); setPillar(null); setPhase(answer.circadianPhase); if (answer.targetProductIds[0]) setActive(answer.targetProductIds[0]); }
+  function navigate(answer: ConciergeAnswer) { setRoute(answer.targetProductIds); setSymptom(''); setPillar(null); if (answer.targetProductIds[0]) setActive(answer.targetProductIds[0]); }
   function overview() { const deckFocus = document.activeElement?.closest('.product-deck'); setActive(null); setRoute([]); setSymptom(''); setPillar(null); if (deckFocus) requestAnimationFrame(() => document.getElementById('product-select')?.focus()); }
   function selectProduct(id: string) { setActive(id); if (!route.includes(id)) { setRoute([]); setPillar(null); setSymptom(''); } }
   function move(step: number) { const current = active ? stops.indexOf(active) : -1; const index = current < 0 ? (step > 0 ? 0 : stops.length - 1) : (current + step + stops.length) % stops.length; setActive(stops[index]); }
@@ -40,21 +38,24 @@ export default function IslandExperience() {
   function choosePillar(id: PillarId) { if (pillar === id) { overview(); return; } const selected = pillarById.get(id)!; setPillar(id); setRoute(selected.products); setSymptom(''); setActive(selected.products[0]); }
   return <div className="experience">
     <a href="#product-select" className="skip-link">跳到產品選單</a>
-    <header className="site-header"><a href={sitePath('/')} className="brand" aria-label="葡眾健康群島首頁"><span className="brand-mark"><Leaf size={29} strokeWidth={1.5} /></span><span><b>葡眾</b><small>健康群島</small></span></a><p className="header-note">給每一天，多一點好好照顧</p><div className="header-actions"><button className="font-button" onClick={() => setScale(scale === 100 ? 125 : scale === 125 ? 140 : 100)} aria-label={`字體大小：${scale}%，點選切換`}><Type size={22} /><span>{scale === 100 ? '標準字體' : scale === 125 ? '長輩大字' : '超大字體'}<small>{scale}%</small></span></button><label className="product-select-label" htmlFor="product-select"><span className="sr-only">選擇產品</span><select id="product-select" value={active ?? ''} onChange={e => { setActive(e.target.value || null); setRoute([]); setSymptom(''); setPillar(null); }}><option value="">所有產品</option>{products.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}</select></label></div></header>
-    <button className="lecture-strip" onClick={() => setLectureOpen(true)} aria-label="講師林煒醫師與11/15講座資訊"><span className="event-badge">{lecture.badge}</span><strong>{lecture.date} {lecture.time}</strong><span>主講・{lecture.speaker}</span><span className="strip-address">{lecture.address}</span><span className="strip-action">講座資訊 <ArrowUpRight size={21} /></span></button>
-    <section className="pillar-filter" aria-label="四大講座主題">{pillars.map((p, i) => <button key={p.id} aria-pressed={pillar === p.id} onClick={() => choosePillar(p.id)}><img width={44} height={44} alt="" src={`data:image/svg+xml;charset=utf-8,${encodeURIComponent(visuals.pillarVisuals[i].svg)}`} /><span>{p.name}</span></button>)}</section>
-    <details className="symptom-search"><summary><ListFilter size={19} />聽懂身體的聲音</summary><div className="symptom-chips">{symptomChoices.map(s => <button key={s} aria-pressed={symptom === s} onClick={() => chooseSymptom(s)}>{s}</button>)}</div></details>
-    <div className="circadian-bar"><span className="circadian-title">一天的節奏</span><div className="phase-options" role="group" aria-label="切換島嶼照明">{phases.map((p, i) => { const Icon = [Sunrise, Sun, Sunset, Moon][i]; return <button key={p.id} aria-pressed={phase === p.id} onClick={() => setPhase(p.id)}><Icon size={21} /><span>{p.name}</span></button>; })}</div><span className="phase-note">情境照明 · 非服用時刻</span><button className="knowledge-button" onClick={() => setEducationOpen(true)}>健康知識館 ↗</button></div>
-    <main className={`island-main ${product ? 'with-deck' : ''}`}><section className="map-region" aria-label="健康群島互動導覽">
-      <ArchipelagoCanvas active={active} route={route} phase={phase} onSelect={selectProduct} reduced={reduced} onHub={() => setLectureOpen(true)} />
-      {!active ? <div className="map-welcome"><h1>找回身體的<br />自癒力</h1><p>醫療改善症狀，<br />營養打造健康。</p><button onClick={() => setActive('995')}>開始講座重點巡禮 <ArrowUpRight size={22} /></button></div> : <div className="map-selection"><h1>{product?.name}</h1><p>{route.length ? `您的閱讀路線 · ${route.length} 座島嶼` : pillarById.get(product!.lecturePillar!)!.name}</p></div>}
-      <div className="map-key">{pillars.map(c => <span key={c.id}><i style={{ background: c.color }} />{c.name}</span>)}</div>
-      {!active && <div className="map-caption">點選島嶼，開始認識</div>}
-    </section><AnimatePresence initial={false}>{product && <motion.div key={product.id} className="deck-wrapper" initial={{ opacity: 0, x: reduced ? 0 : 28 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: reduced ? 0 : .3 }}><ProductSlideDeck product={product} onSelect={selectProduct} onClose={overview} /></motion.div>}</AnimatePresence></main>
-    <footer className="senior-dock"><p className="tour-status" aria-live="polite">{active ? `${Math.max(stops.indexOf(active), 0) + 1} / ${stops.length} 站` : '講座重點巡禮 · 十二站'}</p><nav aria-label="主要產品導覽"><button onClick={() => move(-1)}><ChevronLeft size={24} /><span>上一站</span></button><button className="primary" onClick={() => move(1)} aria-label="下一站，講座重點巡禮"><span>下一站導覽</span><ChevronRight size={24} /></button><button onClick={overview}><Map size={23} /><span>全島總覽</span></button></nav><div className="dock-voice"><VoiceGuide text={product ? `${product.name}。${product.elderlyHook}。${product.introduction}` : `${lecture.title}。${lecture.subtitle}。${lecture.date}，上午十點，主講人${lecture.speaker}。歡迎使用下一站，認識四大講座主題。`} /></div></footer>
-    <button className="concierge-launch" onClick={() => setConcierge(true)}>💬 問問健康小幫手</button>
+    <h1 className="sr-only">找回身體的自癒力・葡眾健康群島</h1>
+    <header className="ios-header glass">
+      <button className="lecture-badge" onClick={() => setLectureOpen(true)} aria-label="講師林煒醫師與11/15講座資訊"><Leaf size={20} /><span className="badge-full">找回身體的自癒力<span className="badge-date">｜林煒醫師 11/15(日) 10:00</span></span><span className="badge-short">講座資訊</span></button>
+      <nav className="pillar-segments" aria-label="四大講座主題">{pillars.map((p, i) => <button key={p.id} aria-pressed={pillar === p.id} onClick={e => { choosePillar(p.id); e.currentTarget.scrollIntoView({ block: 'nearest', inline: 'nearest' }); }}>{pillarLabels[i]}</button>)}</nav>
+      <div className="header-tools"><button className="header-ppt" onClick={() => setKeynoteOpen(true)} aria-label="講座簡報播放，3套PPT"><Presentation size={20} /><span>講座簡報播放 <small>3 套 PPT</small></span></button><button className="font-button" onClick={() => setScale(scale === 100 ? 125 : scale === 125 ? 140 : 100)} aria-label={`字體大小：${scale}%，點選切換`}><strong>A+</strong><span>字級</span><small>{scale}%</small></button></div>
+    </header>
+    <main className="island-main">
+      <section className="map-region" aria-label="健康群島互動導覽"><ArchipelagoCanvas active={active} route={route} onSelect={selectProduct} onHub={() => setLectureOpen(true)} /><div className="map-caption"><span>葡眾健康群島</span><p>{active ? `正在閱讀・${product?.name}` : '四大主題，十二座健康島嶼'}</p></div><p className="tour-status" aria-live="polite">{active ? `${Math.max(stops.indexOf(active), 0) + 1} / ${stops.length} 站` : '點選島嶼，或從下一站開始'}</p></section>
+      <div className="reading-panel glass">
+        {product ? <motion.div className="deck-wrapper" key={product.id} initial={{ opacity: 0, x: reduced ? 0 : 12 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: reduced ? 0 : .22 }}><ProductSlideDeck product={product} onSelect={selectProduct} onClose={overview} /></motion.div> : <section className="welcome-panel"><div className="welcome-mark"><Leaf size={25} /><span>免費健康講座</span></div><h2>找回身體的<br />自癒力</h2><p className="welcome-subtitle">醫療改善症狀，<br />營養打造健康。</p><button className="event-summary" onClick={() => setLectureOpen(true)}><span><strong>11/15（日）10:00</strong><small>林煒醫師・延吉街235巷1號</small></span><ArrowUpRight size={21} /></button><button className="primary start-tour" onClick={() => selectProduct('995')}>開始講座重點巡禮 <ArrowUpRight size={21} /></button><button className="welcome-keynote" onClick={() => setKeynoteOpen(true)}><Presentation size={24} /><span><strong>把講座，慢慢聽懂</strong><small>3 套簡報・23 頁語音導讀</small></span><ChevronRight size={20} /></button></section>}
+        <div className="reading-tools"><label htmlFor="product-select">直接選擇產品</label><select id="product-select" value={active ?? ''} onChange={e => { if (e.target.value) selectProduct(e.target.value); else overview(); }}><option value="">所有產品</option>{products.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}</select><details className="symptom-search"><summary><ListFilter size={18} />聽懂身體的聲音</summary><div className="symptom-chips">{symptomChoices.map(s => <button key={s} aria-pressed={symptom === s} onClick={() => chooseSymptom(s)}>{s}</button>)}</div></details><button className="knowledge-button" onClick={() => setEducationOpen(true)}><BookOpen size={19} />健康知識館 <ArrowUpRight size={18} /></button></div>
+      </div>
+    </main>
+    <footer className="senior-dock glass" aria-label="主要產品導覽"><button onClick={() => move(-1)} aria-label="上一站"><ChevronLeft size={22} /><span>上一站</span></button><button className="primary" onClick={() => move(1)} aria-label="下一站，講座重點巡禮"><ChevronRight size={22} /><span>下一站</span></button><button onClick={overview} aria-label="全島總覽"><Map size={22} /><span>全島總覽</span></button><VoiceGuide label="語音導讀" text={product ? `${product.name}。${product.elderlyHook}。${product.introduction}` : `${lecture.title}。${lecture.subtitle}。${lecture.date}，上午十點，主講人${lecture.speaker}。歡迎使用下一站，認識四大講座主題。`} /><button onClick={() => setKeynoteOpen(true)} aria-label="播放PPT"><Presentation size={22} /><span>播放 PPT</span></button></footer>
+    <button className="concierge-launch" onClick={() => setConcierge(true)} aria-label="💬 問問健康小幫手"><MessageCircle size={24} /><span>問問健康小幫手</span></button>
     {concierge && <Concierge onClose={() => setConcierge(false)} onNavigate={navigate} />}
     {lectureOpen && <LectureModal onClose={() => setLectureOpen(false)} />}
-    {educationOpen && <EducationDeck onClose={() => setEducationOpen(false)} onNavigate={id => { setActive(id); setRoute([]); setPillar(null); setSymptom(''); }} />}
+    {educationOpen && <EducationDeck onClose={() => setEducationOpen(false)} onNavigate={id => { selectProduct(id); setRoute([]); setPillar(null); setSymptom(''); }} />}
+    {keynoteOpen && <PptxKeynotePlayer onClose={() => setKeynoteOpen(false)} />}
   </div>;
 }

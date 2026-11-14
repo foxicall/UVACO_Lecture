@@ -11,7 +11,13 @@ let active = 0;
 const response = (message: string, status: number) => Response.json({ error: message }, { status, headers: { 'Cache-Control': 'no-store' } });
 export async function POST(req: Request) {
   const origin = req.headers.get('origin');
-  if (origin && origin !== new URL(req.url).origin) return response('請從本站開啟健康小幫手。', 403);
+  // Next can expose its 0.0.0.0 bind address in req.url. Validate against the
+  // incoming Host and proxy transport so legitimate browser requests still work.
+  const url = new URL(req.url);
+  const forwardedProtocol = req.headers.get('x-forwarded-proto')?.split(',')[0].trim();
+  const protocol = forwardedProtocol === 'https' || forwardedProtocol === 'http' ? `${forwardedProtocol}:` : url.protocol;
+  const expectedOrigin = `${protocol}//${req.headers.get('host') || url.host}`;
+  if (origin && origin !== expectedOrigin) return response('請從本站開啟健康小幫手。', 403);
   if (!req.headers.get('content-type')?.includes('application/json')) return response('請使用文字問題。', 415);
   let question: string;
   try {
