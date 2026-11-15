@@ -79,7 +79,7 @@ try {
   await page.locator('.clinical-result').scrollIntoViewIfNeeded();await audit('analysis');
   await page.getByRole('button',{name:'在群島查看這組產品',exact:true}).click();
   await page.locator('.product-intro h2').waitFor();assert.equal(await page.locator('.product-intro h2').innerText(),'康爾喜');
-  await page.locator('.hub-label').click();
+  await page.getByRole('button',{name:'三個健康故事專區',exact:true}).click();
   await page.getByRole('tab',{name:'我的關注',exact:true}).click();
   await page.locator('input[value=gut]').check();
   await page.locator('.professional-context input').check();

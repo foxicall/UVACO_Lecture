@@ -90,11 +90,10 @@ try {
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false, `Overflow at ${width}, 140% font`);
     await page.screenshot({ path: `test-results/final-${width}-large.png`, fullPage: true });
     await page.getByRole('button', { name: '字體大小：140%，點選切換' }).click();
-    await page.getByRole('button', { name: '講師林煒醫師與11/15講座資訊' }).click();
-    await page.getByText('完整學經歷與專業認證', {exact:true}).click();
-    await page.locator('.speaker-credentials li').last().waitFor();
-    assert.equal(await page.locator('.speaker-specialties li').count(), 8);
-    assert.equal(await page.locator('.speaker-credentials li').count(), 10);
+    await page.getByRole('button', { name: '找回身體的自癒力｜林煒醫師・精準營養與神經修復領航' }).click();
+    await page.locator('.physician-credentials li').last().waitFor();
+    assert.equal(await page.locator('.physician-specialties li').count(), 8);
+    assert.equal(await page.locator('.physician-credentials li').count(), 10);
     await page.screenshot({ path: `test-results/final-${width}-lecture.png`, fullPage: true });
     await page.keyboard.press('Escape');
     await page.getByRole('button', { name: '神經修復', exact: true }).click();

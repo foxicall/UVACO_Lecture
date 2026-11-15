@@ -40,7 +40,7 @@ const definitions: DraftDeck[] = [
     files: ['20230409_WL_疼痛.pptx'],
     description: '林煒醫師專題｜DNA 甲基化與神經修復藍圖',
     slides: [
-      { id: 'pain-1', title: '疼痛與結構', subtitle: '我們還可以做些什麼？', illustration: '995', blocks: [{ heading: '主講・林煒醫師', text: '英爵診所主任醫師、生生優動疼痛科板橋分院院長；北榮、長庚神經內科經歷，CIPS 國際超音波介入治療認證。' }], note: '依提供講師資料與逐頁文稿重製；完整學經歷可由講座資訊開啟。' },
+      { id: 'pain-1', title: '疼痛與結構', subtitle: '我們還可以做些什麼？', illustration: '995', blocks: [{ heading: '主講・林煒醫師', text: '英爵診所主任醫師、生生優動疼痛科板橋分院院長；北榮、長庚神經內科經歷，CIPS 國際超音波介入治療認證。' }], note: '依提供講師資料與逐頁文稿重製；完整學經歷可由醫師介紹開啟。' },
       { id: 'pain-2', title: '為什麼，總是痛不好？', illustration: 'kangyue', blocks: [{ heading: '先理解疼痛的來源', text: '慢性腰痛、偏頭痛、關節炎與纖維肌痛，可能涉及不同的組織、神經與全身因素。' }, { heading: '壓力也是拼圖之一', text: '原稿以「自律神經超載症候群 AOS」描述壓力與疼痛的關係；不能把所有慢性疼痛都歸因於單一機轉。' }], note: '持續或加劇的疼痛，需要由醫療團隊排除其他病因。' },
       { id: 'pain-3', title: '健康金三角', subtitle: '結構、化學與情緒，一起看', illustration: '360', blocks: [{ heading: '結構 Structure', text: '足部旋前、足弓、膝與骨盆位置可能影響動作負荷；張力整合 Biotensegrity 提供整體觀察角度。' }, { heading: '化學 Chemical', text: '發炎、氧化壓力、營養攝取與代謝狀況，可能參與疼痛與恢復。' }, { heading: '情緒 Emotion', text: '長期壓力與睡眠問題可能放大痛覺；照護也包含情緒支持與生活安排。' }], note: '足弓改變不必然造成肩頸、顳顎或暈眩症狀，仍須逐項評估。' },
       { id: 'pain-4', title: '鬆開修復的煞車', illustration: 'dikang', blocks: [{ heading: '留意身體的緊繃', text: '自律神經、微循環、肌肉活動與疼痛互相影響；不能把慢性痛簡化成乳酸排不出去。' }, { heading: '理解皮質醇的角色', text: '原稿以油門與煞車比喻復健和壓力的交互作用。長期壓力可能影響恢復，但不代表組織必然「永遠好不了」。' }], note: '規律復健、睡眠、營養與壓力照護，可以和醫療計畫一起安排。' },

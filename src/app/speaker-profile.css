@@ -1,0 +1,158 @@
+.speaker-profile-dialog {
+  width:min(820px,calc(100% - 32px));
+  background:var(--paper);
+}
+.speaker-profile-dialog .dialog-heading {
+  background:var(--paper);
+}
+.physician-identity {
+  padding:20px 0 8px;
+}
+.physician-identity h3 {
+  margin:0 0 12px;
+  text-wrap:balance;
+  font-size:clamp(1.75rem,3vw,2.25rem);
+}
+.physician-philosophy {
+  margin:0 0 28px;
+  font-size:1.375rem;
+}
+.physician-name {
+  display:flex;
+  flex-wrap:wrap;
+  align-items:baseline;
+  gap:8px 16px;
+}
+.physician-name strong {
+  font-size:1.75rem;
+  font-weight:650;
+}
+.physician-name span,
+.physician-focus {
+  color:var(--muted);
+  font-size:1.25rem;
+}
+.physician-focus {
+  margin:8px 0 20px;
+}
+.physician-beliefs {
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px 28px;
+  margin:0 0 24px;
+  padding:0;
+  list-style:none;
+}
+.physician-beliefs li {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-size:1.25rem;
+}
+.physician-beliefs svg {
+  color:var(--pine);
+  flex-shrink:0;
+}
+.physician-identity .voice-button {
+  min-height:60px;
+  font-size:1.25rem;
+}
+.physician-section {
+  margin-top:32px;
+}
+.physician-section h3 {
+  margin:0 0 16px;
+  font-size:1.5rem;
+}
+.physician-group {
+  margin:0;
+  padding:8px 24px;
+  list-style:none;
+  border-radius:22px;
+  background:var(--inset);
+  overflow:hidden;
+}
+.physician-group li {
+  padding:16px 0;
+  font-size:1.25rem;
+  line-height:1.75;
+  overflow-wrap:anywhere;
+}
+.physician-group li + li {
+  border-top:1px solid #18222012;
+}
+.physician-specialties {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  column-gap:28px;
+}
+.physician-specialties li:nth-child(2) {
+  border-top:0;
+}
+.physician-care-switch {
+  display:flex;
+  gap:6px;
+  border-radius:999px;
+  padding:6px;
+  background:#E8EDE7;
+}
+.physician-care-switch button {
+  flex:1;
+  min-width:0;
+  min-height:60px;
+  font-size:1.25rem;
+  background:transparent;
+}
+.physician-care-switch button[aria-pressed=true] {
+  color:var(--paper);
+  background:var(--pine);
+}
+.physician-care-answer {
+  margin-top:20px;
+  padding:24px;
+  border-radius:22px;
+  background:var(--inset);
+}
+.physician-care-answer h4 {
+  font-size:1.375rem;
+}
+.physician-care-answer p {
+  margin:0;
+  font-size:1.25rem;
+  line-height:1.75;
+}
+@media(max-width:600px) {
+  .speaker-profile-dialog {
+    width:calc(100% - 24px);
+  }
+  .physician-identity {
+    padding-top:12px;
+  }
+  .physician-focus,
+  .physician-philosophy {
+    text-wrap:balance;
+  }
+  .physician-philosophy {
+    font-size:1.25rem;
+  }
+  .physician-beliefs {
+    display:grid;
+    gap:12px;
+  }
+  .physician-group,
+  .physician-care-answer {
+    padding:8px 18px;
+  }
+  .physician-specialties {
+    grid-template-columns:minmax(0,1fr);
+  }
+  .physician-specialties li:nth-child(2) {
+    border-top:1px solid #18222012;
+  }
+  .physician-care-switch button {
+    padding:10px 8px;
+  }
+  .physician-care-answer {
+    padding:20px 18px;
+  }
+}

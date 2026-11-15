@@ -18,7 +18,7 @@ test('all excluded credits and spaced names are removed without relabelling the 
  assert.equal(result.split('\n').length,source.split('\n').length);
  assert.ok(!result.includes('Daniel Wang'));
  assert.ok(result.includes('UGT 結合反應'));
- assert.equal(anonymizeSourceText('林煒醫師 11/15 健康講座'),'林煒醫師 11/15 健康講座');
+ assert.equal(anonymizeSourceText('林煒醫師 精準營養導覽'),'林煒醫師 精準營養導覽');
  assert.equal(anonymizeSourceText('Redox resilience 氧化還原韌性'),'Redox resilience 氧化還原韌性');
 });
 

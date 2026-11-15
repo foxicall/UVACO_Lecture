@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "sourceDigest": "bc1f3d0852b41f76179fb63fe5f4eeddf98e9db65c0445f424f9114a98240e66",
+  "sourceDigest": "425fd86ae768e8db088c2da6d826c068024d3e7fc9177f74441715944189ec8c",
   "inventory": [
     {
       "path": "README.md",
-      "bytes": 19564,
-      "sha256": "6cc54309e863ad14371eb6e9629dd85bcda280e4dd5006e2011ae89edb2f05d6",
+      "bytes": 19665,
+      "sha256": "37f4c67aa63853948ce2f18239f62ed82abe1c1520ae5646039c2ad7bb609f58",
       "kind": "project-document"
     },
     {
@@ -40,8 +40,8 @@
     },
     {
       "path": "葡眾/lecture-poster-source.md",
-      "bytes": 4987,
-      "sha256": "bb405b69286d3c34b65cfe8ff7611c610533e8c43341fbdbb51465f8a30dc8a1",
+      "bytes": 4688,
+      "sha256": "34a255ff5ec71d864bf6d50558a1cdce08ce4b73177b51857207739a41678f56",
       "kind": "clinical-source"
     },
     {
@@ -82,8 +82,8 @@
     },
     {
       "path": "葡眾/longevity-6-lectures-source.md",
-      "bytes": 35538,
-      "sha256": "7974cb74cd90ed8f21d4f4f2311402fce45b70ae8f7f15107bdff5d3f3d0ff7d",
+      "bytes": 35550,
+      "sha256": "d8826ad594074073a4e75f2f3e8fcb7b5d713b0e91585505d204042e83d94e6a",
       "kind": "clinical-source"
     },
     {
@@ -154,10 +154,10 @@
     },
     {
       "id": "D1",
-      "title": "林煒醫師講座海報",
+      "title": "林煒醫師專業介紹與健康理念",
       "path": "葡眾/lecture-poster-source.md",
-      "sha256": "bb405b69286d3c34b65cfe8ff7611c610533e8c43341fbdbb51465f8a30dc8a1",
-      "bytes": 4987,
+      "sha256": "34a255ff5ec71d864bf6d50558a1cdce08ce4b73177b51857207739a41678f56",
+      "bytes": 4688,
       "sectionCount": 4
     },
     {
@@ -212,8 +212,8 @@
       "id": "S1",
       "title": "六套長壽講座圖解校對",
       "path": "葡眾/longevity-6-lectures-source.md",
-      "sha256": "7974cb74cd90ed8f21d4f4f2311402fce45b70ae8f7f15107bdff5d3f3d0ff7d",
-      "bytes": 35538,
+      "sha256": "d8826ad594074073a4e75f2f3e8fcb7b5d713b0e91585505d204042e83d94e6a",
+      "bytes": 35550,
       "sectionCount": 31
     },
     {

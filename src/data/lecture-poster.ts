@@ -2,13 +2,10 @@ export type PillarId = 'repair' | 'neural' | 'inflammation' | 'autonomic';
 export const lecture = {
   title: '找回身體的自癒力',
   subtitle: '醫療改善症狀，營養打造健康',
-  badge: '免費健康講座',
-  date: '11/15（日）',
-  time: '10:00',
-  address: '延吉街235巷1號',
+  badge: '精準營養與神經修復領航',
+  role: '主講／總顧問',
   speaker: '林煒醫師',
   beliefs: ['營養是修復的原料', '健康不能只靠治療'],
-  invitation: '名額有限，歡迎參加！一起關心神經健康，找回生活品質！',
   specialties: ['疼痛／頭痛治療', '再生醫學', '周邊神經阻斷術', '骨骼肌肉超音波', '動作障礙疾病評估及治療', '功能營養醫學', '頻率共振微電流治療', '中風相關治療與復健'],
   credentials: [
     '英爵診所主任醫師',
@@ -22,7 +19,7 @@ export const lecture = {
     'ECFMG Certificate（美國國外醫學畢業生教育委員會證書）',
     'CIPS（Certified Interventional Pain Sonologist）超音波介入疼痛治療國際認證',
   ],
-  credentialNote: '講師簡歷依活動提供資料整理。ECFMG 證書是國際醫學畢業生資格認證，不等同美國各州的獨立行醫執照。',
+  credentialNote: '醫師簡歷依提供資料整理。ECFMG 證書是國際醫學畢業生資格認證，不等同美國各州的獨立行醫執照。',
   source: '葡眾/lecture-poster-source.md',
 } as const;
 

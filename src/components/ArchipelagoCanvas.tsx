@@ -39,7 +39,7 @@ function Landmark({ p }: { p: Product }) {
 }
 type InteractionProps = {portal:RefObject<HTMLDivElement|null>;onHover:(id:string|null)=>void;onFocus:(id:string|null)=>void};
 function RoofBadge({id,name,color,active=false,onClick,onHover,onFocus,portal,hub=false}:{id:string;name:string;color:string;active?:boolean;onClick:()=>void;hub?:boolean}&InteractionProps) {
-  return <Html portal={portal.current ? {current:portal.current} : undefined} center distanceFactor={1} zIndexRange={[20,1]} className="roof-anchor"><button type="button" data-product-id={id} className={`${hub?'hub-label':'island-label'} landmark-label ${active?'active':''}`} aria-label={hub?'林煒醫師講座，開啟健康金三角':productById.get(id)?.name} aria-pressed={hub?undefined:active} onClick={event=>{event.stopPropagation();onClick();}} onPointerEnter={()=>onHover(id)} onPointerLeave={()=>onHover(null)} onFocus={()=>onFocus(id)} onBlur={()=>onFocus(null)}><span className="landmark-badge"><i aria-hidden="true" style={{backgroundColor:color}}/>{name}</span></button></Html>;
+  return <Html portal={portal.current ? {current:portal.current} : undefined} center distanceFactor={1} zIndexRange={[20,1]} className="roof-anchor"><button type="button" data-product-id={id} className={`${hub?'hub-label':'island-label'} landmark-label ${active?'active':''}`} aria-label={hub?'林煒醫師，開啟醫師介紹':productById.get(id)?.name} aria-pressed={hub?undefined:active} onClick={event=>{event.stopPropagation();onClick();}} onPointerEnter={()=>onHover(id)} onPointerLeave={()=>onHover(null)} onFocus={()=>onFocus(id)} onBlur={()=>onFocus(null)}><span className="landmark-badge"><i aria-hidden="true" style={{backgroundColor:color}}/>{name}</span></button></Html>;
 }
 function Island({ p, active, onSelect, onHover,onFocus,portal }: { p: Product; active: boolean; onSelect: (id: string) => void }&InteractionProps) {
   const [hover, setHover] = useState(false);
@@ -97,7 +97,7 @@ function LectureHub({ onClick,onHover,onFocus,portal }: { onClick: () => void }&
     <mesh position={[0, -.28, 0]}><cylinderGeometry args={[1.9, 1.65, .9, 6]} /><meshStandardMaterial color="#AA9A78" /></mesh>
     <mesh position={[0, .21, 0]}><cylinderGeometry args={[1.92, 1.92, .16, 6]} /><meshStandardMaterial color="#DFD8B5" /></mesh>
     <mesh position={[0, .33, 0]}><cylinderGeometry args={[1.4, 1.5, .14, 12]} /><meshStandardMaterial color="#B6C7B1" /></mesh>
-    <group name="landmark-hub" position={[0, .4, 0]} scale={1.35*LANDMARK_SCALE}><Pavilion /><group position={[0,1.75,0]}><RoofBadge id="hub" name="林煒醫師講座" color="#D97706" hub onClick={onClick} onHover={onHover} onFocus={onFocus} portal={portal}/></group></group>
+    <group name="landmark-hub" position={[0, .4, 0]} scale={1.35*LANDMARK_SCALE}><Pavilion /><group position={[0,1.75,0]}><RoofBadge id="hub" name="林煒醫師" color="#D97706" hub onClick={onClick} onHover={onHover} onFocus={onFocus} portal={portal}/></group></group>
     <Tree position={[-1.05, .25, .5]} size={.75} color="#5D8966" /><Tree position={[1.05, .25, -.4]} size={.65} color="#86A479" />
   </group>;
 }

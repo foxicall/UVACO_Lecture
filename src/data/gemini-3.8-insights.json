@@ -1,11 +1,11 @@
 {
   "version": 2,
-  "sourceDigest": "bc1f3d0852b41f76179fb63fe5f4eeddf98e9db65c0445f424f9114a98240e66",
-  "curationDigest": "8a68bccee9d2f8ca2554d7c5c6dfc6de73174b4f198ed9135a7c3891b82587e5",
+  "sourceDigest": "425fd86ae768e8db088c2da6d826c068024d3e7fc9177f74441715944189ec8c",
+  "curationDigest": "d1864dfa7471b7d5136c5d009500b2892202116f3f5b3ec878dcb00bb6d29001",
   "engine": {
     "model": "gemini-3.8-pro",
-    "status": "unavailable",
-    "detail": "指定的 Gemini 3.8 Pro 目前不可用，使用完整文件整理，未切換模型。"
+    "status": "local",
+    "detail": "文件整理；未進行網路搜尋。"
   },
   "insights": {
     "overview": "從慢性發炎、細胞修復與自律神經三個角度理解身體，先照顧飲食、活動與睡眠，再與醫療人員討論個人需要。用生活故事讀懂身體，再逐一認識配方。",
