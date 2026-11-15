@@ -27,7 +27,8 @@
     "test:visuals": "tsx tests/visual-browser.ts",
     "test:visual-fit": "tsx tests/visual-fit-browser.ts",
     "test:homocysteine": "tsx tests/homocysteine-browser.ts",
-    "test:gut-brain": "tsx tests/gut-brain-browser.ts"
+    "test:gut-brain": "tsx tests/gut-brain-browser.ts",
+    "test:science-modules": "tsx tests/science-modules-browser.ts"
   },
   "engines": {
     "node": ">=22"

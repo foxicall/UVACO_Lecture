@@ -96,8 +96,8 @@ try{
   await page.locator('.header-ppt').click();const keynote=page.locator('.thematic-keynote-dialog');await keynote.waitFor();
   await keynote.getByRole('button',{name:'同半胱胺酸雙路徑',exact:true}).click();chart=await diagram(keynote);assert.equal(await keynote.getByRole('button',{name:'全螢幕播放',exact:true}).count(),0);
   await keynote.locator('#deck-tab-longevity-5').click();await diagram(keynote);
-  await keynote.locator('#deck-tab-longevity-2').click();assert.equal(await keynote.locator('.homocysteine-master').count(),0);assert.equal(await keynote.getByRole('button',{name:'科學圖解',exact:true}).getAttribute('aria-pressed'),'true');
-  await keynote.locator('#deck-tab-longevity-1').click();assert.equal(await keynote.locator('.homocysteine-master').count(),0);await keynote.getByRole('button',{name:'同半胱胺酸雙路徑',exact:true}).click();chart=await diagram(keynote);
+  await keynote.locator('#deck-tab-longevity-2').click();assert.equal(await keynote.locator('.homocysteine-master').count(),0);await keynote.locator('[data-science-module="toxin"]').waitFor();
+  await keynote.locator('#deck-tab-longevity-1').click();chart=await diagram(keynote);assert.equal(await keynote.getByRole('button',{name:'同半胱胺酸雙路徑',exact:true}).getAttribute('aria-pressed'),'true');
   await audit(page,width,'keynote',chart);await visitProduct(page,chart,'360');
   await page.getByRole('button',{name:'字體大小：100%，點選切換'}).click();await page.getByRole('button',{name:'字體大小：125%，點選切換'}).click();
   hub=await openHub(page);chart=await diagram(hub);await noOverflow(page,chart,`${width}px 140%`);await chart.screenshot({path:`test-results/homocysteine-${width}-large.png`});

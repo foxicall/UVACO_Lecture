@@ -77,6 +77,10 @@ npm run assets:generate -- --require-ai
 
 第六專題預設開啟 `GutBrainImmunityMasterInteractive`：腸道屏障剖面動畫、四個免疫代謝環節、腦腸／腸肌兩條遠端路徑、5R 步驟及全部 23 頁選編圖解。慢性發炎／自律神經故事與健康金三角共用此元件，前兩幕保持產品隱藏。個案前後數據與模式開關分離，逐項保留原始頁碼、單位、不同採檢時間及未改善指標；年齡數字是特定演算法的估算變化，尿液濃度變化不等同全身毒素清除。公開畫廊仍使用已匿名化的 23 頁，未公開的原始頁碼不生成錯誤 PDF 頁碼連結。
 
+專題二、三、四分別加入 `ToxinDrainageMasterInteractive`、`EndocrineBrainBrakeInteractive`、`ResolutionMyelinInteractive`。三套互動圖共用大字模式、暫停／減少動態、語音、可點選分子工作站及原料島嶼連結，並各自呈現肝膽腸腎循環、內分泌三軸與突觸離子、胞葬／血腦屏障／髓鞘動畫。研究數字保留族群、物種、介入及來源條件；COMT 的 2-OH／4-OH 反應、SPM 四家族與不同腦部營養路徑維持獨立分支。
+
+六個專題按鈕現在一律先開互動圖，下面的 `DeckSourceGallery` 保留該專題所有選編頁面（共 147 頁），支援縮圖、完整全圖與國語語音。從產品或來源引用進入指定頁時，仍優先開啟該投影片；可用「科學圖解」回到逐頁播放。
+
 ```bash
 # 修改原始檔或公開選頁政策後，明確執行；需要 PyMuPDF / Pillow
 npm run visuals:extract
@@ -90,6 +94,7 @@ TEST_BASE_URL=http://localhost:3002 npm run test:visual-fit
 # 同半胱胺酸動畫、分流、產品連動與跨裝置操作
 TEST_BASE_URL=http://localhost:3002 npm run test:homocysteine
 TEST_BASE_URL=http://localhost:3002 npm run test:gut-brain
+TEST_BASE_URL=http://localhost:3002 npm run test:science-modules
 ```
 
 ## 驗證

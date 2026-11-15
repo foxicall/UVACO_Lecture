@@ -150,8 +150,10 @@ try{
  await page.route('**/extracted-slides/**',route=>route.abort());
  await page.goto(base,{waitUntil:'networkidle'});await page.getByRole('button',{name:'人體修復能力',exact:true}).click();
  await page.locator('.medical-stat-svg').waitFor();await page.getByRole('button',{name:'接著，看身體怎麼了',exact:true}).click();
+ await showOtherPathways(page.locator('.visual-story-dialog'));
  await page.locator('.pathway-flow-svg').waitFor();assert.ok(await page.locator('.pathway-node').count()>1,'Built-in diagram must work without extracted pictures');
  await page.keyboard.press('Escape');await page.locator('.header-ppt').click();
+ await page.getByRole('button',{name:'科學圖解',exact:true}).click();
  await page.locator('.pdf-keynote-image [data-pdf-state=ready]').waitFor({timeout:60000});
  await fallback.close();
  await writeFile('test-results/pathways-accessibility.json',JSON.stringify(reports,null,2));

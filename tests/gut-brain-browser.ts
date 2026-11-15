@@ -109,18 +109,18 @@ try{
   for(const product of products){hub=await openHub(page);chart=await master(hub);await visitProduct(page,chart,product.id);}
   await page.locator('.header-ppt').click();const keynote=page.locator('.thematic-keynote-dialog');await keynote.waitFor();await keynote.locator('#deck-tab-longevity-6').click();chart=await master(keynote);
   assert.equal(await keynote.getByRole('button',{name:'腸腦與免疫互動圖',exact:true}).getAttribute('aria-pressed'),'true');
-  const gallery=chart.locator('.gut-source-gallery');await gallery.locator(':scope>summary').click();
-  await gallery.locator('[data-gut-page]').first().waitFor();
-  assert.deepEqual(await gallery.locator('[data-gut-page]').evaluateAll(nodes=>nodes.map(node=>node.getAttribute('data-gut-page'))),sourceDeck.pages.map(slide=>slide.id));
-  const last=sourceDeck.pages.at(-1)!;await gallery.locator(`[data-gut-page="${last.id}"]`).click();
-  await completeImage(gallery.locator('.gut-gallery-stage .pdf-visual'));
-  await gallery.getByRole('button',{name:'放大腦腸軸原圖',exact:true}).click();const lightbox=page.locator('.visual-lightbox');await lightbox.waitFor();
+  const gallery=keynote.locator('[data-deck-gallery="longevity-6"]');await gallery.locator(':scope>summary').click();
+  await gallery.locator('[data-gallery-page]').first().waitFor();
+  assert.deepEqual(await gallery.locator('[data-gallery-page]').evaluateAll(nodes=>nodes.map(node=>node.getAttribute('data-gallery-page'))),sourceDeck.pages.map(slide=>slide.id));
+  const last=sourceDeck.pages.at(-1)!;await gallery.locator(`[data-gallery-page="${last.id}"]`).click();
+  await completeImage(gallery.locator('.deck-gallery-stage .pdf-visual'));
+  await gallery.getByRole('button',{name:'點擊全螢幕放大',exact:true}).click();const lightbox=page.locator('.visual-lightbox');await lightbox.waitFor();
   assert.match(await lightbox.locator('.visual-provenance a').getAttribute('href')||'',new RegExp(`#page=${last.pdfPageNumber}$`));await completeImage(lightbox.locator('.pdf-visual'));await page.keyboard.press('Escape');
-  await gallery.getByRole('button',{name:'聽這張圖解',exact:true}).click();await anonymous(gallery);await gallery.locator(':scope>summary').click();
+  await gallery.getByRole('button',{name:'國語語音導讀',exact:true}).click();await anonymous(gallery);await gallery.locator(':scope>summary').click();
   await keynote.getByRole('button',{name:'科學圖解',exact:true}).click();assert.equal(await keynote.locator('.pdf-filmstrip>button').count(),23);assert.equal(await keynote.locator('.slide-counter').innerText(),'1 / 23');
   await keynote.getByRole('button',{name:'下一頁',exact:true}).click();assert.equal(await keynote.locator('.slide-counter').innerText(),'2 / 23');
   await keynote.getByRole('button',{name:'腸腦與免疫互動圖',exact:true}).click();await master(keynote);
-  await keynote.locator('#deck-tab-longevity-5').click();assert.equal(await keynote.locator('.gut-brain-master').count(),0);assert.equal(await keynote.getByRole('button',{name:'科學圖解',exact:true}).getAttribute('aria-pressed'),'true');
+  await keynote.locator('#deck-tab-longevity-5').click();assert.equal(await keynote.locator('.gut-brain-master').count(),0);await keynote.locator('.homocysteine-master').waitFor();assert.equal(await keynote.getByRole('button',{name:'同半胱胺酸雙路徑',exact:true}).getAttribute('aria-pressed'),'true');
   await keynote.locator('#deck-tab-longevity-6').click();chart=await master(keynote);await audit(page,width,'keynote',chart);await visitProduct(page,chart,'ningkang');
   await page.getByRole('button',{name:'字體大小：100%，點選切換'}).click();await page.getByRole('button',{name:'字體大小：125%，點選切換'}).click();hub=await openHub(page);chart=await master(hub);
   await chart.locator('.gut-case-panel>summary').click();await noOverflow(chart,`${width}px at 140%`);await chart.screenshot({path:`test-results/gut-brain-${width}-large.png`});

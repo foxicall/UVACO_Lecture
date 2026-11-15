@@ -63,6 +63,7 @@ try{
   const label=`${width}×${height}${large?' 140%':''}`;
   await page.locator('.header-ppt').click();
   await page.locator('#deck-tab-longevity-4').click();
+  await page.getByRole('button',{name:'科學圖解',exact:true}).click();
   await selectSourcePage(page,'brain-forest-002');
   await assertCompleteSlide(page.locator('.pdf-keynote-image .pdf-visual'),`${label} scientific preview`);
   await page.getByRole('button',{name:'全螢幕播放',exact:true}).click();
@@ -84,6 +85,7 @@ try{
   await page.getByRole('button',{name:'全島總覽',exact:true}).click();
   await page.locator('.header-ppt').click();
   await page.locator('#deck-tab-longevity-3').click();
+  await page.getByRole('button',{name:'科學圖解',exact:true}).click();
   await selectSourcePage(page,'longevity-3-001');
   await assertCompleteSlide(page.locator('.pdf-keynote-image .pdf-visual'),`${label} portrait preview`);
   await page.getByRole('button',{name:'全螢幕播放',exact:true}).click();
