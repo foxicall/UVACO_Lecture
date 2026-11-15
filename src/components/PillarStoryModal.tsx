@@ -1,5 +1,6 @@
 'use client';
 import {useEffect,useRef,useState} from 'react';
+import dynamic from 'next/dynamic';
 import {ArrowRight,ArrowLeft,Check,X,MapPin} from 'lucide-react';
 import Dialog from './Dialog';
 import MedicalDiagramGallery from './MedicalDiagramGallery';
@@ -12,6 +13,8 @@ import {productById} from '@/data/uvaco-products';
 import {pillarVisuals,productVisuals,getVisualPage} from '@/data/visual-assets-manifest';
 import {sitePath} from '@/lib/site';
 
+const EarlyNutritionJamaInteractive=dynamic(()=>import('./EarlyNutritionJamaInteractive'),{ssr:false});
+
 export default function PillarStoryModal({pillarId,onClose,onProduct,onProducts,onNextStory}:{pillarId:PillarId;onClose:()=>void;onProduct:(id:string)=>void;onProducts?:(ids:string[])=>void;onNextStory:(id:PillarId)=>void}){
  const [stage,setStage]=useState(0);const [visited,setVisited]=useState(0);const [selected,setSelected]=useState<string[]>([]);
  const heading=useRef<HTMLHeadingElement>(null);const story=pillarStories[pillarId];const pillar=pillarById.get(pillarId)!;
@@ -19,6 +22,7 @@ export default function PillarStoryModal({pillarId,onClose,onProduct,onProducts,
  const go=(next:number)=>{setStage(next);setVisited(v=>Math.max(v,next));};
  const showHomocysteine=(pillarId==='repair'||pillarId==='neural')&&stage>0;
  const showGutBrain=(pillarId==='inflammation'||pillarId==='autonomic')&&stage>0;
+ const showJama=(pillarId==='repair'||pillarId==='inflammation')&&stage>0;
  const showMasterDiagram=showHomocysteine||showGutBrain;
  const visitProducts=(ids:string[])=>{if(ids.length){if(onProducts)onProducts(ids);else onProduct(ids[0]);}};
  const medicalGallery=<MedicalDiagramGallery key={`${pillarId}-${stage}`} pillarId={pillarId} stage={stage as 0|1|2} onProducts={visitProducts}/>;
@@ -28,6 +32,7 @@ export default function PillarStoryModal({pillarId,onClose,onProduct,onProducts,
   <section className="story-stage" data-stage={stage+1} aria-labelledby="story-stage-title">
    <p className="story-eyebrow">第{['一','二','三'][stage]}幕 · 看圖，認識身體</p>
    <h3 id="story-stage-title" tabIndex={-1} ref={heading}>{['身體的感受，從哪裡開始？','跟著圖，看看身體怎麼了','懂了身體，再認識原料'][stage]}</h3>
+   {showJama&&<div className="story-jama-evidence"><EarlyNutritionJamaInteractive key={`${pillarId}-${stage}`} showProducts={stage===2} onProducts={visitProducts}/></div>}
    {showHomocysteine&&<div className="story-homocysteine"><HomocysteineMasterDiagram key={`${pillarId}-${stage}`} showProducts={stage===2} onProducts={visitProducts}/></div>}
    {showGutBrain&&<div className="story-gut-brain"><GutBrainImmunityMasterInteractive key={`${pillarId}-${stage}`} showProducts={stage===2} showGallery={false} onProducts={visitProducts}/></div>}
    <div className="visual-story-grid">

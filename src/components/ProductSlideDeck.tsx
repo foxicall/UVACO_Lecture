@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import dynamic from 'next/dynamic';
 import { X, ArrowUpRight, Leaf, BookOpen, Network } from 'lucide-react';
 import type { Product } from '@/types/product';
 import { productById } from '@/data/uvaco-products';
@@ -14,8 +15,11 @@ import { pillarById } from '@/data/lecture-poster';
 import BiochemicalPathwayCard from './BiochemicalPathwayCard';
 import {productPathwayIds} from '@/data/biochemical-pathways';
 
+const EarlyNutritionJamaInteractive=dynamic(()=>import('./EarlyNutritionJamaInteractive'),{ssr:false});
+
 export default function ProductSlideDeck({ product: p, onSelect, onProducts, onClose }: { product: Product; onSelect: (id: string) => void; onProducts?: (ids: string[]) => void; onClose: () => void }) {
   const [tab, setTab] = useState(0);
+  const [jamaOpen,setJamaOpen]=useState(false);
   const source = sources.products.find(s => s.id === p.id)!;
   const sections = ['身體的需要', '原料小故事', '一起認識'];
   const story = everydayProducts[p.id];
@@ -25,6 +29,7 @@ export default function ProductSlideDeck({ product: p, onSelect, onProducts, onC
   return <aside className="product-deck" aria-label={`${p.name}產品說明`}>
     <div className="deck-top"><span>{pillarById.get(p.lecturePillar!)!.name}</span><button className="icon-button" aria-label="關閉產品說明" onClick={onClose}><X /></button></div>
     <div className="product-intro visual-product-intro"><div><h2>{p.name}</h2><p>{bridge.connection}</p></div></div>
+    {['995','360'].includes(p.id)&&<details className="product-jama-evidence" onToggle={event=>setJamaOpen(event.currentTarget.open)}><summary>📊 JAMA 2026：提早安排營養支持</summary>{jamaOpen&&<EarlyNutritionJamaInteractive onProducts={onProducts||((ids)=>onSelect(ids[0]))}/>}</details>}
     <BiochemicalPathwayCard key={`pathway-${p.id}`} pathwayIds={productPathwayIds[p.id]||[]} productId={p.id} showProducts onProducts={onProducts||((ids)=>onSelect(ids[0]))}/>
     <details className="product-source-gallery"><summary>延伸看科學圖解</summary><VisualCarousel key={p.id} items={productVisuals[p.id]} label={`${p.name}科學圖解`} caption={false} narration={false}/></details>
     <div className="deck-tabs" role="tablist" aria-label="產品資訊分類">{sections.map((name, i) => {

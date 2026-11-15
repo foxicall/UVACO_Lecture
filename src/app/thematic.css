@@ -21,6 +21,13 @@
 .story-other-pathways[open]>summary { margin-bottom:16px; }
 .thematic-introduction { font-size:20px; line-height:1.75; margin:0 0 20px; }
 .thematic-keynote-dialog .pdf-keynote-image .pdf-visual { height:clamp(200px,40vh,620px); }
+.thematic-jama-stage{width:100%;max-width:1440px;min-width:0;margin:0 auto}
+.story-jama-evidence{min-width:0;margin-bottom:32px;padding-bottom:20px;border-bottom:1px solid #ccd5cb}
+.product-jama-evidence{min-width:0;margin:18px 0 24px;border:1px solid #c6d3bf;border-radius:18px;background:#f7f7ee;overflow:hidden}
+.product-jama-evidence>summary{min-height:60px;padding:18px 20px;font-size:1.125rem;line-height:1.7;color:#24523c;font-weight:600;cursor:pointer}
+.product-jama-evidence>.jama-early-master{margin:0;padding:0 16px 20px}
+.thematic-reading-mode>button.keynote-jama-pill{min-height:60px;background:#efe7d5;color:#51451f;border:1px solid #d2c193}
+.thematic-reading-mode>button.keynote-jama-pill[aria-pressed=true]{background:#654f28;color:#fff;border-color:#654f28}
 @media(max-width:1000px){
  .thematic-keynote-dialog .pdf-keynote-image .pdf-visual { height:auto; max-height:42vh; }
 }

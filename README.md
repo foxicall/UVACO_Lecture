@@ -81,6 +81,8 @@ npm run assets:generate -- --require-ai
 
 六個專題按鈕現在一律先開互動圖，下面的 `DeckSourceGallery` 保留該專題所有選編頁面（共 147 頁），支援縮圖、完整全圖與國語語音。從產品或來源引用進入指定頁時，仍優先開啟該投影片；可用「科學圖解」回到逐頁播放。
 
+`EarlyNutritionJamaInteractive` 比較 JAMA Oncology 2026 鼻咽癌同步放化療試驗中的早期與常規 ONS 策略（DOI `10.1001/jamaoncol.2026.4535`、PMID `43018988`、登錄 `NCT04823468`）。兩組事件數與分母固定並列，絕對差異及 NNT 由原始計數計算；人口與介入資訊分別依公開摘要、試驗登錄，短期成本保留 best-case／探索性條件。未能由可讀原文核對的依從性比例、提前使用比例與配方等同性不作為已證實結果。元件位於修復／發炎故事第 2、3 幕、簡報快捷入口與 995／360 抽屜；前兩幕不顯示產品，配方連結不代表本試驗測試葡眾產品。
+
 ```bash
 # 修改原始檔或公開選頁政策後，明確執行；需要 PyMuPDF / Pillow
 npm run visuals:extract
@@ -95,6 +97,7 @@ TEST_BASE_URL=http://localhost:3002 npm run test:visual-fit
 TEST_BASE_URL=http://localhost:3002 npm run test:homocysteine
 TEST_BASE_URL=http://localhost:3002 npm run test:gut-brain
 TEST_BASE_URL=http://localhost:3002 npm run test:science-modules
+TEST_BASE_URL=http://localhost:3002 npm run test:jama
 ```
 
 ## 驗證
