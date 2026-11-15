@@ -1,0 +1,18 @@
+.gut-barrier-scene { container:gut-barrier / inline-size; isolation:isolate; min-width:0; margin:0; color:#182220; }
+.gut-barrier-anatomy { display:block; width:100%; height:auto; overflow:visible; border-radius:24px; background:#F7F7EE; }
+.gut-anatomy-region-label { font-family:inherit; font-size:24px; font-weight:600; fill:#45604B; }
+.gut-anatomy-chemical { font-family:inherit; font-size:22px; font-weight:600; fill:#315E48; }
+.gut-anatomy-chemical.gut-signal-label { font-size:21px; fill:#824837; }
+.gut-barrier-layer-controls { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; margin:18px 0 0; }
+.gut-barrier-layer-controls>button { display:flex; flex-direction:column; gap:4px; min-width:0; min-height:76px; padding:13px 14px; border:1px solid #B9CBB4; border-radius:18px; background:#E9EFE1; color:#244D36; line-height:1.5; }
+.gut-barrier-layer-controls>button>strong { font-size:1.375rem; font-weight:650; }
+.gut-barrier-layer-controls>button>span { font-size:1.125rem; font-weight:400; overflow-wrap:anywhere; }
+.gut-barrier-layer-controls>button[aria-pressed=true] { background:#1B4D3E; border-color:#1B4D3E; color:#FFF; }
+.gut-barrier-layer-controls>button:focus-visible { outline:3px solid #A86D20; outline-offset:3px; }
+.gut-barrier-layer-controls>button:hover { background:#DAE6D0; }
+.gut-barrier-layer-controls>button[aria-pressed=true]:hover { background:#246047; }
+.gut-barrier-legend { display:flex; flex-wrap:wrap; gap:8px 24px; margin-top:16px; font-size:1.25rem; line-height:1.7; color:#304C3B; }
+.gut-key { display:flex; align-items:flex-start; gap:10px; }
+.gut-key:before { content:''; flex-shrink:0; width:11px; height:11px; margin-top:.55em; border-radius:50%; background:#A17934; }
+.gut-key-lps:before { background:#B75040; }.gut-key-scfa:before { background:#2F8765; }
+@container gut-barrier (max-width:600px){.gut-barrier-anatomy { border-radius:18px; }.gut-barrier-layer-controls { grid-template-columns:minmax(0,1fr); gap:8px; margin-top:14px; }.gut-barrier-layer-controls>button { min-height:66px; flex-direction:row; justify-content:space-between; align-items:center; padding:14px 16px; text-align:left; gap:12px; }.gut-barrier-layer-controls>button>span { text-align:right; }.gut-barrier-legend { font-size:1.25rem; gap:10px; }}

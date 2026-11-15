@@ -1,0 +1,78 @@
+.homocysteine-master { --hcy-green:#1B7255; --hcy-amber:#A66D22; --hcy-red:#A64335; container:homocysteine / inline-size; isolation:isolate; min-width:0; color:#182220; margin:24px 0; }
+
+.hcy-title h3 { font-size:clamp(28px,3vw,40px); line-height:1.4; letter-spacing:-.03em; margin:0 0 10px; }
+.hcy-title .hcy-lead,.hcy-mode-summary { font-size:1.375rem; line-height:1.75; margin:0 0 18px; }
+.hcy-products-context { display:inline-block; margin-left:1em; color:#405B4B; font-size:1.125rem; }
+.hcy-toolbar { display:grid; grid-template-columns:minmax(0,1.4fr) minmax(0,1fr); gap:16px; margin:0 0 22px; align-items:center; }
+.hcy-mode-summary { margin:24px 0 0; }
+.hcy-mode-control { display:flex; flex-wrap:wrap; gap:8px; background:#E8ECE3; padding:7px; border-radius:28px; }
+.hcy-mode-control>button { flex:1 1 230px; min-height:64px; padding:14px 18px; font-size:1.25rem; line-height:1.5; border-radius:22px; border:1px solid transparent; background:transparent; color:#304B3B; }
+.hcy-mode-control>button[aria-pressed=true] { background:#1B4D3E; color:white; }
+.hcy-mode-control>button[data-hcy-state=blocked][aria-pressed=true] { background:#943C32; }
+.hcy-tools { display:flex; flex-wrap:wrap; gap:10px; margin:0; }
+.hcy-tools>button,.hcy-tools>div { flex:1 1 130px; }
+.hcy-tools button { width:100%; min-height:60px; padding:12px 16px; font-size:1.125rem; border-radius:15px; }
+.hcy-tools .voice-button { margin:0; }
+.hcy-board { position:relative; display:grid; grid-template-columns:minmax(0,1fr); gap:28px; min-width:0; padding:0 12px; }
+.hcy-flow-particle { filter:drop-shadow(0 0 3px currentColor); }
+.hcy-connectors { position:absolute; z-index:2; inset:0; overflow:visible; pointer-events:none; }
+.hcy-physiology { min-width:0; padding:30px 42px; background:#F0F3E9; border:1px solid #D0DBCA; border-radius:24px; }
+.hcy-mainline { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); grid-template-areas:'met sam' 'hcy sah'; gap:46px 38px; }
+.hcy-mainline>.hcy-node-methionine { grid-area:met; }.hcy-mainline>.hcy-node-sam { grid-area:sam; }.hcy-mainline>.hcy-node-sah { grid-area:sah; }.hcy-mainline>.hcy-node-hcy { grid-area:hcy; }
+.hcy-node { position:relative; z-index:3; min-width:0; display:flex; flex-direction:column; border:1px solid #B9C9B3; border-radius:18px; background:#FAF9F3; overflow-wrap:anywhere; }
+.hcy-node.is-selected { border:2px solid #9A6A29; box-shadow:0 0 0 3px #E6CE9E; }
+.hcy-node-select { display:flex; flex-direction:column; align-items:flex-start; gap:10px; width:100%; min-height:60px; flex:1; text-align:left; border-radius:17px; padding:20px 18px 12px; color:#182220; background:transparent; line-height:1.6; }
+.hcy-node-select:hover { background:#E7EFDF; }
+.hcy-node-select strong { display:block; font-size:1.375rem; line-height:1.5; color:#183E2D; }
+.hcy-node-select>span:last-child { font-size:1.25rem; font-weight:400; }
+.hcy-node-abbreviation { font-size:1rem; color:#415C4C; font-weight:650; letter-spacing:.01em; }
+.hcy-cofactor { margin:0; padding:4px 18px 16px; font-size:1.125rem; line-height:1.65; color:#3F624D; }
+.hcy-product-badges { position:relative; z-index:3; display:flex; flex-wrap:wrap; gap:7px; padding:0 14px 14px; }
+.hcy-product-badges>button { flex:1 1 110px; min-width:0; min-height:60px; font-size:1.125rem; padding:10px 12px; background:#E3ECD9; color:#254D32; border:1px solid #B9CBAA; border-radius:13px; line-height:1.5; }
+.hcy-product-badges svg { flex-shrink:0; }
+.hcy-sah-signal { position:relative; z-index:3; margin:45px 0 30px; padding:18px 20px; border-radius:16px; background:#F0EBF3; border:1px solid #D2C4DE; color:#53396D; }
+.hcy-sah-signal strong { font-size:1.375rem; line-height:1.6; }
+.hcy-sah-signal p { font-size:1.25rem; margin:8px 0 0; line-height:1.75; }
+.homocysteine-master[data-hcy-mode=blocked] .hcy-sah-signal { background:#E7DDEE; border-color:#9272AA; }
+.hcy-branches { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:40px; }
+.hcy-branches>section { min-width:0; }
+.hcy-branches>section>header,.hcy-vascular>header { position:relative; z-index:3; background:#F0F3E9; padding:12px 0 24px; }
+.hcy-branches header>span,.hcy-vascular header>span { font-size:1rem; color:#405B4B; font-weight:650; }
+.hcy-branches h4,.hcy-vascular h4 { margin:4px 0 10px; font-size:1.5rem; line-height:1.5; }
+.hcy-branches header>p,.hcy-vascular header>p { font-size:1.25rem; line-height:1.7; margin:0; }
+.hcy-recycling-branch h4 { color:#256371; }.hcy-trans-branch h4 { color:#80541D; }
+.hcy-branches .hcy-node+.hcy-node { margin-top:44px; }
+.hcy-return-label { position:relative; z-index:3; padding:18px 14px; background:#DDEAD6; border:1px solid #B1C8A1; border-radius:12px; font-size:1.25rem; line-height:1.6; color:#214E34; margin:28px 0 0; }
+.hcy-vascular { min-width:0; border:1px solid #DDCBC2; border-radius:22px; background:#F5F0EA; padding:20px 18px; }
+.hcy-vascular>header { background:#F5F0EA; }.hcy-vascular h4 { color:#723F34; }
+.hcy-vascular ol { list-style:none; margin:0; padding:0; }
+.hcy-vascular li { position:relative; z-index:3; border:1px solid #DFCDC2; background:#FCF8F3; border-radius:15px; padding:18px 16px; }
+.hcy-vascular li+li { margin-top:32px; }.hcy-vascular h5 { font-size:1.25rem; line-height:1.6; margin:0 0 10px; color:#753E32; }
+.hcy-vascular li>p,.hcy-vascular-foot { font-size:1.25rem; line-height:1.75; margin:0; }
+.hcy-vascular li>.hcy-product-badges { padding:16px 0 0; }.hcy-vascular-foot { position:relative; z-index:3; margin-top:20px; background:#F5F0EA; }
+.homocysteine-master[data-hcy-mode=blocked] .hcy-vascular { border-color:#C97562; background:#F8EAE3; }
+.homocysteine-master[data-hcy-mode=blocked] .hcy-vascular>header,.homocysteine-master[data-hcy-mode=blocked] .hcy-vascular-foot { background:#F8EAE3; }
+.homocysteine-master[data-hcy-mode=blocked] .hcy-vascular li { border-color:#CC8B78; background:#FFF6F1; }
+.homocysteine-master[data-hcy-mode=blocked] .hcy-node-hcy { border-color:#B5503F; background:#FFF0E9; }
+.hcy-congestion { display:flex; gap:8px; height:14px; margin:2px 18px 14px; }
+.hcy-congestion i { width:9px; height:9px; border-radius:50%; background:#A9BFA0; }
+.homocysteine-master[data-hcy-mode=blocked] .hcy-congestion i { background:#B44A3C; }
+.homocysteine-master[data-hcy-mode=blocked][data-hcy-motion=running] .hcy-congestion i { animation:hcy-backpressure 1.6s ease-in-out infinite; }
+.hcy-congestion i:nth-child(2) { animation-delay:.2s!important; }.hcy-congestion i:nth-child(3) { animation-delay:.4s!important; }.hcy-congestion i:nth-child(4) { animation-delay:.6s!important; }.hcy-congestion i:nth-child(5) { animation-delay:.8s!important; }
+@keyframes hcy-backpressure { 0%,100% { transform:translateY(0) scale(.75); } 50% { transform:translateY(-4px) scale(1.2); } }
+.hcy-node-detail { margin:28px 0; padding:24px; border-left:4px solid #A66D22; background:#F0F2E8; border-radius:0 16px 16px 0; }
+.hcy-node-detail>p:first-child { font-size:1rem; color:#405B4B; margin:0 0 8px; }.hcy-node-detail h4 { font-size:1.5rem; line-height:1.6; margin:0 0 12px; }.hcy-node-detail>p:last-child { font-size:1.375rem; line-height:1.8; margin:0; }
+.hcy-benefits h4 { font-size:1.5rem; line-height:1.6; margin:0 0 20px; }
+.hcy-benefit-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+.hcy-benefit-grid>div { min-width:0; padding:10px; border:1px solid #C7D4BF; border-radius:16px; background:#F4F5EC; }
+.hcy-benefit-grid>div:last-child:nth-child(odd) { grid-column:1/-1; }
+.hcy-benefit-grid>div>button { display:flex; flex-direction:column; min-height:98px; width:100%; padding:14px; border-radius:12px; font-size:1.25rem; line-height:1.55; background:transparent; }
+.hcy-benefit-grid>div>button[aria-pressed=true] { background:#E0EBD6; color:#1B4D3E; }
+.hcy-benefit-grid .hcy-product-badges { margin-top:10px; padding:0; }
+.hcy-benefit-detail { font-size:1.375rem; line-height:1.8; padding:20px 0; margin:0; }
+.hcy-clinical { border-top:1px solid #C9D4C0; margin-top:18px; }.hcy-clinical summary { cursor:pointer; display:list-item; min-height:60px; font-size:1.25rem; line-height:1.6; padding:18px 0; color:#254F39; }
+.hcy-clinical-columns { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:30px; }.hcy-clinical h4 { font-size:1.375rem; line-height:1.6; margin:10px 0 20px; }.hcy-clinical dl { margin:0; }.hcy-clinical dt { font-size:1.375rem; line-height:1.6; font-weight:650; margin:0 0 8px; }.hcy-clinical dd { font-size:1.375rem; line-height:1.8; margin:0 0 24px; }.hcy-sources { padding-left:24px; }.hcy-sources li { font-size:1.125rem; line-height:1.7; margin-bottom:12px; }.hcy-sources a { color:#1B4D3E; text-decoration:underline; text-underline-offset:3px; overflow-wrap:anywhere; }
+@container homocysteine (min-width:1100px){.hcy-board { grid-template-columns:minmax(0,3fr) minmax(260px,1fr); gap:36px; }.hcy-mainline { grid-template-columns:repeat(4,minmax(0,1fr)); grid-template-areas:'met sam sah hcy'; gap:28px; }.hcy-physiology { padding:26px 34px; }.hcy-benefit-grid { grid-template-columns:repeat(5,minmax(0,1fr)); }.hcy-benefit-grid>div:last-child:nth-child(odd) { grid-column:auto; }}
+@container homocysteine (max-width:1000px){.hcy-toolbar { grid-template-columns:minmax(0,1fr); gap:10px; }.hcy-tools { justify-content:flex-end; }.hcy-tools>button,.hcy-tools>div { flex:0 1 auto; }.hcy-tools button { width:auto; min-width:150px; }}
+@container homocysteine (max-width:650px){.hcy-mode-control>button { flex-basis:110px; padding:12px 10px; }.hcy-products-context { display:block; margin-left:0; }.hcy-title h3 { font-size:28px; }.hcy-tools>button,.hcy-tools>div { flex:1 1 130px; }.hcy-tools button { width:100%; min-width:0; }.hcy-board { padding:0 5px; }.hcy-physiology { padding:22px 32px; }.hcy-mainline { grid-template-columns:minmax(0,1fr); grid-template-areas:'met' 'sam' 'sah' 'hcy'; gap:42px; }.hcy-branches { grid-template-columns:minmax(0,1fr); gap:34px; }.hcy-branches>section { padding-bottom:10px; }.hcy-benefit-grid,.hcy-clinical-columns { grid-template-columns:minmax(0,1fr); }.hcy-benefit-grid>div:last-child:nth-child(odd) { grid-column:auto; }.hcy-sah-signal { padding:16px 14px; }.hcy-node-select { padding:16px 14px 10px; }.hcy-cofactor { padding:4px 14px 14px; }.hcy-product-badges { padding:0 10px 12px; }.hcy-node-detail { padding:20px 16px; }}
+@media(prefers-reduced-motion:reduce){.hcy-congestion i { animation:none!important; }}

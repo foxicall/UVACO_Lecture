@@ -73,6 +73,10 @@ npm run assets:generate -- --require-ai
 
 轉檔以 **120 dpi、關鍵頁、單一處理程序** 執行；一般建置只校驗已提交資產，不做 PDF 轉檔。Next.js 建置設定 4096 MB heap 上限。`biochemical-pathways.ts` 區分人體生理與產品原料研究，並以獨立分支呈現 MTR／BHMT、SPM 家族、自噬與血管代謝。
 
+`HomocysteineMasterDiagram` 將甲硫胺酸 → SAM → SAH ↔ 同半胱胺酸、葉酸／B12 與甜菜鹼兩條再甲基化支路、轉硫化及 GSH 合成放在同一張互動圖。可切換回收受阻與正常分流示意，支援節點說明、動畫暫停、減少動態效果、臨床指標展開及產品島嶼連結。人體修復與神經修復第二幕保留純生理圖解，第三幕才加入產品原料；健康金三角的細胞自癒力／慢性發炎與第 1、5 專題也有入口。圖中的流量切換是生理示意，產品按鈕對照配方原料；不把單一檢驗區間、同半胱胺酸降低或原料研究寫成成品治療效果。
+
+第六專題預設開啟 `GutBrainImmunityMasterInteractive`：腸道屏障剖面動畫、四個免疫代謝環節、腦腸／腸肌兩條遠端路徑、5R 步驟及全部 23 頁選編圖解。慢性發炎／自律神經故事與健康金三角共用此元件，前兩幕保持產品隱藏。個案前後數據與模式開關分離，逐項保留原始頁碼、單位、不同採檢時間及未改善指標；年齡數字是特定演算法的估算變化，尿液濃度變化不等同全身毒素清除。公開畫廊仍使用已匿名化的 23 頁，未公開的原始頁碼不生成錯誤 PDF 頁碼連結。
+
 ```bash
 # 修改原始檔或公開選頁政策後，明確執行；需要 PyMuPDF / Pillow
 npm run visuals:extract
@@ -83,6 +87,9 @@ UVACO_TESSDATA=/tmp/uvaco-tessdata python3 scripts/audit-public-pdf-assets.py --
 # 前端整合與完整投影片顯示回歸
 TEST_BASE_URL=http://localhost:3002 npm run test:visuals
 TEST_BASE_URL=http://localhost:3002 npm run test:visual-fit
+# 同半胱胺酸動畫、分流、產品連動與跨裝置操作
+TEST_BASE_URL=http://localhost:3002 npm run test:homocysteine
+TEST_BASE_URL=http://localhost:3002 npm run test:gut-brain
 ```
 
 ## 驗證

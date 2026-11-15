@@ -31,6 +31,7 @@ try {
     assert.equal(await keynote.locator('.keynote-deck-tabs [role=tab]').count(), 6);
     for (const deck of thematicDecks) {
       await keynote.getByRole('tab', { name: deck.title, exact: true }).click();
+      await keynote.getByRole('button', { name: '科學圖解', exact: true }).click();
       assert.deepEqual(await keynote.locator('.pdf-filmstrip>button').evaluateAll(buttons => buttons.map(button => button.getAttribute('data-page-id'))), deck.pages.map(slide => slide.id));
       assert.equal(await keynote.locator('.slide-counter').innerText(), `1 / ${deck.pageCount}`);
       const firstImage = keynote.locator('.pdf-keynote-image .pdf-visual>img');
@@ -53,6 +54,7 @@ try {
     await page.getByText('靜態版文件整理・這不是AI回答', { exact: true }).waitFor();
     assert.equal(await page.locator('.result-products>div').count(), 2);
     await page.locator('.related-slides button').first().click();
+    await keynote.getByRole('button', { name: '科學圖解', exact: true }).click();
     await page.locator('.slide-counter').waitFor();
     const selectedTab = await keynote.locator('.keynote-deck-tabs [aria-selected=true]').getAttribute('id');
     const selectedDeck = thematicDecks.find(deck => `deck-tab-${deck.id}` === selectedTab)!;

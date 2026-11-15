@@ -25,6 +25,11 @@ async function choosePathway(card:Locator,id:PathwayId){
  if(current!==id)await card.locator('.pathway-picker select').selectOption(id);
  assert.equal(await card.getAttribute('data-pathway'),id);
 }
+async function showOtherPathways(story:Locator){
+ const details=story.locator('.story-other-pathways');
+ if(await details.count()&&await details.getAttribute('open')===null)await details.locator(':scope > summary').click();
+ const card=story.locator('.biochemical-pathway-card');await card.waitFor();return card;
+}
 async function exercisePathway(card:Locator,id:PathwayId,page:Page){
  await choosePathway(card,id);
  const data=pathwayById.get(id)!;
@@ -68,7 +73,7 @@ try{
    await noEarlyProducts(story);
    if(pillar.id==='repair')await audit(page,width,'anatomy');
    await story.getByRole('button',{name:'接著，看身體怎麼了',exact:true}).click();
-   const card=story.locator('.biochemical-pathway-card');await card.waitFor();
+   const card=await showOtherPathways(story);
    for(const id of pillarPathwayIds[pillar.id]){
     await choosePathway(card,id);await noEarlyProducts(story);
     if(!tested.has(id)){await exercisePathway(card,id,page);tested.add(id);}
@@ -131,7 +136,7 @@ try{
   await page.getByRole('button',{name:'字體大小：100%，點選切換'}).click();await page.getByRole('button',{name:'字體大小：125%，點選切換'}).click();
   await page.getByRole('button',{name:'人體修復能力',exact:true}).click();
   await page.getByRole('button',{name:'接著，看身體怎麼了',exact:true}).click();
-  const largeCard=page.locator('.visual-story-dialog .biochemical-pathway-card');
+  const largeCard=await showOtherPathways(page.locator('.visual-story-dialog'));
   assert.ok(await largeCard.locator('.pathway-node').first().evaluate(el=>el.getBoundingClientRect().height)>=44);
   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,`Horizontal overflow at ${width}px / 140%`);
   await page.screenshot({path:`test-results/pathways-large-${width}.png`});

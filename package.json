@@ -25,7 +25,9 @@
     "visuals:extract": "python scripts/extract-all-pdf-visuals.py && node scripts/prepare-pdf-visuals.mjs",
     "visuals:prepare": "node scripts/prepare-pdf-visuals.mjs",
     "test:visuals": "tsx tests/visual-browser.ts",
-    "test:visual-fit": "tsx tests/visual-fit-browser.ts"
+    "test:visual-fit": "tsx tests/visual-fit-browser.ts",
+    "test:homocysteine": "tsx tests/homocysteine-browser.ts",
+    "test:gut-brain": "tsx tests/gut-brain-browser.ts"
   },
   "engines": {
     "node": ">=22"

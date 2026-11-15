@@ -1,4 +1,9 @@
 /* Six clinical topics share the same reading frame as the image galleries. */
+.story-gut-brain,.triangle-gut-brain { min-width:0; margin:24px 0; }
+.thematic-gut-brain-stage { width:100%; max-width:1300px; margin:0 auto; min-width:0; }
+.hub-feature-switch { display:flex; flex-wrap:wrap; gap:10px; margin:24px 0; }
+.hub-feature-switch button { flex:1 1 230px; min-height:60px; padding:14px 20px; font-size:1.25rem; line-height:1.6; }
+.hub-feature-switch button[aria-pressed=true] { background:#1B4D3E; color:#fff; }
 .thematic-keynote-dialog .keynote-byline { display:flex; flex-wrap:wrap; align-items:center; column-gap:16px; row-gap:2px; flex-shrink:0; }
 .thematic-keynote-dialog .keynote-byline strong { font-weight:600; }
 .thematic-keynote-dialog .keynote-deck-tabs button { text-align:left; align-items:flex-start; }
@@ -9,6 +14,11 @@
 .thematic-pathway-link { width:100%; min-height:60px; font-size:18px; text-align:left; line-height:1.6; margin-top:16px; }
 .pdf-keynote-workspace.thematic-pathway-workspace { display:block; }
 .thematic-pathway-stage { width:100%; max-width:1240px; margin:0 auto; min-width:0; }
+.thematic-homocysteine-stage { width:100%; max-width:1440px; margin:0 auto; min-width:0; }
+.story-homocysteine,.triangle-homocysteine { min-width:0; margin:0 0 28px; }
+.story-other-pathways { border-top:1px solid #CCD5CB; padding-top:12px; }
+.story-other-pathways>summary { min-height:60px; font-size:20px; font-weight:600; color:#1B4D3E; }
+.story-other-pathways[open]>summary { margin-bottom:16px; }
 .thematic-introduction { font-size:20px; line-height:1.75; margin:0 0 20px; }
 .thematic-keynote-dialog .pdf-keynote-image .pdf-visual { height:clamp(200px,40vh,620px); }
 @media(max-width:1000px){

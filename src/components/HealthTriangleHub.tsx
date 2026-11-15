@@ -4,6 +4,8 @@ import { ArrowUpRight, BookOpen, ChevronRight, Dna, Sparkles } from 'lucide-reac
 import Dialog from './Dialog';
 import VoiceGuide from './VoiceGuide';
 import ScienceDetails from './ScienceDetails';
+import HomocysteineMasterDiagram from './HomocysteineMasterDiagram';
+import GutBrainImmunityMasterInteractive from './GutBrainImmunityMasterInteractive';
 import { everydayProducts } from '@/data/everyday-language';
 import ClinicalAnalyzer from './ClinicalAnalyzer';
 import { triangleAxes, mechanismCards, productMechanisms, productComparisonNotes, type AxisId, type SlideTarget } from '@/data/health-triangle';
@@ -22,6 +24,7 @@ function TriangleDiagram({axis,onChange}:{axis:AxisId;onChange:(axis:AxisId)=>vo
 export default function HealthTriangleHub({onClose,onProducts,onSlide,initialProduct}:{onClose:()=>void;onProducts:(ids:string[])=>void;onSlide:(target:SlideTarget)=>void;initialProduct?:string}) {
   const [view,setView]=useState(initialProduct?2:0);
   const [axis,setAxis]=useState<AxisId>('inflammation');
+  const [featured,setFeatured]=useState<'gut'|'hcy'>('gut');
   const [matrixProduct,setMatrixProduct]=useState(initialProduct&&productById.has(initialProduct)?initialProduct:'995');
   const titles=['身體的故事','我的關注','產品對照','來源筆記'];
   const active=triangleAxes.find(item=>item.id===axis)!;
@@ -34,6 +37,9 @@ export default function HealthTriangleHub({onClose,onProducts,onSlide,initialPro
       {view===0&&<>
         <section className="triangle-intro"><div><h3>理解身體，<br/>從三個角度開始。</h3><p>像照顧住了一輩子的房子，身體需要整理、原料與休息。點一個主題，從生活故事開始。</p></div><TriangleDiagram axis={axis} onChange={setAxis}/></section>
         <section className="axis-intro" aria-live="polite"><div><Dna size={24}/><h3>{active.title}</h3></div><h4>{active.metaphor}</h4><p>{active.intro}</p><ul>{active.everyday.map(item=><li key={item}>{item}</li>)}</ul></section>
+        {axis==='inflammation'&&<div className="hub-feature-switch" role="group" aria-label="選擇互動主圖"><button aria-pressed={featured==='gut'} onClick={()=>setFeatured('gut')}>腸腦與免疫互動圖</button><button aria-pressed={featured==='hcy'} onClick={()=>setFeatured('hcy')}>同半胱胺酸雙路徑</button></div>}
+        {(axis==='repair'||axis==='inflammation'&&featured==='hcy')&&<section className="triangle-homocysteine" aria-label={`${active.title}：同半胱胺酸雙路徑`}><HomocysteineMasterDiagram key={axis} onProducts={onProducts}/></section>}
+        {(axis==='autonomic'||axis==='inflammation'&&featured==='gut')&&<section className="triangle-gut-brain" aria-label={`${active.title}：腸腦與免疫互動圖`}><GutBrainImmunityMasterInteractive key={axis} showGallery={false} onProducts={onProducts}/></section>}
         <div className="mechanism-list">{mechanismCards.filter(card=>card.axis===axis).map(card=><details key={card.id} className="mechanism-card"><summary><span><strong>{card.title}</strong><span>{card.simple}</span></span><ChevronRight size={20}/></summary><div className="mechanism-body"><h4>放進生活裡，慢慢想</h4><p>{card.explanation}</p><div className="mechanism-actions">{card.productIds.length>0&&<button onClick={()=>onProducts(card.productIds)}>比較相關產品 <ArrowUpRight size={20}/></button>}<button onClick={()=>onSlide(card.slide)}>開啟對應簡報 <BookOpen size={19}/></button></div><VoiceGuide text={`${card.title}。${card.simple}。${card.explanation}`}/><ScienceDetails><h4>研究路徑與條件</h4><p>{card.science}</p><p>{card.boundary}</p><SourceLabels ids={card.sourceIds}/></ScienceDetails></div></details>)}</div>
         <button className="primary triangle-analysis-link" onClick={()=>setView(1)}><Sparkles size={22}/>從我的關注開始</button>
         <details className="synthesis-note"><summary>查看整合摘要與生成狀態</summary><p>{synthesis.insights.overview}</p><p className="small-copy">{synthesis.engine.detail}</p></details>
